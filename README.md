@@ -12,6 +12,6 @@ Idée de coups de pouce avec dijkstra
 * Adapter l'algo python en java 
 * rédapter dijkstra
 * Programmer les blocs 3D
-* Réseau de neuronnes
+* Réseau de neurones
 
 
