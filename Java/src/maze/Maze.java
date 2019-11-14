@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 public class Maze {
 	private int length;
 	private char[][] matrix;
+	private Box start;
+	private Box arrival;
 	
 	public Maze(String name) {
 		FileReader FR;
@@ -20,8 +22,8 @@ public class Maze {
 			while (line != null) {
 				lignes.add(line);
 				line = in.readLine();
+				in.close();
 			}
-			in.close();
 		} catch (IOException e) {
 			System.out.println("exit 1");
 			System.exit(0);
