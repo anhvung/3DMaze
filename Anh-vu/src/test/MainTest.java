@@ -14,6 +14,9 @@ import dijkstra.Vertex;
 import dijkstra.VertexInterface;
 import dijkstra.Dijkstra;
 import java.io.PrintStream;
+
+import javax.swing.JFrame;
+
 import maze.Maze;
 
 public class MainTest {
@@ -24,6 +27,7 @@ public class MainTest {
 		MazeMaker M = new MazeMaker(4,"src/data/3Dmaze.txt");
 		M.makeMaze();
 		Maze maze = new Maze("src/data/3Dmaze.txt");
+		maze.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GraphInterface g = new Graph(maze);
 		ASetInterface a = new ASet();
 		PreviousInterface previous = new Previous(g.getLength());

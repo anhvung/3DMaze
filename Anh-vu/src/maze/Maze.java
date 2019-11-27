@@ -1,20 +1,50 @@
 package maze;
+import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Maze {
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class Maze extends JFrame {
+
+	private static final long serialVersionUID = 1L;
 	protected int length;
 	protected String path;
 	protected String[] directions;
 	private Box[] grid;
+	private JPanel[] panels;
 	public Box start;
 	public Box arrival;
 	public int startIndex;
 	public int arrivalIndex;
 	
-	public Maze(String path) {
+	public Maze(String path) {		
+		directions = new String[] {"ABOVE", 
+				"BELOW", 
+				"UP", 
+				"DOWN", 
+				"RIGHT", 
+				"LEFT"};
+		this.path = path;
+        this.setTitle("Grid Layout");
+        this.setSize(1000, 1000);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+		initMazeFromTextFile();
+		
+		this.setContentPane(panels[start.getIndex()[0]]);
+        setVisible(true);
+		
+        
+
+
+	}
+	
+	public Maze(int length, String path) {
+		this.length = length;
 		this.path = path;
 		directions = new String[] {"ABOVE", 
 				"BELOW", 
@@ -22,6 +52,9 @@ public class Maze {
 				"DOWN", 
 				"RIGHT", 
 				"LEFT"};
+	}
+	
+	private void initMazeFromTextFile() {
 		FileReader FR;
 		ArrayList<String> lignes = new ArrayList<>();
 		try {
@@ -46,7 +79,10 @@ public class Maze {
 		startIndex = Integer.parseInt(lignes.get(1));
 		arrivalIndex = Integer.parseInt(lignes.get(2));
 		grid = new Box[(int)Math.pow(length, 3)];
+		panels = new JPanel[length];
 		for (int depth = 0; depth < length; depth++) {
+			panels[depth] = new JPanel();
+			panels[depth].setLayout(new GridLayout(0,length,0,0));
 			for (int row = 0; row < length; row++) {
 				for (int column = 0; column < length; column++) {
 						int i = index(depth, row, column);
@@ -59,23 +95,16 @@ public class Maze {
 								grid[i].deleteWall(dir);
 							}
 						}
+						panels[depth].add(grid[i]);
 				}
 			}
 		}
+
 		start = grid[startIndex];
 		arrival = grid[arrivalIndex];
 	}
 	
-	public Maze(int length, String path) {
-		this.length = length;
-		this.path = path;
-		directions = new String[] {"ABOVE", 
-				"BELOW", 
-				"UP", 
-				"DOWN", 
-				"RIGHT", 
-				"LEFT"};
-	}
+
 
 	public int getLength() {
 		return length;

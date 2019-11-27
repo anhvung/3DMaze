@@ -30,6 +30,7 @@ public class Grid extends JFrame{
 		Maze maze = new Maze();
 		maze.initFromTextFile("src/data/maze.txt");
         Grid gl = new Grid(maze);
-        gl.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );   }  
+        gl.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }  
     }
 

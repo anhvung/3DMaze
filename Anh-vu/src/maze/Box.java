@@ -2,7 +2,9 @@ package maze;
 
 import java.lang.Math;
 
-public class Box implements BoxInterface {
+import javax.swing.JButton;
+
+public class Box extends JButton implements BoxInterface {
 	public boolean[] walls;
 	protected int i, j, k;
 	
