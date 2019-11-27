@@ -7,5 +7,16 @@ public class Bloc3d {
 	public boolean[] getWalls() {
 		return this.walls;
 	}
-
+	public String getType() {
+		String res=new String();
+		for (boolean wall:walls) {
+			if (wall) {
+				res+="1";
+			}
+			else {
+				res+="0";
+			}
+		}
+		return res;
+	}
 }

@@ -2,9 +2,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class maze {
+public class Maze {
 	private int size;
-	private Bloc3d[] blocs;
+	public Bloc3d[] blocs;
 	public final void initFromTextFile(String fileName) {
 		BufferedReader reader;
 		Bloc3d bloc;
@@ -13,13 +13,14 @@ public class maze {
 			reader = new BufferedReader(new FileReader(fileName));
 			String line = reader.readLine();
 			size=Integer.parseInt(line);
-			blocs =new Bloc3d[size];
-			while (line != null) {
+			blocs =new Bloc3d[size*size*size];
+			for(int i=0;i<1000;i++) {
 				
 				mazeLine++;
 				line = reader.readLine();
 				bloc=toBloc(line);
-				blocs[mazeLine]=bloc;
+				blocs[mazeLine-1]=bloc;
+				System.out.println(mazeLine-1);
 			}
 			reader.close();
 		} catch (IOException e) {

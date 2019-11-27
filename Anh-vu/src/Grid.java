@@ -1,26 +1,35 @@
-import java.awt.*;
- import javax.swing.*;
- public class Grid extends JFrame {
-	 /**
+import java.awt.GridLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+public class Grid extends JFrame{
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 2883516016805876884L;
-	private int marging=30;
-	 
- public Grid()    {       
- setSize( 500, 500 );
- setVisible( true );   
- } 
-public void paint( Graphics g)    
- {  
+	private static final long serialVersionUID = 1L;
+	private Maze maze;
+	public Grid(Maze maze){
+        JPanel container = new JPanel();
+        this.setTitle("Grid Layout");
+        this.setSize(1000, 1000);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        container.setLayout(new GridLayout(0,10,0,0));
+        this.maze=maze;
+        InitFromMaze(maze,container);
+        this.setContentPane(container);
+       
+        setVisible(true);
+    }
+    private void InitFromMaze(Maze maze2,  JPanel container) {
+    	 for (int i=0;i<100;i++) {
+ 			container.add(new JButton(maze2.blocs[i].getType()));
+ 		}
+ 		
+	}
+	public static void main(String[] args) {
+		Maze maze = new Maze();
+		maze.initFromTextFile("src/data/maze.txt");
+        Grid gl = new Grid(maze);
+        gl.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );   }  
+    }
 
- for ( int x =marging ; x < 30*10+marging; x += 30 )
- for ( int y = marging; y < 30*10+marging; y += 30 ) 
-	 
- g.drawRect( x, y, 30, 30 );
-
- } 
- public static void main( String args[] ) 
- {
-     Grid application = new Grid();
- application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );   }  } 
