@@ -21,7 +21,7 @@ public class MainTest {
 	public static void main(String[] args) {
 		PrintStream out = System.out;
 		//Maze maze = new Maze("data/labyrinthe.txt");
-		MazeMaker M = new MazeMaker(4,"data/3Dmaze.txt");
+		MazeMaker M = new MazeMaker(4,"src/3Dmaze.txt");
 		M.makeMaze();
 		Maze maze = new Maze("data/3Dmaze.txt");
 		GraphInterface g = new Graph(maze);
