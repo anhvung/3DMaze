@@ -5,6 +5,7 @@ import java.io.IOException;
 public class Maze {
 	private int size;
 	public Bloc3d[] blocs;
+	
 	public final void initFromTextFile(String fileName) {
 		BufferedReader reader;
 		Bloc3d bloc;
