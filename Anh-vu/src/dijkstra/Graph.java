@@ -1,7 +1,8 @@
 package dijkstra;
 
 import java.util.ArrayList;
-import maze.Maze;
+
+import Controler.Maze;
 
 public class Graph implements GraphInterface {
 	private int[][] matrix;

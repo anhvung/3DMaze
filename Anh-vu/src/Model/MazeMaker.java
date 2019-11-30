@@ -1,6 +1,9 @@
-package maze;
+package Model;
 
 import java.util.Stack;
+
+import Controler.Maze;
+
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package maze;
+package Controler;
 import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.FileReader;

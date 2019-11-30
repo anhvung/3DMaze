@@ -1,4 +1,4 @@
-package maze;
+package Controler;
 
 import java.lang.Math;
 

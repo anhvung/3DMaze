@@ -1,8 +1,6 @@
 package test;
 
 import dijkstra.Graph;
-import maze.MazeMaker;
-import maze.Maze;
 import dijkstra.GraphInterface;
 import dijkstra.ASet;
 import dijkstra.ASetInterface;
@@ -17,16 +15,20 @@ import java.io.PrintStream;
 
 import javax.swing.JFrame;
 
-import maze.Maze;
+import Controler.Maze;
+import Model.MazeMaker;
 
 public class MainTest {
 
 	public static void main(String[] args) {
+		
 		PrintStream out = System.out;
-		//Maze maze = new Maze("data/labyrinthe.txt");
-		MazeMaker M = new MazeMaker(4,"src/data/3Dmaze.txt");
+		int length = 4;
+		String source = "src/data/3Dmaze.txt";
+		
+		MazeMaker M = new MazeMaker(length,source);
 		M.makeMaze();
-		Maze maze = new Maze("src/data/3Dmaze.txt");
+		Maze maze = new Maze(source);
 		maze.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GraphInterface g = new Graph(maze);
 		ASetInterface a = new ASet();

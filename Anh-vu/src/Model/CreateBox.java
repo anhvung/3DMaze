@@ -1,5 +1,6 @@
-package maze;
+package Model;
 
+import Controler.Box;
 
 public class CreateBox extends Box {
 	private CreateBox[] neighbours;
