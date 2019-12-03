@@ -93,7 +93,7 @@ class ColorCube3D extends Frame implements WindowListener
 
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		
-		Alpha rotationAlpha=new Alpha(-1,4000);
+		Alpha rotationAlpha=new Alpha(-1,5000);
 
 		// on crée un comportement qui va appliquer la rotation à l'objet voulu
 		RotationInterpolator rotator=new RotationInterpolator(rotationAlpha,objSpin);
@@ -103,31 +103,60 @@ class ColorCube3D extends Frame implements WindowListener
 		rotator.setSchedulingBounds(bounds);
 		objSpin.addChild(rotator);
 		
-		scene.addChild(objSpin);
+	
 		//Box texturée
-		Appearance boxApp=mkAppWithTexture("src/data/stripe.gif");
-		Box box=new Box(0.3f,0.4f,0.4f,Box.GENERATE_TEXTURE_COORDS,boxApp);
+		Appearance boxApp=mkAppWithTexture("src/data/rock.gif");
+		Box box=new Box(0.05f,0.25f,0.25f,Box.GENERATE_TEXTURE_COORDS,boxApp);
 		TriangleStripArray tri=(TriangleStripArray)(box.getShape(Box.FRONT).getGeometry());
 		tri.setTextureCoordinate(0,new Point2f(3f,0f));
 		tri.setTextureCoordinate(1,new Point2f(3f,3f));
 		tri.setTextureCoordinate(2,new Point2f(0f,0f));
 		tri.setTextureCoordinate(3,new Point2f(0f,3f));	
+		Box box2=new Box(0.25f,0.05f,0.25f,Box.GENERATE_TEXTURE_COORDS,boxApp);
+		TriangleStripArray tri2=(TriangleStripArray)(box2.getShape(Box.FRONT).getGeometry());
+		tri2.setTextureCoordinate(0,new Point2f(3f,0f));
+		tri2.setTextureCoordinate(1,new Point2f(3f,3f));
+		tri2.setTextureCoordinate(2,new Point2f(0f,0f));
+		tri2.setTextureCoordinate(3,new Point2f(0f,3f));	
 		
 		//Sphere texturée
-		Appearance sphereApp=mkAppWithTexture("src/data/rock.gif");
+		Appearance sphereApp=mkAppWithTexture("src/data/stripe.gif");
 		Sphere sphere=new Sphere(0.4f,Sphere.GENERATE_TEXTURE_COORDS,sphereApp);	
 				
 		//mise en place des objets 
-		TransformGroup tg0=mkTranslation(new Vector3f(-0.4f,0f,0f));
-		TransformGroup tg1=mkRotation(Math.PI/5);
-		tg1.addChild(box);
-		tg0.addChild(tg1);
-		scene.addChild(tg0);
+		TransformGroup bigCube = new TransformGroup();
+		TransformGroup tg0=mkTranslation(new Vector3f(-0.25f,0f,0f));
+		TransformGroup ttest=mkTranslation(new Vector3f(-0.5f,0f,0f));
+		TransformGroup tg1=mkTranslation(new Vector3f(0.25f,0f,0f));
+		TransformGroup tg3=mkTranslation(new Vector3f(0.0f,0.20f,0.0f));
+		TransformGroup tg4=mkTranslation(new Vector3f(0.0f,-0.2f,0.0f));
 		
-		TransformGroup tg2=mkTranslation(new Vector3f(0.52f,0f,0f));
-		tg2.addChild(sphere);
-		objSpin.addChild(tg2);
+		tg0.addChild(box);
+		bigCube.addChild(tg0);
+		tg1.addChild(box.cloneTree());
+		bigCube.addChild(tg1);
+		tg3.addChild(box2);
+		bigCube.addChild(tg3);
+		tg4.addChild(box2.cloneTree());
+		bigCube.addChild(tg4);
+		objSpin.addChild(bigCube);
+		ttest.addChild(bigCube.cloneTree());
 		
+		for (int i=-500;i<500;i++) {
+			ttest=mkTranslation(new Vector3f(-i*0.5f,0f,0f));
+			ttest.addChild(bigCube.cloneTree());
+			objSpin.addChild(ttest.cloneTree());
+		}
+		//TransformGroup tg2=mkTranslation(new Vector3f(0.52f,0f,0f));
+		
+		
+		
+		//tg2.addChild(sphere);
+		
+		
+		//objSpin.addChild(tg2);
+		objSpin.addChild(ttest);
+		scene.addChild(objSpin);
 		scene.compile();
 		return scene;
 	}
