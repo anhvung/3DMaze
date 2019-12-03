@@ -93,7 +93,7 @@ class ColorCube3D extends Frame implements WindowListener
 
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		
-		Alpha rotationAlpha=new Alpha(-1,5000);
+		Alpha rotationAlpha=new Alpha(1,5000);
 
 		// on crée un comportement qui va appliquer la rotation à l'objet voulu
 		RotationInterpolator rotator=new RotationInterpolator(rotationAlpha,objSpin);
@@ -125,6 +125,9 @@ class ColorCube3D extends Frame implements WindowListener
 				
 		//mise en place des objets 
 		TransformGroup bigCube = new TransformGroup();
+		TransformGroup cubeLine = new TransformGroup();
+		TransformGroup cubeSquare = new TransformGroup();
+		TransformGroup cubeCube = new TransformGroup();
 		TransformGroup tg0=mkTranslation(new Vector3f(-0.25f,0f,0f));
 		TransformGroup ttest=mkTranslation(new Vector3f(-0.5f,0f,0f));
 		TransformGroup tg1=mkTranslation(new Vector3f(0.25f,0f,0f));
@@ -134,18 +137,29 @@ class ColorCube3D extends Frame implements WindowListener
 		tg0.addChild(box);
 		bigCube.addChild(tg0);
 		tg1.addChild(box.cloneTree());
-		bigCube.addChild(tg1);
+		cubeLine.addChild(tg1);
 		tg3.addChild(box2);
-		bigCube.addChild(tg3);
+		cubeLine.addChild(tg3);
 		tg4.addChild(box2.cloneTree());
 		bigCube.addChild(tg4);
-		objSpin.addChild(bigCube);
+		cubeLine.addChild(bigCube);
 		ttest.addChild(bigCube.cloneTree());
 		
-		for (int i=-500;i<500;i++) {
+		for (int i=-5;i<5;i++) {
 			ttest=mkTranslation(new Vector3f(-i*0.5f,0f,0f));
 			ttest.addChild(bigCube.cloneTree());
-			objSpin.addChild(ttest.cloneTree());
+			cubeLine.addChild(ttest.cloneTree());
+		}
+		for (int i=-5;i<5;i++) {
+			ttest=mkTranslation(new Vector3f(0f,-i*0.5f,0f));
+			ttest.addChild(cubeLine.cloneTree());
+			cubeSquare.addChild(ttest.cloneTree());
+		}
+		
+		for (int i=-5;i<5;i++) {
+			ttest=mkTranslation(new Vector3f(0f,0.0f,-i*0.5f));
+			ttest.addChild(cubeSquare.cloneTree());
+			cubeCube.addChild(ttest.cloneTree());
 		}
 		//TransformGroup tg2=mkTranslation(new Vector3f(0.52f,0f,0f));
 		
@@ -155,7 +169,7 @@ class ColorCube3D extends Frame implements WindowListener
 		
 		
 		//objSpin.addChild(tg2);
-		objSpin.addChild(ttest);
+		objSpin.addChild(cubeCube);
 		scene.addChild(objSpin);
 		scene.compile();
 		return scene;
