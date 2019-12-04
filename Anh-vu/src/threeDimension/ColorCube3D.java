@@ -1,36 +1,14 @@
 package threeDimension;
-
-import java.applet.Applet;
-import java.awt.*;
-
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.Transform3D;
 import javax.vecmath.Vector3f;
-import com.sun.j3d.utils.geometry.ColorCube;
-import com.sun.j3d.utils.applet.MainFrame;
-
-
-
-
-
-
-
-
-
-/* Chapitre 4: Section1, texturation de primitives
- * Auteur    : daboul
- * Date      : 04/00
- */
-
-//Java standart API
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.BorderLayout;
-//Java 3d API
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.Sphere;
@@ -48,30 +26,14 @@ import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.TriangleStripArray;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Point2f;
-import com.sun.j3d.utils.universe.SimpleUniverse;
-import javax.media.j3d.Canvas3D;
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.LineArray;
-import javax.media.j3d.TriangleArray;
-import javax.media.j3d.TriangleStripArray;
-import javax.media.j3d.TriangleFanArray;
-import javax.media.j3d.Shape3D;
-import javax.media.j3d.QuadArray;
-import javax.media.j3d.TransformGroup;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.Appearance;
-import javax.media.j3d.PolygonAttributes;
-import javax.vecmath.Point3f;
-import javax.vecmath.Color3f;
-import javax.vecmath.Vector3f;
-import javax.media.j3d.BoundingSphere;
+
 import javax.media.j3d.Alpha;
 import javax.media.j3d.RotationInterpolator;
 class ColorCube3D extends Frame implements WindowListener
 {
 	ColorCube3D()
 	{
-		super("- Chapitre 4: texturation de primitives -");
+		super("- test 4: texturation de primitives -");
 		this.addWindowListener(this);
 		this.setLayout(new BorderLayout());
 		
@@ -93,7 +55,7 @@ class ColorCube3D extends Frame implements WindowListener
 
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		
-		Alpha rotationAlpha=new Alpha(1,5000);
+		Alpha rotationAlpha=new Alpha(-1,8000);
 
 		// on crée un comportement qui va appliquer la rotation à l'objet voulu
 		RotationInterpolator rotator=new RotationInterpolator(rotationAlpha,objSpin);
@@ -224,7 +186,7 @@ class ColorCube3D extends Frame implements WindowListener
 	public static void main(String args[])
 	{
 		ColorCube3D myApp=new ColorCube3D();
-		myApp.setSize(500,300);
+		myApp.setSize(800,600);
 		myApp.setVisible(true);
 	}
 }
@@ -232,53 +194,3 @@ class ColorCube3D extends Frame implements WindowListener
 
 
 
-/*
-
-public class ColorCube3D extends Applet {
-
-  public ColorCube3D() {
-    this.setLayout(new BorderLayout());
-
-
-    Canvas3D canvas3D = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
-
-    this.add(canvas3D, BorderLayout.CENTER);
-
-
-    SimpleUniverse simpleU = new SimpleUniverse(canvas3D);
-
-
-    simpleU.getViewingPlatform().setNominalViewingTransform();
-
-    BranchGroup scene = createSceneGraph();
-
-
-    scene.compile();
-
-
-    simpleU.addBranchGraph(scene);
-  }
-
-
-  public BranchGroup createSceneGraph() {
-	  BranchGroup objRoot=new BranchGroup();
-	Transform3D rotate = new Transform3D();
-	rotate.rotX(Math.PI/3.0d);//rotation d'angle Pi/3
-	TransformGroup objRotate = new TransformGroup(rotate);
-	objRotate.addChild(new ColorCube(0.5));// de rayon 50 cm
-	objRoot.addChild(objRotate);
-//DEUXIEME CUBE
-	
-	Transform3D translate1 = new Transform3D();
-	translate1.set(new Vector3f(0.6f, 0.0f, 0.0f));
-	translate1.mul(rotate);
-	TransformGroup TG1 = new TransformGroup(translate1);
-	TG1.addChild(new ColorCube(0.5));// de rayon 30 cm
-	objRoot.addChild(TG1);
-	return objRoot;
-  }
-
-  public static void main(String[] args) {
-    Frame frame = new MainFrame(new ColorCube3D(), 256, 256);
-  }
-}*/
