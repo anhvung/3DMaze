@@ -8,14 +8,18 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import View.MiniMap;
+
 public class Maze extends JFrame {
+	//TODO : add the list of father to have permanently the solution of Dijkstra
+	// to be able to show the path to the arrival from any box
 
 	private static final long serialVersionUID = 1L;
 	protected int length;
 	protected String path;
 	protected String[] directions;
 	private Box[] grid;
-	private JPanel[] panels;
+	private MiniMap[] panels;
 	public Box start;
 	public Box arrival;
 	public int startIndex;
@@ -79,10 +83,8 @@ public class Maze extends JFrame {
 		startIndex = Integer.parseInt(lignes.get(1));
 		arrivalIndex = Integer.parseInt(lignes.get(2));
 		grid = new Box[(int)Math.pow(length, 3)];
-		panels = new JPanel[length];
+		panels = new MiniMap[length];
 		for (int depth = 0; depth < length; depth++) {
-			panels[depth] = new JPanel();
-			panels[depth].setLayout(new GridLayout(0,length,0,0));
 			for (int row = 0; row < length; row++) {
 				for (int column = 0; column < length; column++) {
 						int i = index(depth, row, column);
@@ -98,6 +100,8 @@ public class Maze extends JFrame {
 						panels[depth].add(grid[i]);
 				}
 			}
+			
+			panels[depth] = new MiniMap(grid, depth);
 		}
 
 		start = grid[startIndex];
