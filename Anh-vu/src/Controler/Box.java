@@ -4,16 +4,18 @@ import java.lang.Math;
 
 import javax.swing.JButton;
 
-public class Box extends JButton implements BoxInterface {
-	public boolean[] walls;
+import View.MiniMapBox;
+
+public class Box extends MiniMapBox implements BoxInterface {
 	protected int i, j, k;
 	
 	public Box(int i, int j, int k) {
+		super();
 		this.i = i;
 		this.j = j;
 		this.k = k;
-		walls = new boolean[] {true, true, true, true, true, true};
 	}
+	
 	public int getNeighbourIndex(String dir, int length) {
 		int[] move = movement(dir);
 		int[] index = getIndex();
@@ -25,6 +27,7 @@ public class Box extends JButton implements BoxInterface {
 				(index[1] + move[1]) * length +
 				(index[2] + move[2]);
 	}
+	
 	public void deleteWall(String side) {
 		walls[sideToInt(side)] = false;
 	}	
@@ -37,9 +40,14 @@ public class Box extends JButton implements BoxInterface {
 		else if (side == "LEFT") return 5;
 		else return -1;
 	}	
+	
 	public int[] getIndex() {
 		return new int[] {i, j ,k};
 	}	
+	
+	public boolean[] getWalls() {
+		return walls;
+	}
 	
 	public boolean getWall(String dir) {
 		return walls[sideToInt(dir)];

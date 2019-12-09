@@ -140,7 +140,7 @@ public class MazeMaker extends Maze {
 			writer.write("\n");
 			
 			for (CreateBox c : grid) {
-				for (boolean w : c.walls) {
+				for (boolean w : c.getWalls()) {
 					if (w == true) {
 						writer.write("true ");
 					} else {

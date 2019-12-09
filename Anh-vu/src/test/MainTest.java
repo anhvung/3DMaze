@@ -23,12 +23,12 @@ public class MainTest {
 	public static void main(String[] args) {
 		
 		PrintStream out = System.out;
-		int length = 6;
+		int length = 3;
 		String source = "src/data/3Dmaze.txt";
-		System.out.println(length);
 		MazeMaker M = new MazeMaker(length,source);
 		M.makeMaze();
 		Maze maze = new Maze(source);
+		maze.showBoxes();
 		maze.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GraphInterface g = new Graph(maze);
 		ASetInterface a = new ASet();

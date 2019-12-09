@@ -58,15 +58,15 @@ public class Maze extends JFrame {
 				"LEFT"};
 	}
 	
-	private void initMazeFromTextFile() {
+	private ArrayList<String> getLines(){
 		FileReader FR;
-		ArrayList<String> lignes = new ArrayList<>();
+		ArrayList<String> lines = new ArrayList<>();
 		try {
 			FR = new FileReader(this.path);
 			BufferedReader in = new BufferedReader(FR);
 			String line = in.readLine();
 			while (line != null) {
-				lignes.add(line);
+				lines.add(line);
 				line = in.readLine();
 			}
 			in.close();
@@ -79,17 +79,24 @@ public class Maze extends JFrame {
 			System.out.println(e);
 			System.exit(0);
 		}
-		length = Integer.parseInt(lignes.get(0));
-		startIndex = Integer.parseInt(lignes.get(1));
-		arrivalIndex = Integer.parseInt(lignes.get(2));
+		return lines;
+	}
+	
+	private void initMazeFromTextFile() {
+		ArrayList<String> lines = getLines();
+		length = Integer.parseInt(lines.get(0));
+		startIndex = Integer.parseInt(lines.get(1));
+		arrivalIndex = Integer.parseInt(lines.get(2));
 		grid = new Box[(int)Math.pow(length, 3)];
 		panels = new MiniMap[length];
 		for (int depth = 0; depth < length; depth++) {
+			MiniMap mn = new MiniMap(grid, length);
+			panels[depth] = mn;
 			for (int row = 0; row < length; row++) {
 				for (int column = 0; column < length; column++) {
 						int i = index(depth, row, column);
 						grid[i] = new Box(depth, row, column);
-						String[] walls = lignes.get(i + 3).split(" ");
+						String[] walls = lines.get(i + 3).split(" ");
 						for (String dir : directions) {
 							int x = grid[i].sideToInt(dir);
 							boolean y = Boolean.parseBoolean(walls[x]);
@@ -100,15 +107,15 @@ public class Maze extends JFrame {
 						panels[depth].add(grid[i]);
 				}
 			}
-			
-			panels[depth] = new MiniMap(grid, depth);
 		}
 
 		start = grid[startIndex];
 		arrival = grid[arrivalIndex];
 	}
 	
-
+	public void showBoxes() {
+		panels[0].repaint();
+	}
 
 	public int getLength() {
 		return length;
