@@ -23,7 +23,7 @@ public class MainTest {
 	public static void main(String[] args) {
 		
 		PrintStream out = System.out;
-		int length = 5;
+		int length = 6;
 		String source = "src/data/3Dmaze.txt";
 		System.out.println(length);
 		MazeMaker M = new MazeMaker(length,source);
