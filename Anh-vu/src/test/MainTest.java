@@ -23,9 +23,9 @@ public class MainTest {
 	public static void main(String[] args) {
 		
 		PrintStream out = System.out;
-		int length = 4;
+		int length = 5;
 		String source = "src/data/3Dmaze.txt";
-		
+		System.out.println(length);
 		MazeMaker M = new MazeMaker(length,source);
 		M.makeMaze();
 		Maze maze = new Maze(source);

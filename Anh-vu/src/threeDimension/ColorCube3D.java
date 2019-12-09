@@ -1,5 +1,5 @@
 package threeDimension;
-import com.sun.j3d.utils.universe.SimpleUniverse;
+/*import com.sun.j3d.utils.universe.SimpleUniverse;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
@@ -57,16 +57,16 @@ class ColorCube3D extends Frame implements WindowListener
 		
 		Alpha rotationAlpha=new Alpha(-1,8000);
 
-		// on crée un comportement qui va appliquer la rotation à l'objet voulu
+		// on crï¿½e un comportement qui va appliquer la rotation ï¿½ l'objet voulu
 		RotationInterpolator rotator=new RotationInterpolator(rotationAlpha,objSpin);
 
-		// on définit la zone sur laquelle va s'appliquer la rotation
+		// on dï¿½finit la zone sur laquelle va s'appliquer la rotation
 		BoundingSphere bounds=new BoundingSphere();
 		rotator.setSchedulingBounds(bounds);
 		objSpin.addChild(rotator);
 		
 	
-		//Box texturée
+		//Box texturï¿½e
 		Appearance boxApp=mkAppWithTexture("src/data/rock.gif");
 		Box box=new Box(0.05f,0.25f,0.25f,Box.GENERATE_TEXTURE_COORDS,boxApp);
 		TriangleStripArray tri=(TriangleStripArray)(box.getShape(Box.FRONT).getGeometry());
@@ -81,7 +81,7 @@ class ColorCube3D extends Frame implements WindowListener
 		tri2.setTextureCoordinate(2,new Point2f(0f,0f));
 		tri2.setTextureCoordinate(3,new Point2f(0f,3f));	
 		
-		//Sphere texturée
+		//Sphere texturï¿½e
 		Appearance sphereApp=mkAppWithTexture("src/data/stripe.gif");
 		Sphere sphere=new Sphere(0.4f,Sphere.GENERATE_TEXTURE_COORDS,sphereApp);	
 				
@@ -155,7 +155,7 @@ class ColorCube3D extends Frame implements WindowListener
         	return app;
     	}
     	
-    	//méthode de création d'un TransformGroup pour les translations
+    	//mï¿½thode de crï¿½ation d'un TransformGroup pour les translations
     	private TransformGroup mkTranslation(Vector3f vect)
     	{
     		Transform3D t3d=new Transform3D();
@@ -163,7 +163,7 @@ class ColorCube3D extends Frame implements WindowListener
     		return new TransformGroup(t3d);
     	}
     	
-    	//méthode de création d'un TransformGroup pour les rotations
+    	//mï¿½thode de crï¿½ation d'un TransformGroup pour les rotations
     	private TransformGroup mkRotation(double angle)
     	{
     		Transform3D t3d=new Transform3D();
@@ -188,8 +188,8 @@ class ColorCube3D extends Frame implements WindowListener
 		ColorCube3D myApp=new ColorCube3D();
 		myApp.setSize(800,600);
 		myApp.setVisible(true);
-	}
-}
+	}*/
+
 
 
 

@@ -12,13 +12,16 @@ import java.io.PrintWriter;
 import java.lang.Math;
 
 public class MazeMaker extends Maze {
+	private static final long serialVersionUID = 1L;
 	private CreateBox[] grid;
 	private int start;
 	private int arrival;
 	
 	public MazeMaker(int length, String pathToWrite) {
+		
 		super(length, pathToWrite);
 	}
+	
 	private int randint(int min, int max) {
 		return (int) (Math.random() * ((max - min) + 1)) + min;
 	}
@@ -119,11 +122,6 @@ public class MazeMaker extends Maze {
 				
 				
 		}
-		/*for (int n = 0; n < path.size(); n++) {
-			int[] k = path.get(n).getIndex();
-			System.out.println(index(k[0], k[1],k[2]));
-		}
-		System.out.println();*/
 		int[] k = path.pop().getIndex();
 		arrival = index(k[0], k[1],k[2]);
 		writeMaze();

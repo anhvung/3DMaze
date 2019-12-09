@@ -25,7 +25,7 @@ public class Maze extends JFrame {
 	public int startIndex;
 	public int arrivalIndex;
 	
-	public Maze(String path) {		
+	public Maze(String path) {
 		directions = new String[] {"ABOVE", 
 				"BELOW", 
 				"UP", 
