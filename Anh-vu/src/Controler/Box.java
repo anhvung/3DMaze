@@ -36,8 +36,8 @@ public class Box extends MiniMapBox implements BoxInterface {
 		else if (side == "BELOW") return 1;
 		else if (side == "UP") return 2;
 		else if (side == "DOWN") return 3;
-		else if (side == "RIGHT") return 4;
-		else if (side == "LEFT") return 5;
+		else if (side == "LEFT") return 4;
+		else if (side == "RIGHT") return 5;
 		else return -1;
 	}	
 	

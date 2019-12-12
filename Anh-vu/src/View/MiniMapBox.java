@@ -9,16 +9,34 @@ import javax.swing.JPanel;
 
 public class MiniMapBox extends JButton {
 	protected boolean[] walls;
-	private final float prop = 0.05f;
+	private final float prop = 0.01f;
+	private String indexString;
 	
 	
 	public MiniMapBox() {
-		walls = new boolean[] {true, true, true, true,true, true};
+		walls = new boolean[] {true, true, true, true, true, true};
 	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		String s = "";
+		for (boolean wall : walls) {
+			if (wall) s = s + '1';
+			else s = s + '0';
+		}
+		s = s + toString();
+		
+		/*int x0 = getX();
+		int y0 = getY();*/
+		int x0 = 0;
+		int y0 =0;
+		int h  = getSize().height;
+		int w  = getSize().width;
+		
+		g.drawString(s, 10, h / 2);
+		
+
 		
 		if (walls[0]) {
 			
@@ -27,34 +45,44 @@ public class MiniMapBox extends JButton {
 			
 		}
 		if (walls[2]) {
-			int x = getX();
-			int y = getY();
-			int width = getSize().width;
-			int height = (int) Math.round(getSize().height * prop);
+			int x = x0;
+			int y = y0;
+			int width = w;
+			int height = (int) Math.round(h * prop);
 			g.fillRect(x, y, width, height);
 		}
 		if (walls[3]) {
-			int x = getX();
-			int y = getY() + getSize().height - 
-					(int) Math.round(getSize().height * prop);
-			int width = getSize().width;
-			int height = (int) Math.round(getSize().height * prop);
+			int x = x0;
+			int y = y0 + h - (int) Math.round(h * prop);
+			int width = w;
+			int height = (int) Math.round(h * prop);
 			g.fillRect(x, y, width, height);
 		}
 		if (walls[4]) {
-			int x = getX();
-			int y = getY();
-			int width = getSize().width;
-			int height = getSize().height;
+			int x = x0;
+			int y = y0;
+			int width = (int) Math.round(w * prop);
+			int height = h;
 			g.fillRect(x, y, width, height);
 		}
 		if (walls[5]) {
-			int x = getX();
-			int y = getY();
-			int width = getSize().width;
-			int height = getSize().height;
+			int x = x0 + w - (int) Math.round(w * prop);
+			int y = y0;
+			int width = (int) Math.round(w * prop);
+			int height = h;
 			g.fillRect(x, y, width, height);
 		}
+	}
+	
+	public void setIndex(int i, int j, int k, int length) {
+		indexString = " depth : " +
+	Integer.toString(i) +
+	", row : " +
+	Integer.toString(j) + 
+	", column : " +
+	Integer.toString(k) +
+	", index : " +
+	Integer.toString(i * length * length + j * length + k);
 	}
 	
 	public void drawWalls(JPanel panel) {
@@ -98,6 +126,9 @@ public class MiniMapBox extends JButton {
 		panel.add(underPanel, BorderLayout.WEST);
 	}
 	
+	public String toString() {
+		return indexString;
+	}
 	
 	
 }

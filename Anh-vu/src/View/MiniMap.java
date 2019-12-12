@@ -22,24 +22,22 @@ public class MiniMap extends JPanel {
 		list = new ArrayList<MiniMapBox>();
 	}
 	
-	@Override
+	/*@Override
 	public Component add(Component comp) {
 		Component toReturn = super.add(comp);
 		MiniMapBox mnb = (MiniMapBox) comp;
 		list.add(mnb);
 		return toReturn;
+	}*/
+	
+	public void addList(MiniMapBox mnb) {
+		list.add(mnb);
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		for (MiniMapBox mnb : list) {
-			/*float prop = 0.05f;
-			int height = (int) Math.round(mnb.getSize().height * prop);
-			int width = (int) Math.round(mnb.getSize().width * prop);
-			int x = mnb.getX();
-			int y = mnb.getY();
-			g.drawRect(x, y, width, height);*/
 			mnb.repaint();
 		}
 	}

@@ -96,6 +96,7 @@ public class Maze extends JFrame {
 				for (int column = 0; column < length; column++) {
 						int i = index(depth, row, column);
 						grid[i] = new Box(depth, row, column);
+						grid[i].setIndex(depth, row, column, length);
 						String[] walls = lines.get(i + 3).split(" ");
 						for (String dir : directions) {
 							int x = grid[i].sideToInt(dir);
@@ -105,6 +106,7 @@ public class Maze extends JFrame {
 							}
 						}
 						panels[depth].add(grid[i]);
+						panels[depth].addList(grid[i]);
 				}
 			}
 		}
