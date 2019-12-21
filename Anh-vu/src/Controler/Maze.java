@@ -1,29 +1,27 @@
 package Controler;
-import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import View.MiniMap;
 
 public class Maze extends JFrame {
-	//TODO : add the list of father to have permanently the solution of Dijkstra
-	// to be able to show the path to the arrival from any box
 
 	private static final long serialVersionUID = 1L;
 	protected int length;
 	protected String path;
 	protected String[] directions;
 	private Box[] grid;
-	private MiniMap[] panels;
+	private MiniMap miniMap;
 	public Box start;
 	public Box arrival;
 	public int startIndex;
 	public int arrivalIndex;
+	
+	
 	
 	public Maze(String path) {
 		directions = new String[] {"ABOVE", 
@@ -33,13 +31,13 @@ public class Maze extends JFrame {
 				"RIGHT", 
 				"LEFT"};
 		this.path = path;
-        this.setTitle("Grid Layout");
+        this.setTitle("Maze look over");
         this.setSize(1000, 1000);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
 		initMazeFromTextFile();
 		
-		this.setContentPane(panels[start.getIndex()[0]]);
+		this.setContentPane(miniMap);
         setVisible(true);
 		
         
@@ -88,10 +86,8 @@ public class Maze extends JFrame {
 		startIndex = Integer.parseInt(lines.get(1));
 		arrivalIndex = Integer.parseInt(lines.get(2));
 		grid = new Box[(int)Math.pow(length, 3)];
-		panels = new MiniMap[length];
+		miniMap = new MiniMap(length, this);
 		for (int depth = 0; depth < length; depth++) {
-			MiniMap mn = new MiniMap(grid, length);
-			panels[depth] = mn;
 			for (int row = 0; row < length; row++) {
 				for (int column = 0; column < length; column++) {
 						int i = index(depth, row, column);
@@ -105,19 +101,16 @@ public class Maze extends JFrame {
 								grid[i].deleteWall(dir);
 							}
 						}
-						panels[depth].add(grid[i]);
-						panels[depth].addList(grid[i]);
+						miniMap.addBoxToFloor(depth, grid[i]);
 				}
 			}
 		}
 
 		start = grid[startIndex];
 		arrival = grid[arrivalIndex];
+		miniMap.setCurrentIndex(start.getIndex()[0]);
 	}
-	
-	public void showBoxes() {
-		panels[0].repaint();
-	}
+
 
 	public int getLength() {
 		return length;

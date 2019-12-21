@@ -3,18 +3,40 @@ package View;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class MiniMapBox extends JButton {
 	protected boolean[] walls;
-	private final float prop = 0.01f;
+	private final float propWalls = 0.01f;
+	private final float propStairs = 0.25f;
 	private String indexString;
+	private BufferedImage stairsUpImage;
+	private BufferedImage stairsDownImage;
+	
 	
 	
 	public MiniMapBox() {
 		walls = new boolean[] {true, true, true, true, true, true};
+		File file = new File("src/data/stairsdown.png");
+		try {
+			stairsDownImage = ImageIO.read(file);
+		} catch (IOException e) {
+			
+		}
+		file = new File("src/data/stairsup.png");
+		try {
+			stairsUpImage = ImageIO.read(file);
+		} catch (IOException e) {
+			
+		}
+		
 	}
 	
 	@Override
@@ -26,49 +48,51 @@ public class MiniMapBox extends JButton {
 			else s = s + '0';
 		}
 		s = s + toString();
-		
-		/*int x0 = getX();
-		int y0 = getY();*/
+
 		int x0 = 0;
-		int y0 =0;
+		int y0 = 0;
 		int h  = getSize().height;
 		int w  = getSize().width;
 		
-		g.drawString(s, 10, h / 2);
+		g.drawString(s, 10, h / 5);
 		
-
-		
-		if (walls[0]) {
-			
+		if (! walls[0]) {
+			int l_x = (int) (w * propStairs);
+			int l_y = (int) (h * propStairs);
+			Image image = stairsUpImage.getScaledInstance(l_x, l_y, Image.SCALE_SMOOTH);
+			g.drawImage(image, (int) w/4, (int) h/4, null);
 		}
-		if (walls[1]) {
-			
+		if (! walls[1]) {
+			int l_x = (int) (w * propStairs);
+			int l_y = (int) (h * propStairs);
+			Image image = stairsDownImage.getScaledInstance(l_x, l_y, Image.SCALE_SMOOTH);
+			g.drawImage(image, (int) w/2, (int) h/2, null);
 		}
 		if (walls[2]) {
 			int x = x0;
 			int y = y0;
 			int width = w;
-			int height = (int) Math.round(h * prop);
+			int height = (int) Math.round(h * propWalls);
 			g.fillRect(x, y, width, height);
 		}
 		if (walls[3]) {
 			int x = x0;
-			int y = y0 + h - (int) Math.round(h * prop);
+			int y = y0 + h - (int) Math.round(h * propWalls);
 			int width = w;
-			int height = (int) Math.round(h * prop);
+			int height = (int) Math.round(h * propWalls);
 			g.fillRect(x, y, width, height);
 		}
 		if (walls[4]) {
 			int x = x0;
 			int y = y0;
-			int width = (int) Math.round(w * prop);
+			int width = (int) Math.round(w * propWalls);
 			int height = h;
 			g.fillRect(x, y, width, height);
 		}
 		if (walls[5]) {
-			int x = x0 + w - (int) Math.round(w * prop);
+			int x = x0 + w - (int) Math.round(w * propWalls);
 			int y = y0;
-			int width = (int) Math.round(w * prop);
+			int width = (int) Math.round(w * propWalls);
 			int height = h;
 			g.fillRect(x, y, width, height);
 		}
@@ -85,46 +109,7 @@ public class MiniMapBox extends JButton {
 	Integer.toString(i * length * length + j * length + k);
 	}
 	
-	public void drawWalls(JPanel panel) {
-		ColorPanel underPanel;
-		if (walls[0]) {
-		}
-		if (walls[1]) {
-			
-		}
-		if (walls[2]) {
-			underPanel = new ColorPanel(Color.black);
-		}
-		else {
-			underPanel = new ColorPanel(Color.white);
-		}
-		panel.add(underPanel, BorderLayout.NORTH);
-		
-
-		if (walls[3]) {
-			underPanel = new ColorPanel(Color.black);
-		}
-		else {
-			underPanel = new ColorPanel(Color.white);
-		}
-		panel.add(underPanel, BorderLayout.SOUTH);
-
-		if (walls[4]) {
-			underPanel = new ColorPanel(Color.black);
-		}
-		else {
-			underPanel = new ColorPanel(Color.white);
-		}
-		panel.add(underPanel, BorderLayout.EAST);
-
-		if (walls[5]) {
-			underPanel = new ColorPanel(Color.black);
-		}
-		else {
-			underPanel = new ColorPanel(Color.white);
-		}
-		panel.add(underPanel, BorderLayout.WEST);
-	}
+	
 	
 	public String toString() {
 		return indexString;
