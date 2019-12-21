@@ -1,40 +1,50 @@
 package View;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Graphics;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import Controler.Maze;
 
-import Controler.Box;
-
-public class MiniMap extends JPanel {
+public class MiniMap extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private int currentIndex;
-	public int length;
 	private JButton downButton;
 	private JButton upButton;
 	private JPanel[] panels;
-	private JFrame parent;
+	private int length;
 	
-	public MiniMap(int length, JFrame parent) {
-		this.length = length;
-		this.parent = parent;
+	
+	public MiniMap(Maze maze) {
+		this.length = maze.getLength();
+        this.setTitle("Maze look over");
+        this.setSize(1000, 1000);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+		
 		panels = new JPanel[length];
 		for (int i = 0; i < length; i++) {
 			panels[i] = new JPanel();
 			panels[i].setLayout(new GridLayout(length,length));
+			int area = length * length;
+			for (int j = i * area; j < i * area + area; j++) {
+				MiniMapBox mn = new MiniMapBox(maze.getBox(j));
+				if (j == maze.arrivalIndex) mn.setSpecial("ARRIVAL");
+				else if (j == maze.startIndex) mn.setSpecial("START");
+				panels[i].add(mn);
+			}
 		}
-
+		
+		this.setContentPane(new JPanel());
 		this.setLayout(new BorderLayout());
 		this.add(getCurrentPanel(), BorderLayout.CENTER);
+		
 		MiniMap mn = this;
+		
 		upButton = new JButton("Up");
 		upButton.addActionListener(new ActionListener() {
 			@Override
@@ -42,6 +52,7 @@ public class MiniMap extends JPanel {
 				mn.changePanel(-1);
 			}
 		});
+		
 		downButton = new JButton("Down");
 		downButton.addActionListener(new ActionListener() {
 			@Override
@@ -49,15 +60,19 @@ public class MiniMap extends JPanel {
 				mn.changePanel(1);
 			}
 		});
+		
 		this.add(upButton, BorderLayout.NORTH);
 		this.add(downButton, BorderLayout.SOUTH);
 	}
-	
+
 	private void changePanel(int dh) {
+		Dimension size = getCurrentPanel().getSize();
 		remove(getCurrentPanel());
 		setCurrentIndex((currentIndex + dh + length) % length);
-		add(getCurrentPanel(), BorderLayout.CENTER);
-		parent.pack();
+		JPanel panel = getCurrentPanel();
+		panel.setPreferredSize(size);
+		add(panel, BorderLayout.CENTER);
+		pack();
 		repaint();
 	}
 	
@@ -72,4 +87,5 @@ public class MiniMap extends JPanel {
 	public void setCurrentIndex(int i) {
 		currentIndex = i;
 	}
+
 }

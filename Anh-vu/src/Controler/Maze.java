@@ -7,21 +7,18 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import View.MiniMap;
+import View.MiniMapBox;
 
 public class Maze extends JFrame {
 
-	private static final long serialVersionUID = 1L;
 	protected int length;
 	protected String path;
 	protected String[] directions;
 	private Box[] grid;
-	private MiniMap miniMap;
 	public Box start;
 	public Box arrival;
 	public int startIndex;
 	public int arrivalIndex;
-	
-	
 	
 	public Maze(String path) {
 		directions = new String[] {"ABOVE", 
@@ -31,18 +28,8 @@ public class Maze extends JFrame {
 				"RIGHT", 
 				"LEFT"};
 		this.path = path;
-        this.setTitle("Maze look over");
-        this.setSize(1000, 1000);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
 		initMazeFromTextFile();
-		
-		this.setContentPane(miniMap);
-        setVisible(true);
-		
-        
-
-
 	}
 	
 	public Maze(int length, String path) {
@@ -86,30 +73,26 @@ public class Maze extends JFrame {
 		startIndex = Integer.parseInt(lines.get(1));
 		arrivalIndex = Integer.parseInt(lines.get(2));
 		grid = new Box[(int)Math.pow(length, 3)];
-		miniMap = new MiniMap(length, this);
 		for (int depth = 0; depth < length; depth++) {
 			for (int row = 0; row < length; row++) {
 				for (int column = 0; column < length; column++) {
-						int i = index(depth, row, column);
-						grid[i] = new Box(depth, row, column);
-						grid[i].setIndex(depth, row, column, length);
-						String[] walls = lines.get(i + 3).split(" ");
-						for (String dir : directions) {
-							int x = grid[i].sideToInt(dir);
-							boolean y = Boolean.parseBoolean(walls[x]);
-							if (y == false) {
-								grid[i].deleteWall(dir);
-							}
+					int i = index(depth, row, column);
+					grid[i] = new Box(depth, row, column);
+					String[] walls = lines.get(i + 3).split(" ");
+					for (String dir : directions) {
+						int x = grid[i].sideToInt(dir);
+						boolean y = Boolean.parseBoolean(walls[x]);
+						if (y == false) {
+							grid[i].deleteWall(dir);
 						}
-						miniMap.addBoxToFloor(depth, grid[i]);
+					}
 				}
 			}
 		}
-
 		start = grid[startIndex];
 		arrival = grid[arrivalIndex];
-		miniMap.setCurrentIndex(start.getIndex()[0]);
 	}
+
 
 
 	public int getLength() {
@@ -130,5 +113,9 @@ public class Maze extends JFrame {
 			}
 		}
 		return neighbours;
+	}
+	
+	public Box getBox(int index) {
+		return grid[index];
 	}
 }

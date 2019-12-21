@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 
 import Controler.Maze;
 import Model.MazeMaker;
+import View.MiniMap;
 
 public class MainTest {
 	public static void main(String[] args) {
@@ -29,7 +30,10 @@ public class MainTest {
 		M.makeMaze();
 		Maze maze = new Maze(source);
 		//maze.showBoxes();
-		maze.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		MiniMap miniMap = new MiniMap(maze);
+		miniMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
 		GraphInterface g = new Graph(maze);
 		ASetInterface a = new ASet();
 		PreviousInterface previous = new Previous(g.getLength());

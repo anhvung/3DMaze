@@ -1,16 +1,14 @@
 package Controler;
 
-import java.lang.Math;
-
 import javax.swing.JButton;
 
-import View.MiniMapBox;
-
-public class Box extends MiniMapBox implements BoxInterface {
+public class Box extends JButton implements BoxInterface {
 	protected int i, j, k;
+	protected boolean[] walls;
 	
 	public Box(int i, int j, int k) {
 		super();
+		walls = new boolean[] {true, true, true, true, true, true};
 		this.i = i;
 		this.j = j;
 		this.k = k;

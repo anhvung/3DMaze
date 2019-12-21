@@ -12,18 +12,25 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class MiniMapBox extends JButton {
-	protected boolean[] walls;
+import Controler.Box;
+
+public class MiniMapBox extends Box {
 	private final float propWalls = 0.01f;
 	private final float propStairs = 0.25f;
 	private String indexString;
 	private BufferedImage stairsUpImage;
 	private BufferedImage stairsDownImage;
+	private String special = "";
 	
 	
 	
-	public MiniMapBox() {
-		walls = new boolean[] {true, true, true, true, true, true};
+	public final void setSpecial(String special) {
+		this.special = special;
+	}
+
+	public MiniMapBox(Box parent) {
+		super(parent.getIndex()[0], parent.getIndex()[1], parent.getIndex()[1]);
+		walls = parent.getWalls();
 		File file = new File("src/data/stairsdown.png");
 		try {
 			stairsDownImage = ImageIO.read(file);
@@ -42,12 +49,13 @@ public class MiniMapBox extends JButton {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		String s = "";
+		/*String s = "";
 		for (boolean wall : walls) {
 			if (wall) s = s + '1';
 			else s = s + '0';
 		}
-		s = s + toString();
+		s = s + toString();*/
+		String s = special;
 
 		int x0 = 0;
 		int y0 = 0;
@@ -114,6 +122,4 @@ public class MiniMapBox extends JButton {
 	public String toString() {
 		return indexString;
 	}
-	
-	
 }
