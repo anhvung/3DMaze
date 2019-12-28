@@ -32,10 +32,10 @@ import javax.media.j3d.Alpha;
 import javax.media.j3d.RotationInterpolator;
 
 class Display3d extends Frame implements WindowListener {
-	private final TransformGroup[] walls = new TransformGroup[6];
+	private final TransformGroup maze3d = new TransformGroup();
 	private final Appearance boxApp = mkAppWithTexture("src/data/rock.gif"); // texture des murs
 	private final Box basicWall = new Box(0.02f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, boxApp); // mur qui sera
-																										// utilisé
+																									// utilisé
 	// pour
 	// créer les cases
 	private final TriangleStripArray tri = (TriangleStripArray) (basicWall.getShape(Box.FRONT).getGeometry());
@@ -73,41 +73,36 @@ class Display3d extends Frame implements WindowListener {
 		rotator.setSchedulingBounds(bounds);
 		objSpin.addChild(rotator);
 		
-		
-		
-		boolean[] b = { true, false, true, false, true, false };
-		objSpin.addChild(getCube(b));
-		scene.addChild(getCube(b));
+		objSpin.addChild(generateMaze());
+		scene.addChild(objSpin);
 		scene.compile();
 		return scene;
 	}
 
 	private TransformGroup generateMaze() {
 		TransformGroup result =new TransformGroup();
-		for (Controller.box box : Controler.Maze.getMaze().grid)
+		for (Controler.Box box : Controler.Maze.getMaze().getGrid()) {
+			result.addChild(gridItemToTransformGroup(box).cloneTree());
+		}
 		return result;
 	}
 	private TransformGroup gridItemToTransformGroup(Controler.Box box) {
-		TransformGroup result =new TransformGroup();
+		
 		int[] indexes=box.getIndex();
-		TransformGroup[] tg=new TransformGroup[3];
+		
 		Transform3D translZ = new Transform3D();
-		translZ.set(new Vector3f(0, 0f, 0.5f)); //Z
-		tg[0]=new TransformGroup(translZ);
+		translZ.set(new Vector3f(0, 0f, indexes[0]*0.25f)); //Z
+	
+		
 		Transform3D translY = new Transform3D();
-		translY.set(new Vector3f(0f, 0.5f, 0.0f)); //Y
-		tg[1]=new TransformGroup(translZ);
+		translY.set(new Vector3f(0f, indexes[1]*0.25f, 0.0f)); //Y
+
 		Transform3D translX = new Transform3D();
-		translX.set(new Vector3f(0.5f, 0f, 0.0f)); //X
-		tg[2]=new TransformGroup(translZ);
+		translX.set(new Vector3f(indexes[2]*0.25f, 0f, 0.0f)); //X
 		
-		for (int axis=0;axis<3;axis++) {
-			for (int i=0;i<indexes[axis];i++) {
-				result.addChild(tg[axis].cloneTree());
-				
-			}
-		}
-		
+		translZ.mul(translY);
+		translZ.mul(translX);
+		TransformGroup result =new TransformGroup(translZ);
 		result.addChild(getCube(box.getWalls()));
 		return result;
 	}
