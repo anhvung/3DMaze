@@ -1,5 +1,4 @@
 package affichage3d;
-
 import Controler.Maze;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import javax.media.j3d.Canvas3D;
@@ -83,6 +82,35 @@ class Display3d extends Frame implements WindowListener {
 		return scene;
 	}
 
+	private TransformGroup generateMaze() {
+		TransformGroup result =new TransformGroup();
+		for (Controller.box box : Controler.Maze.getMaze().grid)
+		return result;
+	}
+	private TransformGroup gridItemToTransformGroup(Controler.Box box) {
+		TransformGroup result =new TransformGroup();
+		int[] indexes=box.getIndex();
+		TransformGroup[] tg=new TransformGroup[3];
+		Transform3D translZ = new Transform3D();
+		translZ.set(new Vector3f(0, 0f, 0.5f)); //Z
+		tg[0]=new TransformGroup(translZ);
+		Transform3D translY = new Transform3D();
+		translY.set(new Vector3f(0f, 0.5f, 0.0f)); //Y
+		tg[1]=new TransformGroup(translZ);
+		Transform3D translX = new Transform3D();
+		translX.set(new Vector3f(0.5f, 0f, 0.0f)); //X
+		tg[2]=new TransformGroup(translZ);
+		
+		for (int axis=0;axis<3;axis++) {
+			for (int i=0;i<indexes[axis];i++) {
+				result.addChild(tg[axis].cloneTree());
+				
+			}
+		}
+		
+		result.addChild(getCube(box.getWalls()));
+		return result;
+	}
 	private TransformGroup getWall(int wallType) {
 		tri.setTextureCoordinate(0, new Point2f(3f, 0f)); //textures
 		tri.setTextureCoordinate(1, new Point2f(3f, 3f));
@@ -129,7 +157,6 @@ class Display3d extends Frame implements WindowListener {
 		for (int i = 0; i < 6; i++) {
 			if (solidWalls[i]) {
 				cube.addChild(getWall(i));
-
 			}
 		}
 		return cube;

@@ -120,4 +120,7 @@ public class Maze extends JFrame {
 	public Box getBox(int index) {
 		return grid[index];
 	}
+	public Box[]  getGrid() {
+		return grid;
+	}
 }
