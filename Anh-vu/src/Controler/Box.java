@@ -1,19 +1,19 @@
 package Controler;
 
-import java.lang.Math;
-
 import javax.swing.JButton;
 
 public class Box extends JButton implements BoxInterface {
-	public boolean[] walls;
 	protected int i, j, k;
+	protected boolean[] walls;
 	
 	public Box(int i, int j, int k) {
+		super();
+		walls = new boolean[] {true, true, true, true, true, true};
 		this.i = i;
 		this.j = j;
 		this.k = k;
-		walls = new boolean[] {true, true, true, true, true, true};
 	}
+	
 	public int getNeighbourIndex(String dir, int length) {
 		int[] move = movement(dir);
 		int[] index = getIndex();
@@ -25,6 +25,7 @@ public class Box extends JButton implements BoxInterface {
 				(index[1] + move[1]) * length +
 				(index[2] + move[2]);
 	}
+	
 	public void deleteWall(String side) {
 		walls[sideToInt(side)] = false;
 	}	
@@ -33,13 +34,18 @@ public class Box extends JButton implements BoxInterface {
 		else if (side == "BELOW") return 1;
 		else if (side == "UP") return 2;
 		else if (side == "DOWN") return 3;
-		else if (side == "RIGHT") return 4;
-		else if (side == "LEFT") return 5;
+		else if (side == "LEFT") return 4;
+		else if (side == "RIGHT") return 5;
 		else return -1;
 	}	
+	
 	public int[] getIndex() {
 		return new int[] {i, j ,k};
 	}	
+	
+	public boolean[] getWalls() {
+		return walls;
+	}
 	
 	public boolean getWall(String dir) {
 		return walls[sideToInt(dir)];
