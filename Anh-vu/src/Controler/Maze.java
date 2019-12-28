@@ -19,8 +19,8 @@ public class Maze extends JFrame {
 	public Box arrival;
 	public int startIndex;
 	public int arrivalIndex;
-	
-	public Maze(String path) {
+	private static Maze uniqueMaze=new Maze("chemin ver le fichier à préciser"); // UNIQUE INSTANCE DE MAZE 
+	private Maze(String path) {
 		directions = new String[] {"ABOVE", 
 				"BELOW", 
 				"UP", 
@@ -32,7 +32,7 @@ public class Maze extends JFrame {
 		initMazeFromTextFile();
 	}
 	
-	public Maze(int length, String path) {
+	private Maze(int length, String path) {
 		this.length = length;
 		this.path = path;
 		directions = new String[] {"ABOVE", 
