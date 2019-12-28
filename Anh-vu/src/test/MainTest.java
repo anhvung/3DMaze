@@ -1,6 +1,8 @@
 package test;
 
 import dijkstra.Graph;
+import java.util.ArrayList;
+import java.util.Date;
 import dijkstra.GraphInterface;
 import dijkstra.ASet;
 import dijkstra.ASetInterface;
@@ -17,19 +19,21 @@ import javax.swing.JFrame;
 
 import Controler.Maze;
 import Model.MazeMaker;
+import View.MiniMap;
 
 public class MainTest {
-
 	public static void main(String[] args) {
-		
 		PrintStream out = System.out;
-		int length = 4;
+		int length = 3;
 		String source = "src/data/3Dmaze.txt";
-		
 		MazeMaker M = new MazeMaker(length,source);
 		M.makeMaze();
 		Maze maze = new Maze(source);
-		maze.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//maze.showBoxes();
+		MiniMap miniMap = new MiniMap(maze);
+		miniMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
 		GraphInterface g = new Graph(maze);
 		ASetInterface a = new ASet();
 		PreviousInterface previous = new Previous(g.getLength());
@@ -39,10 +43,11 @@ public class MainTest {
 		Dijkstra D = new Dijkstra();
 		D.dijkstra(g, r, a, pi, previous);
 		
-		for (VertexInterface v : previous.getShortestPathTo(s)) {
+		/*for (VertexInterface v : previous.getShortestPathTo(s)) {
 			out.println(v.getIndex());
 		}
-		/*for (int i = 0; i < g.getLength(); i++) {
+		
+		for (int i = 0; i < g.getLength(); i++) {
 			for (int j = 0; j < g.getLength(); j++) {
 				out.print(g.getMatrix()[i][j]);
 				out.print(" ");

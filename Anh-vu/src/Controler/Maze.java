@@ -1,31 +1,26 @@
 package Controler;
-import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import View.MiniMap;
+import View.MiniMapBox;
 
 public class Maze extends JFrame {
-	//TODO : add the list of father to have permanently the solution of Dijkstra
-	// to be able to show the path to the arrival from any box
 
-	private static final long serialVersionUID = 1L;
 	protected int length;
 	protected String path;
 	protected String[] directions;
 	private Box[] grid;
-	private MiniMap[] panels;
 	public Box start;
 	public Box arrival;
 	public int startIndex;
 	public int arrivalIndex;
 	
-	public Maze(String path) {		
+	public Maze(String path) {
 		directions = new String[] {"ABOVE", 
 				"BELOW", 
 				"UP", 
@@ -33,18 +28,8 @@ public class Maze extends JFrame {
 				"RIGHT", 
 				"LEFT"};
 		this.path = path;
-        this.setTitle("Grid Layout");
-        this.setSize(1000, 1000);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
 		initMazeFromTextFile();
-		
-		this.setContentPane(panels[start.getIndex()[0]]);
-        setVisible(true);
-		
-        
-
-
 	}
 	
 	public Maze(int length, String path) {
@@ -58,15 +43,15 @@ public class Maze extends JFrame {
 				"LEFT"};
 	}
 	
-	private void initMazeFromTextFile() {
+	private ArrayList<String> getLines(){
 		FileReader FR;
-		ArrayList<String> lignes = new ArrayList<>();
+		ArrayList<String> lines = new ArrayList<>();
 		try {
 			FR = new FileReader(this.path);
 			BufferedReader in = new BufferedReader(FR);
 			String line = in.readLine();
 			while (line != null) {
-				lignes.add(line);
+				lines.add(line);
 				line = in.readLine();
 			}
 			in.close();
@@ -79,35 +64,35 @@ public class Maze extends JFrame {
 			System.out.println(e);
 			System.exit(0);
 		}
-		length = Integer.parseInt(lignes.get(0));
-		startIndex = Integer.parseInt(lignes.get(1));
-		arrivalIndex = Integer.parseInt(lignes.get(2));
+		return lines;
+	}
+	
+	private void initMazeFromTextFile() {
+		ArrayList<String> lines = getLines();
+		length = Integer.parseInt(lines.get(0));
+		startIndex = Integer.parseInt(lines.get(1));
+		arrivalIndex = Integer.parseInt(lines.get(2));
 		grid = new Box[(int)Math.pow(length, 3)];
-		panels = new MiniMap[length];
 		for (int depth = 0; depth < length; depth++) {
 			for (int row = 0; row < length; row++) {
 				for (int column = 0; column < length; column++) {
-						int i = index(depth, row, column);
-						grid[i] = new Box(depth, row, column);
-						String[] walls = lignes.get(i + 3).split(" ");
-						for (String dir : directions) {
-							int x = grid[i].sideToInt(dir);
-							boolean y = Boolean.parseBoolean(walls[x]);
-							if (y == false) {
-								grid[i].deleteWall(dir);
-							}
+					int i = index(depth, row, column);
+					grid[i] = new Box(depth, row, column);
+					String[] walls = lines.get(i + 3).split(" ");
+					for (String dir : directions) {
+						int x = grid[i].sideToInt(dir);
+						boolean y = Boolean.parseBoolean(walls[x]);
+						if (y == false) {
+							grid[i].deleteWall(dir);
 						}
-						panels[depth].add(grid[i]);
+					}
 				}
 			}
-			
-			panels[depth] = new MiniMap(grid, depth);
 		}
-
 		start = grid[startIndex];
 		arrival = grid[arrivalIndex];
 	}
-	
+
 
 
 	public int getLength() {
@@ -128,5 +113,9 @@ public class Maze extends JFrame {
 			}
 		}
 		return neighbours;
+	}
+	
+	public Box getBox(int index) {
+		return grid[index];
 	}
 }
