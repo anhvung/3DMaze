@@ -19,7 +19,7 @@ public class Maze extends JFrame {
 	public Box arrival;
 	public int startIndex;
 	public int arrivalIndex;
-	private static Maze uniqueMaze=new Maze("chemin ver le fichier à préciser"); // UNIQUE INSTANCE DE MAZE 
+	private static Maze uniqueMaze=new Maze("src/data/3Dmaze.txt"); //INSTANCE DE MAZE SUR LAQUELLE ON TRAVAILLE DANS LA CLASSE Display3D
 	private Maze(String path) {
 		directions = new String[] {"ABOVE", 
 				"BELOW", 
@@ -32,7 +32,7 @@ public class Maze extends JFrame {
 		initMazeFromTextFile();
 	}
 	
-	private Maze(int length, String path) {
+	public Maze(int length, String path) {
 		this.length = length;
 		this.path = path;
 		directions = new String[] {"ABOVE", 

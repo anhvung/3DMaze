@@ -1,7 +1,5 @@
 package affichage3d;
 
-package threeDimension;
-
 import Controler.Maze;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import javax.media.j3d.Canvas3D;
@@ -34,7 +32,7 @@ import javax.vecmath.Point2f;
 import javax.media.j3d.Alpha;
 import javax.media.j3d.RotationInterpolator;
 
-class Maze3d extends Frame implements WindowListener {
+class Display3d extends Frame implements WindowListener {
 	private TransformGroup[] walls = new TransformGroup[6];
 	private Appearance boxApp = mkAppWithTexture("src/data/rock.gif"); // texture des murs
 	private Box basicWall = new Box(0.05f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, boxApp); // mur qui sera utilisé
@@ -42,7 +40,7 @@ class Maze3d extends Frame implements WindowListener {
 																								// créer les cases
 	private TriangleStripArray tri = (TriangleStripArray) (basicWall.getShape(Box.FRONT).getGeometry());
 
-	Maze3d() {
+	Display3d() {
 		super("Samuel & Anh-Vu : Laby3D");
 		this.addWindowListener(this);
 		this.setLayout(new BorderLayout());
@@ -213,7 +211,7 @@ class Maze3d extends Frame implements WindowListener {
 	}
 
 	public static void main(String args[]) {
-		Maze3d myApp = new Maze3d();
+		Display3d myApp = new Display3d();
 		myApp.setSize(800, 600);
 		myApp.setVisible(true);
 	}
