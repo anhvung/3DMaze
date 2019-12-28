@@ -42,7 +42,9 @@ public class Maze extends JFrame {
 				"RIGHT", 
 				"LEFT"};
 	}
-	
+	public static Maze getMaze() {
+		return uniqueMaze;
+	}
 	private ArrayList<String> getLines(){
 		FileReader FR;
 		ArrayList<String> lines = new ArrayList<>();

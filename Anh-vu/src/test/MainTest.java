@@ -22,23 +22,26 @@ import Model.MazeMaker;
 import View.MiniMap;
 
 public class MainTest {
+	public static final String source = "src/data/3Dmaze.txt";
 	public static void main(String[] args) {
 		PrintStream out = System.out;
 		int length = 3;
-		String source = "src/data/3Dmaze.txt";
+		
+		//Maze maze = new Maze(source);  
+		//intégré dans Maze déjà --> Maze.getMaze() pour avoir le laby
 		MazeMaker M = new MazeMaker(length,source);
 		M.makeMaze();
-		Maze maze = new Maze(source);
+		
 		//maze.showBoxes();
-		MiniMap miniMap = new MiniMap(maze);
+		MiniMap miniMap = new MiniMap(Maze.getMaze());
 		miniMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
-		GraphInterface g = new Graph(maze);
+		GraphInterface g = new Graph(Maze.getMaze());
 		ASetInterface a = new ASet();
 		PreviousInterface previous = new Previous(g.getLength());
-		VertexInterface r = new Vertex(maze.startIndex);
-		VertexInterface s = new Vertex(maze.arrivalIndex);
+		VertexInterface r = new Vertex(Maze.getMaze().startIndex);
+		VertexInterface s = new Vertex(Maze.getMaze().arrivalIndex);
 		PiInterface pi = new Pi(g.getLength());
 		Dijkstra D = new Dijkstra();
 		D.dijkstra(g, r, a, pi, previous);
