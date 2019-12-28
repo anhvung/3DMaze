@@ -33,12 +33,13 @@ import javax.media.j3d.Alpha;
 import javax.media.j3d.RotationInterpolator;
 
 class Display3d extends Frame implements WindowListener {
-	private TransformGroup[] walls = new TransformGroup[6];
-	private Appearance boxApp = mkAppWithTexture("src/data/rock.gif"); // texture des murs
-	private Box basicWall = new Box(0.05f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, boxApp); // mur qui sera utilisé
-																								// pour
-																								// créer les cases
-	private TriangleStripArray tri = (TriangleStripArray) (basicWall.getShape(Box.FRONT).getGeometry());
+	private final TransformGroup[] walls = new TransformGroup[6];
+	private final Appearance boxApp = mkAppWithTexture("src/data/rock.gif"); // texture des murs
+	private final Box basicWall = new Box(0.02f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, boxApp); // mur qui sera
+																										// utilisé
+	// pour
+	// créer les cases
+	private final TriangleStripArray tri = (TriangleStripArray) (basicWall.getShape(Box.FRONT).getGeometry());
 
 	Display3d() {
 		super("Samuel & Anh-Vu : Laby3D");
@@ -72,88 +73,64 @@ class Display3d extends Frame implements WindowListener {
 		BoundingSphere bounds = new BoundingSphere();
 		rotator.setSchedulingBounds(bounds);
 		objSpin.addChild(rotator);
-/*
-		// Box texturée
-		Appearance boxApp = mkAppWithTexture("src/data/rock.gif"); // texture des murs
-		Box box = new Box(0.05f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, boxApp); // mur qui sera utilisé pour créer
-																						// les cases
-		// application des textures
-		TriangleStripArray tri = (TriangleStripArray) (box.getShape(Box.FRONT).getGeometry());
-		tri.setTextureCoordinate(0, new Point2f(3f, 0f));
-		tri.setTextureCoordinate(1, new Point2f(3f, 3f));
-		tri.setTextureCoordinate(2, new Point2f(0f, 0f));
-		tri.setTextureCoordinate(3, new Point2f(0f, 3f));
-
-		// Sphere texturée
-		Appearance sphereApp = mkAppWithTexture("src/data/stripe.gif");
-		Sphere sphere = new Sphere(0.4f, Sphere.GENERATE_TEXTURE_COORDS, sphereApp);
-
-		// mise en place des objets
-		TransformGroup bigCube = new TransformGroup();
-		TransformGroup cubeLine = new TransformGroup();
-		TransformGroup cubeSquare = new TransformGroup();
-		TransformGroup cubeCube = new TransformGroup();
-		TransformGroup tg0 = mkTranslation(new Vector3f(-0.25f, 0f, 0f));
-		TransformGroup ttest = mkTranslation(new Vector3f(-0.5f, 0f, 0f));
-		TransformGroup tg1 = mkTranslation(new Vector3f(0.25f, 0f, 0f));
-		TransformGroup tg3 = mkTranslation(new Vector3f(0.0f, 0.20f, 0.0f));
-		TransformGroup tg4 = mkTranslation(new Vector3f(0.0f, -0.2f, 0.0f));
-
-		tg0.addChild(box);
-		bigCube.addChild(tg0);
-		tg1.addChild(box.cloneTree());
-		cubeLine.addChild(tg1);
-		tg3.addChild(box2);
-		cubeLine.addChild(tg3);
-		tg4.addChild(box2.cloneTree());
-		bigCube.addChild(tg4);
-		cubeLine.addChild(bigCube);
-		ttest.addChild(bigCube.cloneTree());
-
-		for (int i = -5; i < 5; i++) {
-			ttest = mkTranslation(new Vector3f(-i * 0.5f, 0f, 0f));
-			ttest.addChild(bigCube.cloneTree());
-			cubeLine.addChild(ttest.cloneTree());
-		}
-		for (int i = -5; i < 5; i++) {
-			ttest = mkTranslation(new Vector3f(0f, -i * 0.5f, 0f));
-			ttest.addChild(cubeLine.cloneTree());
-			cubeSquare.addChild(ttest.cloneTree());
-		}
-
-		for (int i = -5; i < 5; i++) {
-			ttest = mkTranslation(new Vector3f(0f, 0.0f, -i * 0.5f));
-			ttest.addChild(cubeSquare.cloneTree());
-			cubeCube.addChild(ttest.cloneTree());
-		}
-		*/
-		// TransformGroup tg2=mkTranslation(new Vector3f(0.52f,0f,0f));
-
-		// tg2.addChild(sphere);
-
-		// objSpin.addChild(tg2);
-		objSpin.addChild(getWall(1));
-		scene.addChild(objSpin);
+		
+		
+		
+		boolean[] b = { true, false, true, false, true, false };
+		objSpin.addChild(getCube(b));
+		scene.addChild(getCube(b));
 		scene.compile();
 		return scene;
 	}
 
 	private TransformGroup getWall(int wallType) {
-		tri.setTextureCoordinate(0, new Point2f(3f, 0f));
+		tri.setTextureCoordinate(0, new Point2f(3f, 0f)); //textures
 		tri.setTextureCoordinate(1, new Point2f(3f, 3f));
 		tri.setTextureCoordinate(2, new Point2f(0f, 0f));
 		tri.setTextureCoordinate(3, new Point2f(0f, 3f));
-		TransformGroup cube = new TransformGroup();
-		//cube = mkTranslation(new Vector3f(-i * 0.5f, 0f, 0f));
-		cube.addChild(basicWall.cloneTree());
-		return cube;
+		Transform3D rotation = new Transform3D();
+		Transform3D translate = new Transform3D();
+		switch (wallType) {
+		case 0:
+			translate.set(new Vector3f(0.230f, 0f, 0.0f)); //droite
+			rotation.rotZ(0);
+			break;
+		case 1:
+			translate.set(new Vector3f(-0.230f, 0f, 0.0f));//gauche
+			rotation.rotZ(0);
+			break;
+		case 2:
+			translate.set(new Vector3f(0.230f, 0f, 0.0f)); //Haut
+			rotation.rotZ(Math.PI/2d);
+			break;
+		case 3:
+			translate.set(new Vector3f(-0.230f, 0f, 0.0f));//Bas
+			rotation.rotZ(Math.PI/2);
+			break;
+		case 4:
+			translate.set(new Vector3f(0.230f, 0f, 0.0f)); // devant
+			rotation.rotY(Math.PI/2);
+			break;
+		case 5:
+			translate.set(new Vector3f(-0.230f, 0f, 0.0f));//derriere
+			rotation.rotY(Math.PI/2);
+			break;
+
+		}
+		
+		rotation.mul(translate);
+		TransformGroup wall = new TransformGroup(rotation);
+		wall.addChild(basicWall.cloneTree());
+		return wall;
 	}
 
 	private TransformGroup getCube(boolean[] solidWalls) {
 		TransformGroup cube = new TransformGroup();
 		for (int i = 0; i < 6; i++) {
-			if (solidWalls[i])
-				cube.addChild(walls[i]);
+			if (solidWalls[i]) {
+				cube.addChild(getWall(i));
+
+			}
 		}
 		return cube;
 	}
@@ -185,7 +162,7 @@ class Display3d extends Frame implements WindowListener {
 	// méthode de création d'un TransformGroup pour les rotations
 	private TransformGroup mkRotation(double angle) {
 		Transform3D t3d = new Transform3D();
-		t3d.rotY(angle);
+		t3d.rotX(angle);
 		return new TransformGroup(t3d);
 	}
 
