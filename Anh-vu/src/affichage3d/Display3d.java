@@ -72,7 +72,7 @@ class Display3d extends Frame implements WindowListener {
 		BoundingSphere bounds = new BoundingSphere();
 		rotator.setSchedulingBounds(bounds);
 		objSpin.addChild(rotator);
-
+/*
 		// Box texturée
 		Appearance boxApp = mkAppWithTexture("src/data/rock.gif"); // texture des murs
 		Box box = new Box(0.05f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, boxApp); // mur qui sera utilisé pour créer
@@ -126,12 +126,13 @@ class Display3d extends Frame implements WindowListener {
 			ttest.addChild(cubeSquare.cloneTree());
 			cubeCube.addChild(ttest.cloneTree());
 		}
+		*/
 		// TransformGroup tg2=mkTranslation(new Vector3f(0.52f,0f,0f));
 
 		// tg2.addChild(sphere);
 
 		// objSpin.addChild(tg2);
-		objSpin.addChild(cubeCube);
+		objSpin.addChild(getWall(1));
 		scene.addChild(objSpin);
 		scene.compile();
 		return scene;
@@ -143,7 +144,7 @@ class Display3d extends Frame implements WindowListener {
 		tri.setTextureCoordinate(2, new Point2f(0f, 0f));
 		tri.setTextureCoordinate(3, new Point2f(0f, 3f));
 		TransformGroup cube = new TransformGroup();
-		cube = mkTranslation(new Vector3f(-i * 0.5f, 0f, 0f));
+		//cube = mkTranslation(new Vector3f(-i * 0.5f, 0f, 0f));
 		cube.addChild(basicWall.cloneTree());
 		return cube;
 	}
