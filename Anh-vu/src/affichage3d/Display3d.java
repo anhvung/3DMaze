@@ -1,6 +1,10 @@
 package affichage3d;
 import Controler.Maze;
 import com.sun.j3d.utils.universe.SimpleUniverse;
+import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
+import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
+import com.sun.j3d.utils.behaviors.mouse.MouseWheelZoom;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
@@ -19,6 +23,8 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.Appearance;
+import javax.media.j3d.BoundingSphere;
+import javax.vecmath.Point3d;
 import javax.media.j3d.Texture;
 import javax.media.j3d.Texture2D;
 import javax.media.j3d.ImageComponent2D;
@@ -59,22 +65,23 @@ class Display3d extends Frame implements WindowListener {
 	private BranchGroup createScene(SimpleUniverse su) {
 
 		BranchGroup scene = new BranchGroup();
-		TransformGroup objSpin = new TransformGroup();
+		//TransformGroup objSpin = new TransformGroup();
+		//objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		
+		
 
-		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-
-		Alpha rotationAlpha = new Alpha(-1, 16000);
+		//Alpha rotationAlpha = new Alpha(-1, 16000);
 
 		// on crée un mouvement de rotation
-		RotationInterpolator rotator = new RotationInterpolator(rotationAlpha, objSpin);
+		//RotationInterpolator rotator = new RotationInterpolator(rotationAlpha, objSpin);
 
 		// on définit la zone sur laquelle va s'appliquer la rotation
 		BoundingSphere bounds = new BoundingSphere();
-		rotator.setSchedulingBounds(bounds);
-		objSpin.addChild(rotator);
-		
+		//rotator.setSchedulingBounds(bounds);
+		//objSpin.addChild(rotator);
+		TransformGroup objSpin =getMouseTransform(scene,bounds);
 		objSpin.addChild(generateMaze());
-		scene.addChild(objSpin);
+		
 		scene.compile();
 		return scene;
 	}
@@ -173,7 +180,37 @@ class Display3d extends Frame implements WindowListener {
 		app.setTextureAttributes(new TextureAttributes());
 		return app;
 	}
+	private TransformGroup getMouseTransform(BranchGroup root, BoundingSphere bounds) {
+		 TransformGroup manipulator = new TransformGroup();
+		    manipulator.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
+		    // Rotation a la souris
+		    MouseRotate rotateBehavior = new MouseRotate();
+		    rotateBehavior.setTransformGroup(manipulator);
+		    rotateBehavior.setSchedulingBounds(bounds);
+		    manipulator.addChild(rotateBehavior);
+
+		    // Translation
+		    MouseTranslate translateBehavior = new MouseTranslate();
+		    translateBehavior.setTransformGroup(manipulator);
+		    translateBehavior.setSchedulingBounds(bounds);
+		    manipulator.addChild(translateBehavior);
+
+		    // Zoom Molette
+		    MouseWheelZoom wheelZoomBehavior = new MouseWheelZoom();
+		    wheelZoomBehavior.setTransformGroup(manipulator);
+		    wheelZoomBehavior.setSchedulingBounds(bounds);
+		    manipulator.addChild(wheelZoomBehavior);
+
+		    // Zoom Souris
+		    MouseZoom zoomBehavior = new MouseZoom();
+		    zoomBehavior.setTransformGroup(manipulator);
+		    zoomBehavior.setSchedulingBounds(bounds);
+		    manipulator.addChild(zoomBehavior);
+
+		    root.addChild(manipulator);
+		    return manipulator;
+	}
 	// méthode de création d'un TransformGroup pour les translations
 	private TransformGroup mkTranslation(Vector3f vect) {
 		Transform3D t3d = new Transform3D();
