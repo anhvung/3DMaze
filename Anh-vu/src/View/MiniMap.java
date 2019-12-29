@@ -24,7 +24,7 @@ public class MiniMap extends JFrame {
         this.setTitle("Maze look over");
         this.setSize(1000, 1000);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //setVisible(true);
+        setVisible(true);
 		
 		panels = new JPanel[length];
 		for (int i = 0; i < length; i++) {

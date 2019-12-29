@@ -1,4 +1,5 @@
 package affichage3d;
+
 import Controler.Maze;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
@@ -38,13 +39,14 @@ import javax.media.j3d.Alpha;
 import javax.media.j3d.RotationInterpolator;
 import java.awt.event.*;
 import java.io.PrintStream;
-import java.awt.*; 
+import java.awt.*;
 import javax.swing.*;
+
 public class Display3d extends JFrame implements WindowListener {
 	private final TransformGroup maze3d = new TransformGroup();
 	private final Appearance boxApp = mkAppWithTexture("src/data/rock.gif"); // texture des murs
 	private final Box basicWall = new Box(0.02f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, boxApp); // mur qui sera
-																									// utilisé
+																										// utilisé
 	// pour
 	// créer les cases
 	private final TriangleStripArray tri = (TriangleStripArray) (basicWall.getShape(Box.FRONT).getGeometry());
@@ -68,56 +70,59 @@ public class Display3d extends JFrame implements WindowListener {
 	private BranchGroup createScene(SimpleUniverse su) {
 
 		BranchGroup scene = new BranchGroup();
-		//TransformGroup objSpin = new TransformGroup();
-		//objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		
-		
+		// TransformGroup objSpin = new TransformGroup();
+		// objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
-		//Alpha rotationAlpha = new Alpha(-1, 16000);
+		// Alpha rotationAlpha = new Alpha(-1, 16000);
 
 		// on crée un mouvement de rotation
-		//RotationInterpolator rotator = new RotationInterpolator(rotationAlpha, objSpin);
+		// RotationInterpolator rotator = new RotationInterpolator(rotationAlpha,
+		// objSpin);
 
 		// on définit la zone sur laquelle va s'appliquer la rotation
 		BoundingSphere bounds = new BoundingSphere();
-		//rotator.setSchedulingBounds(bounds);
-		//objSpin.addChild(rotator);
-		TransformGroup objSpin =getMouseTransform(scene,bounds);
+		// rotator.setSchedulingBounds(bounds);
+		// objSpin.addChild(rotator);
+		TransformGroup objSpin = getMouseTransform(scene, bounds);
 		objSpin.addChild(generateMaze());
-		
+
 		scene.compile();
 		return scene;
 	}
 
 	private TransformGroup generateMaze() {
-		TransformGroup result =new TransformGroup();
+		TransformGroup result = new TransformGroup();
 		for (Controler.Box box : Controler.Maze.getMaze().getGrid()) {
-			result.addChild(gridItemToTransformGroup(box).cloneTree());
+			if (box.getIndex()[0] == 0) {
+				result.addChild(gridItemToTransformGroup(box).cloneTree());
+			}
 		}
 		return result;
 	}
+
 	private TransformGroup gridItemToTransformGroup(Controler.Box box) {
-		
-		int[] indexes=box.getIndex();
-		
+
+		int[] indexes = box.getIndex();
+		final float cubeInterval = 0.5f;
 		Transform3D translZ = new Transform3D();
-		translZ.set(new Vector3f(0, 0f, indexes[0]*0.25f)); //Z
-	
-		
+		translZ.set(new Vector3f(0, 0f, indexes[0] * cubeInterval)); // Z
+
 		Transform3D translY = new Transform3D();
-		translY.set(new Vector3f(0f, indexes[1]*0.25f, 0.0f)); //Y
+		translY.set(new Vector3f(0f, indexes[1] * cubeInterval, 0.0f)); // Y
 
 		Transform3D translX = new Transform3D();
-		translX.set(new Vector3f(indexes[2]*0.25f, 0f, 0.0f)); //X
-		
+		translX.set(new Vector3f(indexes[2] * cubeInterval, 0f, 0.0f)); // X
+
 		translZ.mul(translY);
 		translZ.mul(translX);
-		TransformGroup result =new TransformGroup(translZ);
+		TransformGroup result = new TransformGroup(translZ);
 		result.addChild(getCube(box.getWalls()));
 		return result;
 	}
+
+	@SuppressWarnings("deprecation")
 	private TransformGroup getWall(int wallType) {
-		tri.setTextureCoordinate(0, new Point2f(3f, 0f)); //textures
+		tri.setTextureCoordinate(0, new Point2f(3f, 0f)); // textures
 		tri.setTextureCoordinate(1, new Point2f(3f, 3f));
 		tri.setTextureCoordinate(2, new Point2f(0f, 0f));
 		tri.setTextureCoordinate(3, new Point2f(0f, 3f));
@@ -125,32 +130,32 @@ public class Display3d extends JFrame implements WindowListener {
 		Transform3D translate = new Transform3D();
 		switch (wallType) {
 		case 0:
-			translate.set(new Vector3f(0.230f, 0f, 0.0f)); //droite
+			translate.set(new Vector3f(0.230f, 0f, 0.0f)); // droite
 			rotation.rotZ(0);
 			break;
 		case 1:
-			translate.set(new Vector3f(-0.230f, 0f, 0.0f));//gauche
+			translate.set(new Vector3f(-0.230f, 0f, 0.0f));// gauche
 			rotation.rotZ(0);
 			break;
 		case 2:
-			translate.set(new Vector3f(0.230f, 0f, 0.0f)); //Haut
-			rotation.rotZ(Math.PI/2d);
+			translate.set(new Vector3f(0.230f, 0f, 0.0f)); // Haut
+			rotation.rotZ(Math.PI / 2d);
 			break;
 		case 3:
-			translate.set(new Vector3f(-0.230f, 0f, 0.0f));//Bas
-			rotation.rotZ(Math.PI/2);
+			translate.set(new Vector3f(-0.230f, 0f, 0.0f));// Bas
+			rotation.rotZ(Math.PI / 2);
 			break;
 		case 4:
 			translate.set(new Vector3f(0.230f, 0f, 0.0f)); // devant
-			rotation.rotY(Math.PI/2);
+			rotation.rotY(Math.PI / 2);
 			break;
 		case 5:
-			translate.set(new Vector3f(-0.230f, 0f, 0.0f));//derriere
-			rotation.rotY(Math.PI/2);
+			translate.set(new Vector3f(-0.230f, 0f, 0.0f));// derriere
+			rotation.rotY(Math.PI / 2);
 			break;
 
 		}
-		
+
 		rotation.mul(translate);
 		TransformGroup wall = new TransformGroup(rotation);
 		wall.addChild(basicWall.cloneTree());
@@ -183,37 +188,39 @@ public class Display3d extends JFrame implements WindowListener {
 		app.setTextureAttributes(new TextureAttributes());
 		return app;
 	}
+
 	private TransformGroup getMouseTransform(BranchGroup root, BoundingSphere bounds) {
-		 TransformGroup manipulator = new TransformGroup();
-		    manipulator.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		TransformGroup manipulator = new TransformGroup();
+		manipulator.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
-		    // Rotation a la souris
-		    MouseRotate rotateBehavior = new MouseRotate();
-		    rotateBehavior.setTransformGroup(manipulator);
-		    rotateBehavior.setSchedulingBounds(bounds);
-		    manipulator.addChild(rotateBehavior);
+		// Rotation a la souris
+		MouseRotate rotateBehavior = new MouseRotate();
+		rotateBehavior.setTransformGroup(manipulator);
+		rotateBehavior.setSchedulingBounds(bounds);
+		manipulator.addChild(rotateBehavior);
 
-		    // Translation
-		    MouseTranslate translateBehavior = new MouseTranslate();
-		    translateBehavior.setTransformGroup(manipulator);
-		    translateBehavior.setSchedulingBounds(bounds);
-		    manipulator.addChild(translateBehavior);
+		// Translation
+		MouseTranslate translateBehavior = new MouseTranslate();
+		translateBehavior.setTransformGroup(manipulator);
+		translateBehavior.setSchedulingBounds(bounds);
+		manipulator.addChild(translateBehavior);
 
-		    // Zoom Molette
-		    MouseWheelZoom wheelZoomBehavior = new MouseWheelZoom();
-		    wheelZoomBehavior.setTransformGroup(manipulator);
-		    wheelZoomBehavior.setSchedulingBounds(bounds);
-		    manipulator.addChild(wheelZoomBehavior);
+		// Zoom Molette
+		MouseWheelZoom wheelZoomBehavior = new MouseWheelZoom();
+		wheelZoomBehavior.setTransformGroup(manipulator);
+		wheelZoomBehavior.setSchedulingBounds(bounds);
+		manipulator.addChild(wheelZoomBehavior);
 
-		    // Zoom Souris
-		    MouseZoom zoomBehavior = new MouseZoom();
-		    zoomBehavior.setTransformGroup(manipulator);
-		    zoomBehavior.setSchedulingBounds(bounds);
-		    manipulator.addChild(zoomBehavior);
+		// Zoom Souris
+		MouseZoom zoomBehavior = new MouseZoom();
+		zoomBehavior.setTransformGroup(manipulator);
+		zoomBehavior.setSchedulingBounds(bounds);
+		manipulator.addChild(zoomBehavior);
 
-		    root.addChild(manipulator);
-		    return manipulator;
+		root.addChild(manipulator);
+		return manipulator;
 	}
+
 	// méthode de création d'un TransformGroup pour les translations
 	private TransformGroup mkTranslation(Vector3f vect) {
 		Transform3D t3d = new Transform3D();
@@ -255,6 +262,7 @@ public class Display3d extends JFrame implements WindowListener {
 		myApp.setSize(800, 600);
 		myApp.setVisible(true);
 	}
+
 	public static Display3d get3DMaze() {
 		Display3d myApp = new Display3d();
 		myApp.setSize(800, 600);
