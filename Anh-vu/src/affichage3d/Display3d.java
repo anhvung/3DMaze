@@ -36,8 +36,11 @@ import javax.vecmath.Point2f;
 
 import javax.media.j3d.Alpha;
 import javax.media.j3d.RotationInterpolator;
-
-class Display3d extends Frame implements WindowListener {
+import java.awt.event.*;
+import java.io.PrintStream;
+import java.awt.*; 
+import javax.swing.*;
+public class Display3d extends JFrame implements WindowListener {
 	private final TransformGroup maze3d = new TransformGroup();
 	private final Appearance boxApp = mkAppWithTexture("src/data/rock.gif"); // texture des murs
 	private final Box basicWall = new Box(0.02f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, boxApp); // mur qui sera
@@ -247,9 +250,14 @@ class Display3d extends Frame implements WindowListener {
 		System.exit(1);
 	}
 
-	public static void main(String args[]) {
+	public static void display() {
 		Display3d myApp = new Display3d();
 		myApp.setSize(800, 600);
 		myApp.setVisible(true);
+	}
+	public static Display3d get3DMaze() {
+		Display3d myApp = new Display3d();
+		myApp.setSize(800, 600);
+		return myApp;
 	}
 }

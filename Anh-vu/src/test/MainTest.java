@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import Controler.Maze;
 import Model.MazeMaker;
 import View.MiniMap;
+import affichage3d.Display3d;
 
 public class MainTest {
 	public static final String source = "src/data/3Dmaze.txt";
@@ -58,6 +59,8 @@ public class MainTest {
 			out.println();
 		}*/
 		
+		//partie de l'affichage3D
+		affichage3d.Display3d.display();
 	}
 
 }
