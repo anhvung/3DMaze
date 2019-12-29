@@ -23,6 +23,7 @@ import javax.media.j3d.Canvas3D;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.Transform3D;
+import javax.media.j3d.PointLight;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
 import javax.vecmath.Point3d;
@@ -34,6 +35,8 @@ import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.TriangleStripArray;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Point2f;
+import javax.vecmath.Point3f;
+import javax.vecmath.Color3f;
 
 import javax.media.j3d.Alpha;
 import javax.media.j3d.RotationInterpolator;
@@ -44,7 +47,7 @@ import javax.swing.*;
 
 public class Display3d extends JFrame implements WindowListener {
 	private final TransformGroup maze3d = new TransformGroup();
-	private final Appearance boxApp = mkAppWithTexture("src/data/rock.gif"); // texture des murs
+	private final Appearance boxApp = mkAppWithTexture("src/data/sam.jpg"); // texture des murs
 	private final Box basicWall = new Box(0.02f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, boxApp); // mur qui sera
 																										// utilisé
 	// pour
@@ -105,7 +108,8 @@ public class Display3d extends JFrame implements WindowListener {
 		int[] indexes = box.getIndex();
 		final float cubeInterval = 0.5f;
 		Transform3D translZ = new Transform3D();
-		translZ.set(new Vector3f(0, 0f, indexes[1] * cubeInterval)); // Y
+
+		translZ.set(new Vector3f(0f, 0f, indexes[1] * cubeInterval)); // Y
 
 		Transform3D translY = new Transform3D();
 		translY.set(new Vector3f(0f, -indexes[0] * cubeInterval, 0.0f)); // Z AXIS
@@ -169,6 +173,12 @@ public class Display3d extends JFrame implements WindowListener {
 				cube.addChild(getWall(i));
 			}
 		}
+		PointLight pointLi=new PointLight
+				(new Color3f(1f,1f,1f)
+				,new Point3f(2f,2f,2f)
+				,new Point3f(1f,0f,0f));
+				pointLi.setInfluencingBounds(new BoundingSphere(new Point3d(),150d));
+				//cube.addChild(pointLi);
 		return cube;
 	}
 
