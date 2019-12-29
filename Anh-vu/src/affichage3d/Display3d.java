@@ -93,9 +93,9 @@ public class Display3d extends JFrame implements WindowListener {
 	private TransformGroup generateMaze() {
 		TransformGroup result = new TransformGroup();
 		for (Controler.Box box : Controler.Maze.getMaze().getGrid()) {
-			if (box.getIndex()[0] == 0) {
-				result.addChild(gridItemToTransformGroup(box).cloneTree());
-			}
+
+			result.addChild(gridItemToTransformGroup(box).cloneTree());
+
 		}
 		return result;
 	}
@@ -105,10 +105,10 @@ public class Display3d extends JFrame implements WindowListener {
 		int[] indexes = box.getIndex();
 		final float cubeInterval = 0.5f;
 		Transform3D translZ = new Transform3D();
-		translZ.set(new Vector3f(0, 0f, indexes[0] * cubeInterval)); // Z
+		translZ.set(new Vector3f(0, 0f, indexes[1] * cubeInterval)); // Y
 
 		Transform3D translY = new Transform3D();
-		translY.set(new Vector3f(0f, indexes[1] * cubeInterval, 0.0f)); // Y
+		translY.set(new Vector3f(0f, -indexes[0] * cubeInterval, 0.0f)); // Z AXIS
 
 		Transform3D translX = new Transform3D();
 		translX.set(new Vector3f(indexes[2] * cubeInterval, 0f, 0.0f)); // X
@@ -129,27 +129,27 @@ public class Display3d extends JFrame implements WindowListener {
 		Transform3D rotation = new Transform3D();
 		Transform3D translate = new Transform3D();
 		switch (wallType) {
-		case 0:
+		case 5:
 			translate.set(new Vector3f(0.230f, 0f, 0.0f)); // droite
 			rotation.rotZ(0);
 			break;
-		case 1:
+		case 4:
 			translate.set(new Vector3f(-0.230f, 0f, 0.0f));// gauche
 			rotation.rotZ(0);
 			break;
-		case 2:
+		case 0:
 			translate.set(new Vector3f(0.230f, 0f, 0.0f)); // Haut
-			rotation.rotZ(Math.PI / 2d);
+			rotation.rotZ(Math.PI / 2);
 			break;
-		case 3:
+		case 1:
 			translate.set(new Vector3f(-0.230f, 0f, 0.0f));// Bas
 			rotation.rotZ(Math.PI / 2);
 			break;
-		case 4:
+		case 2:
 			translate.set(new Vector3f(0.230f, 0f, 0.0f)); // devant
 			rotation.rotY(Math.PI / 2);
 			break;
-		case 5:
+		case 3:
 			translate.set(new Vector3f(-0.230f, 0f, 0.0f));// derriere
 			rotation.rotY(Math.PI / 2);
 			break;
