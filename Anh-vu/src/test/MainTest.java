@@ -57,6 +57,7 @@ public class MainTest {
 
 		// partie de l'affichage3D
 		affichage3d.Display3d.display();
+		
 	}
 
 }

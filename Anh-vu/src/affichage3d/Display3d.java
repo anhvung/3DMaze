@@ -1,7 +1,9 @@
 package affichage3d;
 
+import com.sun.j3d.utils.behaviors.keyboard.*;
 import Controler.Maze;
 import com.sun.j3d.utils.universe.SimpleUniverse;
+import com.sun.j3d.utils.universe.ViewingPlatform;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
@@ -11,9 +13,6 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.Transform3D;
 import javax.vecmath.Vector3f;
-import java.awt.Frame;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.BorderLayout;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.geometry.Box;
@@ -36,6 +35,7 @@ import javax.media.j3d.TriangleStripArray;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Point2f;
 import javax.vecmath.Point3f;
+import javax.vecmath.Vector3d;
 import javax.vecmath.Color3f;
 
 import javax.media.j3d.Alpha;
@@ -44,25 +44,33 @@ import java.awt.event.*;
 import java.io.PrintStream;
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Display3d extends JFrame implements WindowListener {
-	private final TransformGroup maze3d = new TransformGroup();
+public class Display3d extends JFrame implements KeyListener {
+	private TransformGroup objSpin = new TransformGroup();
 	private final Appearance boxApp = mkAppWithTexture("src/data/sam.jpg"); // texture des murs
 	private final Box basicWall = new Box(0.02f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, boxApp); // mur qui sera
-																										// utilisé
+	private Point3d currentPosition = new Point3d(0,0,0);
+	private Point3d nextPosition = new Point3d(1, 1, 1);
+
+	// utilisé
 	// pour
 	// créer les cases
 	private final TriangleStripArray tri = (TriangleStripArray) (basicWall.getShape(Box.FRONT).getGeometry());
+	private SimpleUniverse myWorld;
 
 	Display3d() {
 		super("Samuel & Anh-Vu : Laby3D");
-		this.addWindowListener(this);
+		;
 		this.setLayout(new BorderLayout());
 
 		// Création de la scène en JAVA3D
 		Canvas3D canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
-		SimpleUniverse myWorld = new SimpleUniverse(canvas);
+		myWorld = new SimpleUniverse(canvas);
+		canvas.addKeyListener(this);
 		BranchGroup myScene = createScene(myWorld);
+
 		myWorld.addBranchGraph(myScene);
 		myWorld.getViewingPlatform().setNominalViewingTransform();
 		// fin de creation
@@ -73,23 +81,19 @@ public class Display3d extends JFrame implements WindowListener {
 	private BranchGroup createScene(SimpleUniverse su) {
 
 		BranchGroup scene = new BranchGroup();
-		// TransformGroup objSpin = new TransformGroup();
-		// objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-
-		// Alpha rotationAlpha = new Alpha(-1, 16000);
-
-		// on crée un mouvement de rotation
-		// RotationInterpolator rotator = new RotationInterpolator(rotationAlpha,
-		// objSpin);
-
-		// on définit la zone sur laquelle va s'appliquer la rotation
 		BoundingSphere bounds = new BoundingSphere();
-		// rotator.setSchedulingBounds(bounds);
-		// objSpin.addChild(rotator);
-		TransformGroup objSpin = getMouseTransform(scene, bounds);
+		objSpin = getMouseTransform(scene, bounds);
 		objSpin.addChild(generateMaze());
+		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		TransformGroup tg = su.getViewingPlatform().getViewPlatformTransform();
 
+		KeyNavigatorBehavior keyNavigatorBehavior = new KeyNavigatorBehavior(tg);
+
+		// Champ d'action du clavier
+		keyNavigatorBehavior.setSchedulingBounds(new BoundingSphere(new Point3d(), 1000));
+		scene.addChild(keyNavigatorBehavior);
 		scene.compile();
+		
 		return scene;
 	}
 
@@ -173,12 +177,9 @@ public class Display3d extends JFrame implements WindowListener {
 				cube.addChild(getWall(i));
 			}
 		}
-		PointLight pointLi=new PointLight
-				(new Color3f(1f,1f,1f)
-				,new Point3f(2f,2f,2f)
-				,new Point3f(1f,0f,0f));
-				pointLi.setInfluencingBounds(new BoundingSphere(new Point3d(),150d));
-				//cube.addChild(pointLi);
+		PointLight pointLi = new PointLight(new Color3f(1f, 1f, 1f), new Point3f(2f, 2f, 2f), new Point3f(1f, 0f, 0f));
+		pointLi.setInfluencingBounds(new BoundingSphere(new Point3d(), 150d));
+		// cube.addChild(pointLi);
 		return cube;
 	}
 
@@ -205,6 +206,7 @@ public class Display3d extends JFrame implements WindowListener {
 
 		// Rotation a la souris
 		MouseRotate rotateBehavior = new MouseRotate();
+		rotateBehavior.setFactor(0.003);
 		rotateBehavior.setTransformGroup(manipulator);
 		rotateBehavior.setSchedulingBounds(bounds);
 		manipulator.addChild(rotateBehavior);
@@ -245,30 +247,9 @@ public class Display3d extends JFrame implements WindowListener {
 		return new TransformGroup(t3d);
 	}
 
-	public void windowActivated(WindowEvent e) {
-	}
-
-	public void windowClosed(WindowEvent e) {
-	}
-
-	public void windowDeactivated(WindowEvent e) {
-	}
-
-	public void windowDeiconified(WindowEvent e) {
-	}
-
-	public void windowIconified(WindowEvent e) {
-	}
-
-	public void windowOpened(WindowEvent e) {
-	}
-
-	public void windowClosing(WindowEvent e) {
-		System.exit(1);
-	}
-
 	public static void display() {
 		Display3d myApp = new Display3d();
+		myApp.updateCamera(new Point3d(0,0,4),100);
 		myApp.setSize(800, 600);
 		myApp.setVisible(true);
 	}
@@ -278,4 +259,68 @@ public class Display3d extends JFrame implements WindowListener {
 		myApp.setSize(800, 600);
 		return myApp;
 	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		char key = e.getKeyChar();
+
+		if (key == 'd') {
+			System.out.println("d");
+			updateCamera(new Point3d(1, -1,3), 1500);
+		}
+
+	}
+
+	public void updateCamera(Point3d next, int length) {
+		Point3d[] steps = positionArray(currentPosition, next, length);
+		for (Point3d step : steps) {
+			CameraStep(step.getX(), step.getY(), step.getZ());
+			
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	private void CameraStep(double x, double y, double z) {
+		nextPosition = new Point3d(x, y, z);
+		System.out.println(nextPosition);
+		Vector3f vect = new Vector3f(  (float) ((float) nextPosition.getX()), (float) ((float) nextPosition.getY()),(float) ((float) nextPosition.getZ()));
+		Transform3D look = new Transform3D();
+		System.out.println(vect);
+		look.setTranslation(vect);
+		myWorld.getViewingPlatform().getViewPlatformTransform().setTransform(look);
+		currentPosition = new Point3d(x, y, z);
+
+	}
+
+	private Point3d[] positionArray(Point3d start, Point3d finish, int length) {
+		Point3d[] result = new Point3d[length+1];
+		double[] current = { start.getX(), start.getY(), start.getZ() };
+		double[] next = { finish.getX(), finish.getY(), finish.getZ() };
+		for (int i = 0; i < length+1; i++) {
+			result[i] = new Point3d(current[0] + i * (next[0] - current[0]) / length,
+					current[1] + i * (next[1] - current[1]) / length, current[2] + i * (next[2] - current[2]) / length);
+		}
+
+		return result;
+
+	}
+
 }
