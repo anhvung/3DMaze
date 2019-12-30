@@ -1,71 +1,54 @@
 package affichage3d;
 
-import com.sun.j3d.utils.behaviors.keyboard.*;
-import Controler.Maze;
 import com.sun.j3d.utils.universe.SimpleUniverse;
-import com.sun.j3d.utils.universe.ViewingPlatform;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseWheelZoom;
-import javax.media.j3d.Canvas3D;
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.TransformGroup;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.ViewPlatform;
-import javax.media.j3d.View;
-import javax.vecmath.Vector3f;
-import java.awt.BorderLayout;
-import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.geometry.Box;
-import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.image.TextureLoader;
+
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.Transform3D;
-import javax.media.j3d.PointLight;
-import javax.media.j3d.Appearance;
-import javax.media.j3d.BoundingSphere;
-import javax.vecmath.Point3d;
 import javax.media.j3d.Texture;
 import javax.media.j3d.Texture2D;
 import javax.media.j3d.ImageComponent2D;
-import javax.media.j3d.PhysicalBody;
-import javax.media.j3d.PhysicalEnvironment;
-import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.TriangleStripArray;
+import javax.media.j3d.PointLight;
+import javax.media.j3d.Appearance;
+import javax.media.j3d.BoundingSphere;
+
+import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Point2f;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Color3f;
 
-import javax.media.j3d.Alpha;
-import javax.media.j3d.RotationInterpolator;
-import java.awt.event.*;
-import java.io.PrintStream;
-import java.awt.*;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.BorderLayout;
 
 public class Display3d extends JFrame implements KeyListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private TransformGroup objSpin = new TransformGroup();
 	private Box basicWall = new Box(0.02f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, new Appearance()); // unique mur
-	private static final float stepSize = 0.1f;																					// du jeu
+	private static final float stepSize = 0.1f; // du jeu
 	private Point3d currentPosition = new Point3d(0.5f, -0 / 2f, 0.5f);
-	private Point3d nextPosition = new Point3d(1, 1, 1);
 	private double[] forwardVect = { 0, 0, -zoom };
-	private double currentAngle = 0d;
-	private static final double zoom = 10000.0;
+	private double[] previousVect = { 0, 0, -zoom };
+	private static final double zoom = 1.0;
 	private static final float scaleSize = 2.5f;
-	// utilisé
-	// pour
-	// créer les cases
 	private final TriangleStripArray tri = (TriangleStripArray) (basicWall.getShape(Box.FRONT).getGeometry());
 	private SimpleUniverse myWorld;
+	private static final int speed = 100;
 
 	Display3d() {
 		super("Samuel & Anh-Vu : Laby3D");
@@ -94,16 +77,12 @@ public class Display3d extends JFrame implements KeyListener {
 		basicWall.setAppearance(Box.FRONT, walls);
 		basicWall.setAppearance(Box.LEFT, sides);
 		basicWall.setAppearance(Box.RIGHT, sides);
-
 	}
 
 	private BranchGroup createScene(SimpleUniverse su) {
 
 		BranchGroup scene = new BranchGroup();
 		BoundingSphere bounds = new BoundingSphere();
-		ViewPlatform vp = new ViewPlatform();
-		vp.setViewAttachPolicy(View.RELATIVE_TO_FIELD_OF_VIEW);
-
 		Transform3D scale = new Transform3D();
 		scale.setScale(scaleSize);
 		TransformGroup BigTG = new TransformGroup(scale);
@@ -111,35 +90,15 @@ public class Display3d extends JFrame implements KeyListener {
 		objSpin = getMouseTransform(scene, bounds);
 		objSpin.addChild(BigTG);
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		TransformGroup tg = su.getViewingPlatform().getViewPlatformTransform();
-
-		View view = new View();
-		PhysicalBody pb = new PhysicalBody();
-		PhysicalEnvironment pe = new PhysicalEnvironment();
-		view.setPhysicalEnvironment(pe);
-		view.setPhysicalBody(pb);
-
-		view.setFieldOfView(Math.PI / 2.2);
-		// attach the View to the ViewPlatform
-
 		su.getViewingPlatform().getViewers()[0].getView().setFieldOfView(Math.PI / 2.2);
-
-		// KeyNavigatorBehavior keyNavigatorBehavior = new KeyNavigatorBehavior(tg);
-
-		// Champ d'action du clavier
-		// keyNavigatorBehavior.setSchedulingBounds(new BoundingSphere(new Point3d(),
-		// 1000));
-		// scene.addChild(keyNavigatorBehavior);
-
 		scene.compile();
-
 		return scene;
 	}
 
 	public static void display() {
 		Display3d myApp = new Display3d();
 		myApp.updateCameraPos(new Point3d(0.5f, -0 / 2f, 0.5f), 100);
-		double[] forwardVect = { 0, 0, -zoom };
+		double[] forwardVect = { zoom, 0, 0 };
 		myApp.updateCameraRot(forwardVect, 100);
 		myApp.setSize(800, 600);
 		myApp.setVisible(true);
@@ -166,38 +125,38 @@ public class Display3d extends JFrame implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		char key = e.getKeyChar();
-		if (key == 'z') {
-			System.out.println("z");
+		switch (key) {
+		case 'e':
 			goForward();
-			// updateCameraRot(new Point3d(-1,0,0),1500);
-		}
-		if (key == 'd') {
-			System.out.println("d");
+			break;
+		case 'd':
 			turnRight();
-			// updateCameraRot(new Point3d(-1,0,0),1500);
-		}
-		if (key == 'q') {
-			System.out.println("q");
-			// updateCameraRot(1, 0, 1500);
+			break;
+		case 'q':
 			turnLeft();
-		}
-		if (key == 's') {
-			System.out.println("q");
-			// updateCameraRot(1, 0, 1500);
+			break;
+		case 'a':
 			goBack();
+			break;
+		case 'z':
+			turnUp();
+			break;
+		case 's':
+			turnDown();
+			break;
 		}
 
 	}
 
 	private void goBack() {
-		final int speed = 100;
-		updateCameraPos(add(getLeft(getLeft(forwardVect)), currentPosition, (float) (stepSize * scaleSize / zoom)), speed);
+		System.out.println("reculer");
+		updateCameraPos(add(getLeft(getLeft(forwardVect)), currentPosition, (float) (stepSize * scaleSize / zoom)),
+				speed);
 
 	}
 
 	private void goForward() {
-		final int speed = 100;
-		
+		System.out.println("avancer");
 		System.out.println("Starting at : " + currentPosition.toString());
 		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
 
@@ -206,28 +165,53 @@ public class Display3d extends JFrame implements KeyListener {
 
 	}
 
-	private void turnLeft() {
-		final int speed = 100;
+	private void turnUp() {
+		System.out.println("turn Up");
 		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
-		if (forwardVect[2] < 0) { // north-->west
-			double[] dir = { -zoom, 0, 0 };
+		if (forwardVect[1] <= 0) {
+			
+			double[] dir = getUp(forwardVect);
+			previousVect = forwardVect;
 			updateCameraRot(dir, speed);
-			System.out.println("this is now facing east");
-		} else if (forwardVect[0] < 0) { // X west-->south
-			double[] dir = { 0, 0, zoom };
-			updateCameraRot(dir, speed);
-			System.out.println("this is now facing south");
-		} else if (forwardVect[2] > 0) { // Y South-->east
-			double[] dir = { zoom, 0, 0 };
-			updateCameraRot(dir, speed);
-			System.out.println("this is now facing west");
-		} else if (forwardVect[0] > 0) { // X east-->North
-			double[] dir = { 0, 0, -zoom };
-			updateCameraRot(dir, speed);
-			System.out.println("this is now facing North");
-
 		}
-		// updateCurrentPos();
+
+	}
+
+	private void turnDown() {
+		System.out.println("turn Down");
+		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
+		if (forwardVect[1] >= 0) {
+			
+			double[] dir = getDown(forwardVect);
+			previousVect = forwardVect;
+			updateCameraRot(dir, speed);
+		}
+
+	}
+
+	private void turnLeft() {
+		
+		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
+		if (forwardVect[1] == 0) {
+			System.out.println("turnLeft");
+			previousVect = forwardVect;
+			double[] dir = getLeft(forwardVect);
+			updateCameraRot(dir, speed);
+			printDir();
+		}
+	}
+
+	private void turnRight() {
+		
+		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
+		if (forwardVect[1] == 0) {
+			System.out.println("TurnRight");
+			previousVect = forwardVect;
+			double[] dir = getLeft(getLeft(getLeft(forwardVect)));
+			updateCameraRot(dir, speed);
+			printDir();
+		}
+
 	}
 
 	private double[] getLeft(double[] vect) {
@@ -249,73 +233,63 @@ public class Display3d extends JFrame implements KeyListener {
 		return null;
 	}
 
-	private void updateCurrentPos() {
-		if (forwardVect[2] > 0) {// south
-			currentPosition = new Point3d(currentPosition.getX(), currentPosition.getY(), -currentPosition.getZ());
-		} else if (forwardVect[0] > 0) {// east
-			currentPosition = new Point3d(-currentPosition.getY(), currentPosition.getY(), currentPosition.getX());
-		} else if (forwardVect[0] < 0) {// west
-			currentPosition = new Point3d(currentPosition.getY(), currentPosition.getZ(), -currentPosition.getX());
-		}
+	private double[] getDown(double[] vect) {
+		if (vect[1] == 0) { // plat-->haut
+			double[] dir = { vect[0]/10, -zoom, vect[2]/10 };
+			return dir;
+		} else if (vect[1] > 0) { // bas-->plat
 
+			return previousVect;
+		}
+		return null;
 	}
 
-	private void turnRight() {
-		final int speed = 100;
+	private double[] getUp(double[] vect) {
+		if (vect[1] == 0) { // plat-->bas
+			double[] dir = { vect[0]/10, zoom,vect[2]/10 };//matrice inversible
+			return dir;
+		} else if (vect[1] < 0) { // haut-->plat
+			return previousVect;
+		}
+		return null;
+	}
+
+	private void printDir() {
 		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
 		if (forwardVect[2] < 0) { // devant Y north-->east
-			double[] dir = { zoom, 0, 0 };
-			updateCameraRot(dir, speed);
-			System.out.println("this is now facing east");
+			System.out.println("facing north");
 		} else if (forwardVect[0] > 0) { // devant X east-->south
-			double[] dir = { 0, 0, zoom };
-			updateCameraRot(dir, speed);
-			System.out.println("this is now facing south");
+			System.out.println("facing east");
 		} else if (forwardVect[2] > 0) { // devant Y South-->west
-			double[] dir = { -zoom, 0, 0 };
-			updateCameraRot(dir, speed);
-			System.out.println("this is now facing west");
+			System.out.println(" facing south");
 		} else if (forwardVect[0] < 0) { // devant X West-->North
-			double[] dir = { 0, 0, -zoom };
-			updateCameraRot(dir, speed);
-			System.out.println("this is now facing North");
+			System.out.println("facing west");
 		}
-		// updateCurrentPos();
-
 	}
 
-	// méthode de création d'un TransformGroup pour les translations
-	private TransformGroup mkTranslation(Vector3f vect) {
-		Transform3D t3d = new Transform3D();
-		t3d.setTranslation(vect);
-		return new TransformGroup(t3d);
-	}
-
-	// méthode de création d'un TransformGroup pour les rotations
-	private TransformGroup mkRotation(double angle) {
-		Transform3D t3d = new Transform3D();
-		t3d.rotX(angle);
-		return new TransformGroup(t3d);
-	}
-
-	public void UpdateViewerGeometryJ3D(Point3d start, Point3d center) {
+	public void UpdateViewerGeometryJ3D(Point3d start, Point3d center, double[] vect2, double[] vect1) {
 		TransformGroup viewingTransformGroup = myWorld.getViewingPlatform().getViewPlatformTransform();
 		Transform3D viewingTransform = new Transform3D();
 
-		final Vector3d up = new Vector3d(0, 1, 0);
-		if (currentPosition.getX() != currentPosition.getX() || currentPosition.getY() != center.getY()
-				|| currentPosition.getZ() != center.getZ()) {
+		Vector3d up = new Vector3d(0,1,0);
+		if (vect1[0]==vect2[0]&& vect1[0]==0) {
+			up = new Vector3d(0,1,0);
+		}
+		else if (vect1[2]==vect2[2]&& vect1[2]==0) {
+			up = new Vector3d(0,1,0);
+		}
+		//System.out.println("up : "+up.toString());
+		if ((currentPosition.getX() != currentPosition.getX() || currentPosition.getY() != center.getY()
+				|| currentPosition.getZ() != center.getZ())) {
 			viewingTransform.lookAt(currentPosition, center, up);
 			viewingTransform.invert();
 			Vector3f vect = new Vector3f((float) ((float) currentPosition.getX()),
 					(float) ((float) currentPosition.getY()), (float) ((float) currentPosition.getZ()));
 			Transform3D look = new Transform3D();
-			Transform3D pers = new Transform3D();
+
 			look.setTranslation(vect);
 			look.mul(viewingTransform);
-			
 			viewingTransformGroup.setTransform(look);
-			
 
 		}
 
@@ -324,13 +298,10 @@ public class Display3d extends JFrame implements KeyListener {
 	public void updateCameraRot(double[] nextForward, int length) {
 		Point3d gaze1 = add(forwardVect, currentPosition);
 		Point3d gaze2 = add(nextForward, currentPosition);
-		System.out.println("Currentpos : " + currentPosition.toString());
-		System.out.println("gaze1 : " + gaze1.toString());
-		System.out.println("gaze2 : " + gaze2.toString());
 		Point3d[] steps = positionArray(gaze1, gaze2, length);
 		for (Point3d step : steps) {
-			UpdateViewerGeometryJ3D(gaze1, step);
-
+			UpdateViewerGeometryJ3D(gaze1, step,nextForward,forwardVect);
+			System.out.println(step);
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -342,18 +313,11 @@ public class Display3d extends JFrame implements KeyListener {
 		forwardVect = nextForward;
 	}
 
-	private Point3d add(double[] pos, Point3d position, float scaleStep) {
-		double[] gaze = magicTransf(pos);
+	private Point3d add(double[] gaze, Point3d position, float scaleStep) {
 		double x = gaze[0] * scaleStep + position.getX();
 		double y = gaze[1] * scaleStep + position.getY();
 		double z = gaze[2] * scaleStep + position.getZ();
 		return new Point3d(x, y, z);
-	}
-
-	private double[] magicTransf(double[] pos) {
-		double[] res = { 0, 0, -zoom };
-
-		return pos;
 	}
 
 	private Point3d add(double[] gaze, Point3d position) {
@@ -380,7 +344,7 @@ public class Display3d extends JFrame implements KeyListener {
 	}
 
 	private void CameraStep(double x, double y, double z) {
-		nextPosition = new Point3d(x, y, z);
+		Point3d nextPosition = new Point3d(x, y, z);
 		Vector3d up = new Vector3d(0, 1, 0);
 		Transform3D viewingTransform = new Transform3D();
 		viewingTransform.lookAt(currentPosition, add(forwardVect, currentPosition), up);
