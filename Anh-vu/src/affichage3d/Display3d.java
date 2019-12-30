@@ -54,7 +54,7 @@ import java.awt.event.KeyListener;
 public class Display3d extends JFrame implements KeyListener {
 	private TransformGroup objSpin = new TransformGroup();
 	private Box basicWall = new Box(0.02f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, new Appearance()); // unique mur
-																											// du jeu
+	private static final float stepSize = 0.1f;																					// du jeu
 	private Point3d currentPosition = new Point3d(0.5f, -0 / 2f, 0.5f);
 	private Point3d nextPosition = new Point3d(1, 1, 1);
 	private double[] forwardVect = { 0, 0, -zoom };
@@ -191,13 +191,13 @@ public class Display3d extends JFrame implements KeyListener {
 
 	private void goBack() {
 		final int speed = 100;
-		updateCameraPos(add(getLeft(getLeft(forwardVect)), currentPosition, (float) (0.10f * scaleSize)), speed);
+		updateCameraPos(add(getLeft(getLeft(forwardVect)), currentPosition, (float) (stepSize * scaleSize / zoom)), speed);
 
 	}
 
 	private void goForward() {
 		final int speed = 100;
-		final float stepSize = 0.1f;
+		
 		System.out.println("Starting at : " + currentPosition.toString());
 		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
 
