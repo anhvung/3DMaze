@@ -51,8 +51,10 @@ public class Display3d extends JFrame implements KeyListener {
 	private TransformGroup objSpin = new TransformGroup();
 	private final Appearance boxApp = mkAppWithTexture("src/data/sam.jpg"); // texture des murs
 	private final Box basicWall = new Box(0.02f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, boxApp); // mur qui sera
-	private Point3d currentPosition = new Point3d(0,0,0);
+	private Point3d currentPosition = new Point3d(0.5f, -0 / 2f, 0.5f);
 	private Point3d nextPosition = new Point3d(1, 1, 1);
+	private double[] forwardVect = { 0, 0, -1 };
+	private double currentAngle = 0d;
 
 	// utilisé
 	// pour
@@ -82,8 +84,13 @@ public class Display3d extends JFrame implements KeyListener {
 
 		BranchGroup scene = new BranchGroup();
 		BoundingSphere bounds = new BoundingSphere();
+
+		Transform3D scale = new Transform3D();
+		
+		TransformGroup BigTG = new TransformGroup(scale);
+		BigTG.addChild(generateMaze());
 		objSpin = getMouseTransform(scene, bounds);
-		objSpin.addChild(generateMaze());
+		objSpin.addChild(BigTG);
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		TransformGroup tg = su.getViewingPlatform().getViewPlatformTransform();
 
@@ -92,9 +99,226 @@ public class Display3d extends JFrame implements KeyListener {
 		// Champ d'action du clavier
 		keyNavigatorBehavior.setSchedulingBounds(new BoundingSphere(new Point3d(), 1000));
 		scene.addChild(keyNavigatorBehavior);
+
 		scene.compile();
-		
+
 		return scene;
+	}
+
+	public static void display() {
+		Display3d myApp = new Display3d();
+		myApp.updateCameraPos(new Point3d(0.5f, -0 / 2f, 0.5f), 100);
+		double[] forwardVect = { 0, 0, -1 };
+		myApp.updateCameraRot(forwardVect, 100);
+		myApp.setSize(800, 600);
+		myApp.setVisible(true);
+	}
+
+	public static Display3d get3DMaze() {
+		Display3d myApp = new Display3d();
+		myApp.setSize(800, 600);
+		return myApp;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		char key = e.getKeyChar();
+		if (key == 'z') {
+			System.out.println("z");
+			goForward();
+			// updateCameraRot(new Point3d(-1,0,0),1500);
+		}
+		if (key == 'd') {
+			System.out.println("d");
+			turnRight();
+			// updateCameraRot(new Point3d(-1,0,0),1500);
+		}
+		if (key == 'q') {
+			System.out.println("q");
+			// updateCameraRot(1, 0, 1500);
+			turnLeft();
+		}
+
+	}
+
+	private void goForward() {
+		final int speed=1000;
+		System.out.println("Starting at : "+ currentPosition.toString());
+		System.out.println("Starting with dir : "+ forwardVect.toString());
+		//final double[] forwardVect = { 0, 0, -1 };
+		updateCameraPos(add(forwardVect,currentPosition,0.25f), speed);
+		
+	}
+
+	private void turnLeft() {
+		final int speed = 1000;
+		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
+		if (forwardVect[2] == -1) { // north-->west
+			double[] dir = { -1, 0, 0 };
+			updateCameraRot(dir, speed);
+			System.out.println("this is now facing east");
+		} else if (forwardVect[0] == -1) { // X west-->south
+			double[] dir = { 0, 0, 1 };
+			updateCameraRot(dir, speed);
+			System.out.println("this is now facing south");
+		} else if (forwardVect[2] == 1) { // Y South-->east
+			double[] dir = { 1, 0, 0 };
+			updateCameraRot(dir, speed);
+			System.out.println("this is now facing west");
+		} else if (forwardVect[0] == 1) { // X east-->North
+			double[] dir = { 0, 0, -1 };
+			updateCameraRot(dir, speed);
+			System.out.println("this is now facing North");
+		}
+	}
+
+	private void turnRight() {
+		final int speed = 1000;
+		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
+		if (forwardVect[2] == -1) { // devant Y north-->east
+			double[] dir = { 1, 0, 0 };
+			updateCameraRot(dir, speed);
+			System.out.println("this is now facing east");
+		} else if (forwardVect[0] == 1) { // devant X east-->south
+			double[] dir = { 0, 0, 1 };
+			updateCameraRot(dir, speed);
+			System.out.println("this is now facing south");
+		} else if (forwardVect[2] == 1) { // devant Y South-->west
+			double[] dir = { -1, 0, 0 };
+			updateCameraRot(dir, speed);
+			System.out.println("this is now facing west");
+		} else if (forwardVect[0] == -1) { // devant X West-->North
+			double[] dir = { 0, 0, -1 };
+			updateCameraRot(dir, speed);
+			System.out.println("this is now facing North");
+		}
+	}
+
+	// méthode de création d'un TransformGroup pour les translations
+	private TransformGroup mkTranslation(Vector3f vect) {
+		Transform3D t3d = new Transform3D();
+		t3d.setTranslation(vect);
+		return new TransformGroup(t3d);
+	}
+
+	// méthode de création d'un TransformGroup pour les rotations
+	private TransformGroup mkRotation(double angle) {
+		Transform3D t3d = new Transform3D();
+		t3d.rotX(angle);
+		return new TransformGroup(t3d);
+	}
+
+	public void UpdateViewerGeometryJ3D(Point3d start, Point3d center) {
+		TransformGroup viewingTransformGroup = myWorld.getViewingPlatform().getViewPlatformTransform();
+		Transform3D viewingTransform = new Transform3D();
+
+		Vector3d up = new Vector3d(0, 1, 0);
+		if (currentPosition.getX() != currentPosition.getX() || currentPosition.getY() != center.getY()
+				|| currentPosition.getZ() != center.getZ()) {
+			viewingTransform.lookAt(currentPosition, center, up);
+			viewingTransform.invert();
+			viewingTransformGroup.setTransform(viewingTransform);
+
+		}
+
+	}
+
+	public void updateCameraRot(double[] nextForward, int length) {
+		Point3d gaze1 = add(forwardVect, currentPosition);
+		Point3d gaze2 = add(nextForward, currentPosition);
+		System.out.println("Currentpos : " + currentPosition.toString());
+		System.out.println("gaze1 : " + gaze1.toString());
+		System.out.println("gaze2 : " + gaze2.toString());
+		Point3d[] steps = positionArray(gaze1, gaze2, length);
+		for (Point3d step : steps) {
+			UpdateViewerGeometryJ3D(gaze1, step);
+
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		forwardVect = nextForward;
+	}
+
+	private Point3d add(double[] pos, Point3d position, float scaleStep) {
+		double[] gaze=magicTransf(pos);
+		double x = gaze[0] * scaleStep + position.getX();
+		double y = gaze[1] * scaleStep + position.getY();
+		double z = gaze[2] * scaleStep + position.getZ();
+		return new Point3d(x, y, z);
+	}
+
+	private double[] magicTransf(double[] pos) {
+		if (pos[0]==1) {
+			double[] res={0,0,-1};
+			return res;
+		}
+		return pos;
+	}
+
+	private Point3d add(double[] gaze, Point3d position) {
+		double x = gaze[0] + position.getX();
+		double y = gaze[1] + position.getY();
+		double z = gaze[2] + position.getZ();
+		return new Point3d(x, y, z);
+	}
+
+	public void updateCameraPos(Point3d next, int length) {
+
+		Point3d[] steps = positionArray(currentPosition, next, length);
+		for (Point3d step : steps) {
+			CameraStep(step.getX(), step.getY(), step.getZ());
+			System.out.println("getting to : "+ step.toString());
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	private void CameraStep(double x, double y, double z) {
+		nextPosition = new Point3d(x, y, z);
+
+		Vector3f vect = new Vector3f((float) ((float) nextPosition.getX()), (float) ((float) nextPosition.getY()),
+				(float) ((float) nextPosition.getZ()));
+		Transform3D look = new Transform3D();
+
+		look.setTranslation(vect);
+		myWorld.getViewingPlatform().getViewPlatformTransform().setTransform(look);
+		currentPosition = new Point3d(x, y, z);
+
+	}
+
+	private Point3d[] positionArray(Point3d start, Point3d finish, int length) {
+		Point3d[] result = new Point3d[length + 1];
+		double[] current = { start.getX(), start.getY(), start.getZ() };
+		double[] next = { finish.getX(), finish.getY(), finish.getZ() };
+		for (int i = 0; i < length + 1; i++) {
+			result[i] = new Point3d(current[0] + i * (next[0] - current[0]) / length,
+					current[1] + i * (next[1] - current[1]) / length, current[2] + i * (next[2] - current[2]) / length);
+		}
+
+		return result;
+
 	}
 
 	private TransformGroup generateMaze() {
@@ -231,96 +455,6 @@ public class Display3d extends JFrame implements KeyListener {
 
 		root.addChild(manipulator);
 		return manipulator;
-	}
-
-	// méthode de création d'un TransformGroup pour les translations
-	private TransformGroup mkTranslation(Vector3f vect) {
-		Transform3D t3d = new Transform3D();
-		t3d.setTranslation(vect);
-		return new TransformGroup(t3d);
-	}
-
-	// méthode de création d'un TransformGroup pour les rotations
-	private TransformGroup mkRotation(double angle) {
-		Transform3D t3d = new Transform3D();
-		t3d.rotX(angle);
-		return new TransformGroup(t3d);
-	}
-
-	public static void display() {
-		Display3d myApp = new Display3d();
-		myApp.updateCamera(new Point3d(0,0,4),100);
-		myApp.setSize(800, 600);
-		myApp.setVisible(true);
-	}
-
-	public static Display3d get3DMaze() {
-		Display3d myApp = new Display3d();
-		myApp.setSize(800, 600);
-		return myApp;
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		char key = e.getKeyChar();
-
-		if (key == 'd') {
-			System.out.println("d");
-			updateCamera(new Point3d(1, -1,3), 1500);
-		}
-
-	}
-
-	public void updateCamera(Point3d next, int length) {
-		Point3d[] steps = positionArray(currentPosition, next, length);
-		for (Point3d step : steps) {
-			CameraStep(step.getX(), step.getY(), step.getZ());
-			
-			try {
-				Thread.sleep(2);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
-
-	private void CameraStep(double x, double y, double z) {
-		nextPosition = new Point3d(x, y, z);
-		System.out.println(nextPosition);
-		Vector3f vect = new Vector3f(  (float) ((float) nextPosition.getX()), (float) ((float) nextPosition.getY()),(float) ((float) nextPosition.getZ()));
-		Transform3D look = new Transform3D();
-		System.out.println(vect);
-		look.setTranslation(vect);
-		myWorld.getViewingPlatform().getViewPlatformTransform().setTransform(look);
-		currentPosition = new Point3d(x, y, z);
-
-	}
-
-	private Point3d[] positionArray(Point3d start, Point3d finish, int length) {
-		Point3d[] result = new Point3d[length+1];
-		double[] current = { start.getX(), start.getY(), start.getZ() };
-		double[] next = { finish.getX(), finish.getY(), finish.getZ() };
-		for (int i = 0; i < length+1; i++) {
-			result[i] = new Point3d(current[0] + i * (next[0] - current[0]) / length,
-					current[1] + i * (next[1] - current[1]) / length, current[2] + i * (next[2] - current[2]) / length);
-		}
-
-		return result;
-
 	}
 
 }
