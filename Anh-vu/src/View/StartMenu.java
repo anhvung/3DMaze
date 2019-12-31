@@ -1,4 +1,5 @@
 package View;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,7 @@ public class StartMenu extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 3525L;
+
 	public StartMenu() {
 		JPanel container = new JPanel();
 		this.setTitle("START MENU");
@@ -36,8 +38,7 @@ public class StartMenu extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		container.setLayout(new BorderLayout());
-		
-		
+
 		JButton left = new JButton("Facile");
 		left.addActionListener(new ActionListener() {
 			@Override
@@ -73,27 +74,28 @@ public class StartMenu extends JFrame {
 		this.setContentPane(container);
 		this.setVisible(true);
 	}
-		private void level(int length) {
-			String source = game.MainTest.source;
-			setVisible(false); //you can't see me!
-			dispose(); //Destroy the JFrame object
-			// Maze maze = new Maze(source);
-			// intégré dans Maze déjà --> Maze.getMaze() pour avoir le laby
-			MazeMaker M = new MazeMaker(length, source);
-			M.makeMaze();
-			Controler.Maze.updateMaze();
-			// maze.showBoxes();
-			MiniMap miniMap = new MiniMap(Maze.getMaze());
-			//miniMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-			GraphInterface g = new Graph(Maze.getMaze());
-			ASetInterface a = new ASet();
-			PreviousInterface previous = new Previous(g.getLength());
-			VertexInterface r = new Vertex(Maze.getMaze().startIndex);
-			VertexInterface s = new Vertex(Maze.getMaze().arrivalIndex);
-			PiInterface pi = new Pi(g.getLength());
-			Dijkstra D = new Dijkstra();
-			D.dijkstra(g, r, a, pi, previous);
-			new Player(miniMap);
-		}
+	private void level(int length) {
+		String source = game.MainTest.source;
+		setVisible(false); // you can't see me!
+		dispose(); // Destroy the JFrame object
+		// Maze maze = new Maze(source);
+		// intégré dans Maze déjà --> Maze.getMaze() pour avoir le laby
+		MazeMaker M = new MazeMaker(length, source);
+		M.makeMaze();
+		Controler.Maze.updateMaze();
+		// maze.showBoxes();
+		MiniMap miniMap = new MiniMap(Maze.getMaze());
+		// miniMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		GraphInterface g = new Graph(Maze.getMaze());
+		ASetInterface a = new ASet();
+		PreviousInterface previous = new Previous(g.getLength());
+		VertexInterface r = new Vertex(Maze.getMaze().startIndex);
+		VertexInterface s = new Vertex(Maze.getMaze().arrivalIndex);
+		PiInterface pi = new Pi(g.getLength());
+		Dijkstra D = new Dijkstra();
+		D.dijkstra(g, r, a, pi, previous);
+		new Player(miniMap);
+	}
 }

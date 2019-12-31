@@ -49,9 +49,9 @@ public class Display3d extends Canvas3D {
 	private static final float scaleSize = 2.5f;
 	private final TriangleStripArray tri = (TriangleStripArray) (basicWall.getShape(Box.FRONT).getGeometry());
 	private SimpleUniverse myWorld;
-	private static final int speed = 1500;
+	private static final int speed = 300;
 	public static Display3d maze3d;
-
+	
 	Display3d() {
 		
 		super(SimpleUniverse.getPreferredConfiguration());
@@ -109,12 +109,12 @@ public class Display3d extends Canvas3D {
 
 	}
 
-	public static void animate(int k, int i, int j) {
+	public static void animate(int[] ind) {
 		
 		
 		double[] forwardVect = { 0, 0, -zoom };
 		maze3d.updateCameraRot(forwardVect, 10);
-		maze3d.updateCameraPos(new Point3d((float) k * scaleSize, (float) i * scaleSize, (float) j * scaleSize), 2200);
+		maze3d.updateCameraPos(new Point3d((float) ind[2] * scaleSize*stepSize, (float)  -ind[0] * scaleSize*stepSize, (float) ind[1] * scaleSize*stepSize), 4000);
 		
 	}
 
