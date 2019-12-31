@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import Controler.Maze;
 
-public class MiniMap extends JFrame {
+public class MiniMap extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private int currentIndex;
 	private JButton downButton;
@@ -21,9 +21,9 @@ public class MiniMap extends JFrame {
 	
 	public MiniMap(Maze maze) {
 		this.length = maze.getLength();
-        this.setTitle("Maze look over");
-        this.setSize(1000, 1000);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //this.setTitle("Maze look over");
+        this.setSize(500, 500);
+        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 		
 		panels = new JPanel[length];
@@ -39,7 +39,7 @@ public class MiniMap extends JFrame {
 			}
 		}
 		
-		this.setContentPane(new JPanel());
+		//this.add(new JPanel());
 		this.setLayout(new BorderLayout());
 		this.add(getCurrentPanel(), BorderLayout.CENTER);
 		
@@ -72,7 +72,7 @@ public class MiniMap extends JFrame {
 		JPanel panel = getCurrentPanel();
 		panel.setPreferredSize(size);
 		add(panel, BorderLayout.CENTER);
-		pack();
+		updateUI();
 		repaint();
 	}
 	
