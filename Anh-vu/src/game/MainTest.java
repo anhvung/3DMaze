@@ -59,7 +59,7 @@ public class MainTest {
 		// intégré dans Maze déjà --> Maze.getMaze() pour avoir le laby
 		MazeMaker M = new MazeMaker(length, source);
 		M.makeMaze();
-
+		Controler.Maze.updateMaze();
 		// maze.showBoxes();
 		MiniMap miniMap = new MiniMap(Maze.getMaze());
 		// miniMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

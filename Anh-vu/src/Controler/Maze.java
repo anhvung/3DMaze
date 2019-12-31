@@ -19,7 +19,7 @@ public class Maze extends JFrame {
 	public Box arrival;
 	public int startIndex;
 	public int arrivalIndex;
-	private static Maze uniqueMaze=new Maze("src/data/3Dmaze.txt"); //INSTANCE DE MAZE SUR LAQUELLE ON TRAVAILLE DANS LA CLASSE Display3D
+	private static Maze uniqueMaze=new Maze(game.MainTest.source); //INSTANCE DE MAZE SUR LAQUELLE ON TRAVAILLE DANS LA CLASSE Display3D
 	private Maze(String path) {
 		directions = new String[] {"ABOVE", 
 				"BELOW", 
@@ -44,6 +44,9 @@ public class Maze extends JFrame {
 	}
 	public static Maze getMaze() {
 		return uniqueMaze;
+	}
+	public static void updateMaze() {
+		uniqueMaze=new Maze(game.MainTest.source);
 	}
 	private ArrayList<String> getLines(){
 		FileReader FR;
