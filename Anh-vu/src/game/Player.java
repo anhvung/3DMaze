@@ -19,8 +19,7 @@ public class Player extends JFrame {
 	private static boolean[] direction = new boolean[3];
 	private static final long serialVersionUID = 1L;
 	
-
-	Player(MiniMap miniMap) {
+	public Player(MiniMap miniMap) {
 		initializeFrame(miniMap);
 	}
 
@@ -32,20 +31,19 @@ public class Player extends JFrame {
 		Canvas3D pane1 =affichage3d.Display3d.maze3d;
 		JPanel  pane2 = miniMap;
 		pane2.setPreferredSize(new Dimension(500,500));
-		
 		this.add(pane1,BorderLayout.WEST);
 		this.add(new View.Navigation(),BorderLayout.CENTER);
 		this.add(pane2,BorderLayout.EAST);
-		
 		this.setSize(1200, 1200);
         this.pack();
         this.setVisible(true);
 		this.setFocusable(true);
         this.requestFocusInWindow();
-        affichage3d.Display3d.animate(0,0,0);
-        
+       
 	}
-
+	
+	
 
 	
+
 }

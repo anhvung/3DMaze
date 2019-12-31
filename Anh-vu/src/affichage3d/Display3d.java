@@ -93,25 +93,28 @@ public class Display3d extends Canvas3D {
 		objSpin = getMouseTransform(scene, bounds);
 		objSpin.addChild(BigTG);
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		su.getViewingPlatform().getViewers()[0].getView().setFieldOfView(Math.PI / 2.2);
+		su.getViewingPlatform().getViewers()[0].getView().setFieldOfView(Math.PI / 2);//FOV
 		scene.compile();
 		return scene;
 	}
 
 	public static void display(boolean show) {
 		maze3d = new Display3d();
-		maze3d.setSize(1200, 900);
+		maze3d.setSize(700, 700);
 		if (show)
 			maze3d.setVisible(true);
-		
+		maze3d.updateCameraPos(new Point3d((float) 5 * scaleSize, (float) -3 * scaleSize, (float) 12 * scaleSize), 10);
+		double[] forwardVect = { zoom, 0, 0 };
+		maze3d.updateCameraRot(forwardVect, 10);
 
 	}
 
 	public static void animate(int k, int i, int j) {
-		maze3d.updateCameraPos(new Point3d((float) 5 * scaleSize, (float) -3 * scaleSize, (float) 12 * scaleSize), 10);
+		
+		
 		double[] forwardVect = { 0, 0, -zoom };
 		maze3d.updateCameraRot(forwardVect, 10);
-		maze3d.updateCameraPos(new Point3d((float) k * scaleSize, (float) i * scaleSize, (float) j * scaleSize), 1800);
+		maze3d.updateCameraPos(new Point3d((float) k * scaleSize, (float) i * scaleSize, (float) j * scaleSize), 2200);
 		
 	}
 

@@ -10,49 +10,83 @@ import javax.swing.JPanel;
 import affichage3d.Display3d;
 
 public class Navigation extends JPanel {
+	private static boolean firstTime = true;
+	private static JButton upButton = new JButton("START");
+	private static JButton down = new JButton("START");
+	private static JButton left = new JButton("START");
+	private static JButton right = new JButton("START");
+	private static JButton go = new JButton("START");
 
 	public Navigation() {
-		
+
 		this.setSize(300, 300);
 		this.setLayout(new BorderLayout());
-		JButton upButton = new JButton("Up");
+
 		upButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("turn Up");
-				Display3d.maze3d.turnUp();
+				if (firstTime) {
+					changeTxt();
+				} else {
+					Display3d.maze3d.turnUp();
+				}
+
 			}
 		});
-		JButton down = new JButton("Down");
+
 		down.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("turn down");
-				Display3d.maze3d.turnDown();
+				if (firstTime) {
+					changeTxt();
+
+				} else {
+					Display3d.maze3d.turnDown();
+				}
+
 			}
 		});
-		JButton left = new JButton("Turn Left");
+
 		left.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("turn left");
-				Display3d.maze3d.turnLeft();
+				if (firstTime) {
+					changeTxt();
+
+				} else {
+					Display3d.maze3d.turnLeft();
+				}
+
 			}
 		});
-		JButton right = new JButton("Turn Right");
+
 		right.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("turn right");
-				Display3d.maze3d.turnRight();
+				if (firstTime) {
+					changeTxt();
+
+				} else {
+					Display3d.maze3d.turnRight();
+				}
 			}
 		});
-		JButton go = new JButton("Forward");
+
 		go.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("go forward");
-				Display3d.maze3d.goForward();
+
+				if (firstTime) {
+					changeTxt();
+
+				} else {
+					Display3d.maze3d.goForward();
+				}
 			}
 		});
 		this.add(upButton, BorderLayout.NORTH);
@@ -62,4 +96,15 @@ public class Navigation extends JPanel {
 		this.add(go, BorderLayout.CENTER);
 		this.setVisible(true);
 	}
+
+	private void changeTxt() {
+		firstTime = false;
+		right.setText("turn right");
+		left.setText("Turn Left");
+		upButton.setText("Turn Up");
+		down.setText("Turn Down");
+		go.setText("Forward");
+		affichage3d.Display3d.animate(0, 0, 0);
+	}
+
 }
