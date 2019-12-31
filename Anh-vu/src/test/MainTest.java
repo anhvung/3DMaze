@@ -27,7 +27,7 @@ public class MainTest {
 
 	public static void main(String[] args) {
 		PrintStream out = System.out;
-		int length = 3;
+		final int length = 10;
 
 		// Maze maze = new Maze(source);
 		// intégré dans Maze déjà --> Maze.getMaze() pour avoir le laby
@@ -44,9 +44,9 @@ public class MainTest {
 		VertexInterface r = new Vertex(Maze.getMaze().startIndex);
 		VertexInterface s = new Vertex(Maze.getMaze().arrivalIndex);
 		PiInterface pi = new Pi(g.getLength());
-		Dijkstra D = new Dijkstra();
-		D.dijkstra(g, r, a, pi, previous);
-
+		//Dijkstra D = new Dijkstra();
+		//D.dijkstra(g, r, a, pi, previous);
+		System.out.println("fini dijkstra");
 		/*
 		 * for (VertexInterface v : previous.getShortestPathTo(s)) {
 		 * out.println(v.getIndex()); }
@@ -56,7 +56,7 @@ public class MainTest {
 		 */
 
 		// partie de l'affichage3D
-		affichage3d.Display3d.display();
+		affichage3d.Display3d.display(0,0,0);
 		
 	}
 
