@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import Controler.Box;
 import Controler.Maze;
 
-public class Player extends JFrame {
+public class Player extends JFrame { 
 	private static int[] position = new int[3];
 	private static String direction = "north";
 	private static String prev = "north";

@@ -21,10 +21,8 @@ import dijkstra.Vertex;
 import dijkstra.VertexInterface;
 import game.Player;
 
+//FENETRE DE SELECTION DE LA DIFFICULTE
 public class StartMenu extends JFrame {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3525L;
 
 	public StartMenu() {
@@ -72,18 +70,16 @@ public class StartMenu extends JFrame {
 	}
 
 	private void level(int length) {
+		// On lance le niveau choisi
 		String source = game.MainTest.source;
-		setVisible(false); // you can't see me!
-		dispose(); // Destroy the JFrame object
+		setVisible(false);
+		dispose();
 		// Maze maze = new Maze(source);
 		// intégré dans Maze déjà --> Maze.getMaze() pour avoir le laby
 		MazeMaker M = new MazeMaker(length, source);
 		M.makeMaze();
 		Controler.Maze.updateMaze();
-		// maze.showBoxes();
 		MiniMap miniMap = new MiniMap(Maze.getMaze());
-		// miniMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		GraphInterface g = new Graph(Maze.getMaze());
 		ASetInterface a = new ASet();
 		PreviousInterface previous = new Previous(g.getLength());

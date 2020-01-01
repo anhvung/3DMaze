@@ -2,6 +2,7 @@ package Model;
 
 import Controler.Box;
 
+//CASE DANS LA GENERATION ALEATOIRE DU LABY
 public class CreateBox extends Box {
 	private CreateBox[] neighbours;
 	public boolean visited;

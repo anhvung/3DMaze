@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+//CLASSE DU LABY
 public class Maze extends JFrame {
 	private static final long serialVersionUID = 6161828148540912988L;
 	protected int length;
@@ -15,8 +16,8 @@ public class Maze extends JFrame {
 	private Box[] grid;
 	public Box start;
 	public Box arrival;
-	public int startIndex;
-	public int arrivalIndex;
+	public int startIndex; //index de la case de départ
+	public int arrivalIndex;//index de la case d'arrivée
 	private static Maze uniqueMaze = new Maze(game.MainTest.source); // INSTANCE DE MAZE SUR LAQUELLE ON TRAVAILLE DANS
 																		// LA CLASSE Display3D
 

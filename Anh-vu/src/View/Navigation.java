@@ -14,9 +14,7 @@ import game.Player;
 import affichage3d.Display3d;
 
 public class Navigation extends JPanel {
-	/**
-	 * 
-	 */
+	//Ici on s'occupe des boutons de navigation 
 
 	private static final long serialVersionUID = -1537227921727720927L;
 	private static boolean firstTime = true;
@@ -27,7 +25,7 @@ public class Navigation extends JPanel {
 	private static JButton go = new JButton("START");
 	private static JButton[] ref = { down, upButton, go, left, right };
 
-	public Navigation() {
+	public Navigation() { 
 
 		this.setSize(300, 300);
 		this.setLayout(new BorderLayout());
@@ -116,7 +114,7 @@ public class Navigation extends JPanel {
 		this.setVisible(true);
 	}
 
-	private void changeTxt() {
+	private void changeTxt() { // Texte initial
 		firstTime = false;
 		right.setText("turn right");
 		left.setText("Turn Left");
@@ -127,7 +125,7 @@ public class Navigation extends JPanel {
 		affichage3d.Display3d.animate(start.getIndex());
 	}
 
-	public static void update(String dir, Box box) {
+	public static void update(String dir, Box box) { //Mise à jour des directions autorisées
 		ArrayList<Integer> blocked = new ArrayList<Integer>();
 		switch (dir) {
 
@@ -173,7 +171,7 @@ public class Navigation extends JPanel {
 		noGo(blocked);
 	}
 
-	private static void noGo(ArrayList<Integer> list) {
+	private static void noGo(ArrayList<Integer> list) { // Mise à jour de la couleur des buttons en fonction des directions autorisées
 		for (JButton b : ref) {
 			b.setBackground(Color.GREEN);
 		}
