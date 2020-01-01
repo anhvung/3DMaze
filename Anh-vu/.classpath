@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/vu_ng/Documents/LABY/Anh-vu/Ext JARs/vecmath (1).jar"/>
-	<classpathentry kind="lib" path="C:/Users/vu_ng/Documents/LABY/Anh-vu/Ext JARs/jogamp-fat (1).jar"/>
-	<classpathentry kind="lib" path="C:/Users/vu_ng/Documents/LABY/Anh-vu/Ext JARs/j3dutils (1).jar"/>
-	<classpathentry kind="lib" path="C:/Users/vu_ng/Documents/LABY/Anh-vu/Ext JARs/j3dcore (1).jar"/>
+	<classpathentry kind="lib" path="Ext JARs/j3dcore (1).jar"/>
+	<classpathentry kind="lib" path="Ext JARs/j3dutils (1).jar"/>
+	<classpathentry kind="lib" path="Ext JARs/jogamp-fat (1).jar"/>
+	<classpathentry kind="lib" path="Ext JARs/vecmath (1).jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
