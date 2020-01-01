@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import Controler.Maze;
 import Model.MazeMaker;
 import View.MiniMap;
+import View.StartMenu;
 import affichage3d.Display3d;
 
 public class MainTest {
@@ -53,27 +54,7 @@ public class MainTest {
 		 * affichage3d.Display3d.display(0,0,0,true);
 		 */
 ///////////////////////////////
-		int length = 3;
-
-		// Maze maze = new Maze(source);
-		// intégré dans Maze déjà --> Maze.getMaze() pour avoir le laby
-		MazeMaker M = new MazeMaker(length, source);
-		M.makeMaze();
-		Controler.Maze.updateMaze();
-		// maze.showBoxes();
-		MiniMap miniMap = new MiniMap(Maze.getMaze());
-		// miniMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		GraphInterface g = new Graph(Maze.getMaze());
-		ASetInterface a = new ASet();
-		PreviousInterface previous = new Previous(g.getLength());
-		VertexInterface r = new Vertex(Maze.getMaze().startIndex);
-		VertexInterface s = new Vertex(Maze.getMaze().arrivalIndex);
-		PiInterface pi = new Pi(g.getLength());
-		Dijkstra D = new Dijkstra();
-		D.dijkstra(g, r, a, pi, previous);
-
-		new Player(miniMap, length);
+		new StartMenu();
 
 	}
 
