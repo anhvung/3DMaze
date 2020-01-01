@@ -3,15 +3,11 @@ package View;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.PrintStream;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import Controler.Maze;
 import Model.MazeMaker;
-import affichage3d.Display3d;
 import dijkstra.ASet;
 import dijkstra.ASetInterface;
 import dijkstra.Dijkstra;
@@ -30,6 +26,7 @@ public class StartMenu extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 3525L;
+
 	public StartMenu() {
 		JPanel container = new JPanel();
 		this.setTitle("START MENU");
@@ -95,6 +92,6 @@ public class StartMenu extends JFrame {
 		PiInterface pi = new Pi(g.getLength());
 		Dijkstra D = new Dijkstra();
 		D.dijkstra(g, r, a, pi, previous);
-		new Player(miniMap,length);
+		new Player(miniMap, length);
 	}
 }

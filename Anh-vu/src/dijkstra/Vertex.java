@@ -1,8 +1,8 @@
 package dijkstra;
 
-public class Vertex implements VertexInterface{
+public class Vertex implements VertexInterface {
 	private int index;
-	
+
 	public int getIndex() {
 		return index;
 	}

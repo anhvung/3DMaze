@@ -22,7 +22,7 @@ public class Player extends JFrame {
 	private static int length;
 
 	public Player(MiniMap miniMap, int length) {
-		this.length = length;
+		Player.length = length;
 		initializeFrame(miniMap);
 	}
 
@@ -50,12 +50,12 @@ public class Player extends JFrame {
 	}
 
 	private static void updateNav(String dir, Box box) {
-		System.out.println(prev+""+direction);
+		updatePosition(playerIndex);
 		Navigation.update(dir, box);
 
 	}
 
-	private void updatePosition(int index) {
+	private static void updatePosition(int index) {
 		position = grid[index].getIndex();
 
 	}
@@ -99,7 +99,7 @@ public class Player extends JFrame {
 	}
 
 	public static void updateGo() {
-		playerIndex=grid[playerIndex].getNeighbourIndex(translate(direction),length);
+		playerIndex = grid[playerIndex].getNeighbourIndex(translate(direction), length);
 		updateNav(direction, grid[playerIndex]);
 
 	}
@@ -119,7 +119,7 @@ public class Player extends JFrame {
 		case "down":
 			return "BELOW";
 		}
-		
+
 		return null;
 	}
 

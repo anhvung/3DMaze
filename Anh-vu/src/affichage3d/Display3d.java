@@ -1,7 +1,6 @@
 package affichage3d;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
-import com.sun.j3d.exp.swing.JCanvas3D;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
@@ -29,11 +28,6 @@ import javax.vecmath.Point3f;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Color3f;
 
-import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.BorderLayout;
-
 public class Display3d extends Canvas3D {
 	/**
 	 * 
@@ -51,15 +45,11 @@ public class Display3d extends Canvas3D {
 	private SimpleUniverse myWorld;
 	private static final int speed = 300;
 	public static Display3d maze3d;
-	
+
 	Display3d() {
-		
+
 		super(SimpleUniverse.getPreferredConfiguration());
 		initializeTextures("src/data/sam.jpg", "src/data/wall.jpg");
-		//this.setLayout(new BorderLayout());
-
-		// Création de la scène en JAVA3D
-		//super(SimpleUniverse.getPreferredConfiguration());
 		myWorld = new SimpleUniverse(this);
 
 		BranchGroup myScene = createScene(myWorld);
@@ -68,7 +58,6 @@ public class Display3d extends Canvas3D {
 		myWorld.getViewingPlatform().setNominalViewingTransform();
 		// fin de creation
 
-		
 	}
 
 	private void initializeTextures(final String string, final String string2) {
@@ -90,10 +79,10 @@ public class Display3d extends Canvas3D {
 		scale.setScale(scaleSize);
 		TransformGroup BigTG = new TransformGroup(scale);
 		BigTG.addChild(generateMaze());
-		objSpin = getMouseTransform(scene, bounds);
+		objSpin = getMouseTransform(scene, bounds, false);
 		objSpin.addChild(BigTG);
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		su.getViewingPlatform().getViewers()[0].getView().setFieldOfView(Math.PI / 2);//FOV
+		su.getViewingPlatform().getViewers()[0].getView().setFieldOfView(Math.PI / 2);// FOV
 		scene.compile();
 		return scene;
 	}
@@ -110,80 +99,53 @@ public class Display3d extends Canvas3D {
 	}
 
 	public static void animate(int[] ind) {
-		
-		
+
 		double[] forwardVect = { 0, 0, -zoom };
 		maze3d.updateCameraRot(forwardVect, 10);
-		maze3d.updateCameraPos(new Point3d((float) ind[2] * scaleSize*stepSize, (float)  -ind[0] * scaleSize*stepSize, (float) ind[1] * scaleSize*stepSize), 4000);
-		
-	}
-
-	private void goBack() {
-		System.out.println("reculer");
-		updateCameraPos(add(getLeft(getLeft(forwardVect)), currentPosition, (float) (stepSize * scaleSize / zoom)),
-				speed);
+		maze3d.updateCameraPos(new Point3d((float) ind[2] * scaleSize * stepSize,
+				(float) -ind[0] * scaleSize * stepSize, (float) ind[1] * scaleSize * stepSize), 4000);
 
 	}
 
 	public void goForward() {
-		System.out.println("avancer");
-		System.out.println("Starting at : " + currentPosition.toString());
-		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
-
-		// final double[] forwardVect = { 0, 0, -1 };
 		updateCameraPos(add(forwardVect, currentPosition, (float) (stepSize * scaleSize / zoom)), speed);
 
 	}
 
 	public void turnUp() {
-		System.out.println("turn Up");
-		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
 		if (forwardVect[1] <= 0) {
 
 			double[] dir = getUp(forwardVect);
 			previousVect = forwardVect;
 			updateCameraRot(dir, speed);
-			printDir();
 		}
 
 	}
 
 	public void turnDown() {
-		System.out.println("turn Down");
-		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
 		if (forwardVect[1] >= 0) {
 
 			double[] dir = getDown(forwardVect);
 			previousVect = forwardVect;
 			updateCameraRot(dir, speed);
-			printDir();
 		}
 
 	}
 
 	public void turnLeft() {
-
-		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
 		if (forwardVect[1] == 0) {
-			System.out.println("turnLeft");
 			previousVect = forwardVect;
 			double[] dir = getLeft(forwardVect);
 			updateCameraRot(dir, speed);
-			printDir();
 		}
 	}
 
 	public void turnRight() {
-
-		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
 		if (forwardVect[1] == 0) {
-			System.out.println("TurnRight");
 			previousVect = forwardVect;
 			double[] dir = getLeft(getLeft(getLeft(forwardVect)));
 			updateCameraRot(dir, speed);
-			printDir();
 		}
-
 	}
 
 	private double[] getLeft(double[] vect) {
@@ -226,23 +188,17 @@ public class Display3d extends Canvas3D {
 		return null;
 	}
 
-	private void printDir() {
-		System.out.println("ForwqrdVect : " + forwardVect[0] + " " + forwardVect[1] + " " + forwardVect[2] + " ");
-		if (forwardVect[1] > 0) {
-			System.out.println(" facing up");
-		} else if (forwardVect[1] < 0) {
-			System.out.println("facing down");
-		} else if (forwardVect[2] < 0) {
-			System.out.println("facing north");
-		} else if (forwardVect[0] > 0) {
-			System.out.println("facing east");
-		} else if (forwardVect[2] > 0) {
-			System.out.println(" facing south");
-		} else if (forwardVect[0] < 0) {
-			System.out.println("facing west");
-		}
-
-	}
+	/*
+	 * private void printDir() { if (forwardVect[1] > 0) {
+	 * System.out.println(" facing up"); } else if (forwardVect[1] < 0) {
+	 * System.out.println("facing down"); } else if (forwardVect[2] < 0) {
+	 * System.out.println("facing north"); } else if (forwardVect[0] > 0) {
+	 * System.out.println("facing east"); } else if (forwardVect[2] > 0) {
+	 * System.out.println(" facing south"); } else if (forwardVect[0] < 0) {
+	 * System.out.println("facing west"); }
+	 * 
+	 * }
+	 */
 
 	public void UpdateViewerGeometryJ3D(Point3d start, Point3d center, double[] vect2, double[] vect1) {
 		TransformGroup viewingTransformGroup = myWorld.getViewingPlatform().getViewPlatformTransform();
@@ -254,7 +210,7 @@ public class Display3d extends Canvas3D {
 		} else if (vect1[2] == vect2[2] && vect1[2] == 0) {
 			up = new Vector3d(0, 1, 0);
 		}
-		// System.out.println("up : "+up.toString());
+
 		if ((currentPosition.getX() != currentPosition.getX() || currentPosition.getY() != center.getY()
 				|| currentPosition.getZ() != center.getZ())) {
 			viewingTransform.lookAt(currentPosition, center, up);
@@ -277,11 +233,9 @@ public class Display3d extends Canvas3D {
 		Point3d[] steps = positionArray(gaze1, gaze2, length);
 		for (Point3d step : steps) {
 			UpdateViewerGeometryJ3D(gaze1, step, nextForward, forwardVect);
-			// System.out.println(step);
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -308,11 +262,9 @@ public class Display3d extends Canvas3D {
 		Point3d[] steps = positionArray(currentPosition, next, length);
 		for (Point3d step : steps) {
 			CameraStep(step.getX(), step.getY(), step.getZ());
-			// System.out.println("getting to : " + step.toString());
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -452,34 +404,37 @@ public class Display3d extends Canvas3D {
 		return app;
 	}
 
-	private TransformGroup getMouseTransform(BranchGroup root, BoundingSphere bounds) {
+	private TransformGroup getMouseTransform(BranchGroup root, BoundingSphere bounds, boolean mouseSupport) {
 		TransformGroup manipulator = new TransformGroup();
-		manipulator.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		if (mouseSupport) {
+			manipulator.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
-		// Rotation a la souris
-		MouseRotate rotateBehavior = new MouseRotate();
-		rotateBehavior.setFactor(0.003);
-		rotateBehavior.setTransformGroup(manipulator);
-		rotateBehavior.setSchedulingBounds(bounds);
-		manipulator.addChild(rotateBehavior);
+			// Rotation a la souris
+			MouseRotate rotateBehavior = new MouseRotate();
+			rotateBehavior.setFactor(0.003);
+			rotateBehavior.setTransformGroup(manipulator);
+			rotateBehavior.setSchedulingBounds(bounds);
+			manipulator.addChild(rotateBehavior);
 
-		// Translation
-		MouseTranslate translateBehavior = new MouseTranslate();
-		translateBehavior.setTransformGroup(manipulator);
-		translateBehavior.setSchedulingBounds(bounds);
-		manipulator.addChild(translateBehavior);
+			// Translation
+			MouseTranslate translateBehavior = new MouseTranslate();
+			translateBehavior.setTransformGroup(manipulator);
+			translateBehavior.setSchedulingBounds(bounds);
+			manipulator.addChild(translateBehavior);
 
-		// Zoom Molette
-		MouseWheelZoom wheelZoomBehavior = new MouseWheelZoom();
-		wheelZoomBehavior.setTransformGroup(manipulator);
-		wheelZoomBehavior.setSchedulingBounds(bounds);
-		manipulator.addChild(wheelZoomBehavior);
+			// Zoom Molette
+			MouseWheelZoom wheelZoomBehavior = new MouseWheelZoom();
+			wheelZoomBehavior.setTransformGroup(manipulator);
+			wheelZoomBehavior.setSchedulingBounds(bounds);
+			manipulator.addChild(wheelZoomBehavior);
 
-		// Zoom Souris
-		MouseZoom zoomBehavior = new MouseZoom();
-		zoomBehavior.setTransformGroup(manipulator);
-		zoomBehavior.setSchedulingBounds(bounds);
-		manipulator.addChild(zoomBehavior);
+			// Zoom Souris
+			MouseZoom zoomBehavior = new MouseZoom();
+			zoomBehavior.setTransformGroup(manipulator);
+			zoomBehavior.setSchedulingBounds(bounds);
+			manipulator.addChild(zoomBehavior);
+
+		}
 
 		root.addChild(manipulator);
 		return manipulator;

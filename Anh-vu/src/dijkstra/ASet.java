@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class ASet implements ASetInterface {
 	private ArrayList<VertexInterface> set;
-	
+
 	public ASet() {
 		set = new ArrayList<VertexInterface>();
 	}
-	
+
 	public void add(VertexInterface other) {
 		set.add(other);
 	}

@@ -72,9 +72,8 @@ public class MainTest {
 		PiInterface pi = new Pi(g.getLength());
 		Dijkstra D = new Dijkstra();
 		D.dijkstra(g, r, a, pi, previous);
-		
-		
-		new Player(miniMap,length);
+
+		new Player(miniMap, length);
 
 	}
 
