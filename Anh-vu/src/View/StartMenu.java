@@ -30,7 +30,6 @@ public class StartMenu extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 3525L;
-
 	public StartMenu() {
 		JPanel container = new JPanel();
 		this.setTitle("START MENU");
@@ -96,6 +95,6 @@ public class StartMenu extends JFrame {
 		PiInterface pi = new Pi(g.getLength());
 		Dijkstra D = new Dijkstra();
 		D.dijkstra(g, r, a, pi, previous);
-		new Player(miniMap);
+		new Player(miniMap,length);
 	}
 }

@@ -14,12 +14,15 @@ import Controler.Maze;
 
 public class Player extends JFrame {
 	private static int[] position = new int[3];
-	private static boolean[] direction = new boolean[3];
+	private static String direction = "north";
+	private static String prev = "north";
 	private static final long serialVersionUID = 1L;
 	private static Box[] grid;
 	private static int playerIndex;
+	private static int length;
 
-	public Player(MiniMap miniMap) {
+	public Player(MiniMap miniMap, int length) {
+		this.length = length;
 		initializeFrame(miniMap);
 	}
 
@@ -42,12 +45,12 @@ public class Player extends JFrame {
 		grid = Maze.getMaze().getGrid();
 		playerIndex = Maze.getMaze().startIndex;
 		updatePosition(playerIndex);
-		updateNav(direction, playerIndex);
+		updateNav(direction, grid[playerIndex]);
 
 	}
 
-	private static void updateNav(boolean[] dir, int ind) {
-		Navigation.update(dir, ind);
+	private static void updateNav(String dir, Box box) {
+		Navigation.update(dir, box);
 
 	}
 
@@ -57,32 +60,81 @@ public class Player extends JFrame {
 	}
 
 	public static void updateTurnUp() {
-		updateNav(direction, playerIndex);
+		if (direction == "down") {
+			direction = prev;
+			prev = "down";
+		} else {
+			prev = direction;
+			direction = "up";
+		}
+		updateNav(direction, grid[playerIndex]);
 
 	}
 
 	public static void updateTurnDown() {
-		updateNav(direction, playerIndex);
+		if (direction == "up") {
+			direction = prev;
+			prev = "up";
+		} else {
+			prev = direction;
+			direction = "down";
+		}
+		updateNav(direction, grid[playerIndex]);
 
 	}
 
 	public static void updateTurnLeft() {
-		updateNav(direction, playerIndex);
+		prev = direction;
+		direction = getLeft(direction);
+		updateNav(direction, grid[playerIndex]);
 
 	}
 
 	public static void updateTurnRight() {
-		updateNav(direction, playerIndex);
+		prev = direction;
+		direction = getLeft(getLeft(getLeft(direction)));
+		updateNav(direction, grid[playerIndex]);
 
 	}
 
 	public static void updateGo() {
-		updateNav(direction, playerIndex);
+		playerIndex=grid[playerIndex].getNeighbourIndex(translate(direction),length);
+		updateNav(direction, grid[playerIndex]);
 
 	}
 
-	public static boolean canGo() {
-		return true;
+	private static String translate(String dir) {
+		switch (dir) {
+		case "north":
+			return "UP";
+		case "west":
+			return "LEFT";
+		case "south":
+			return "DOWN";
+		case "east":
+			return "RIGHT";
+		case "up":
+			return "ABOVE";
+		case "down":
+			return "BELOW";
+		}
+		
+		return null;
 	}
 
+	private static String getLeft(String dir) {
+		switch (dir) {
+		case "north":
+			return "west";
+		case "west":
+			return "south";
+		case "south":
+			return "east";
+		case "east":
+			return "north";
+
+		}
+		return null;
+
+	}
 }

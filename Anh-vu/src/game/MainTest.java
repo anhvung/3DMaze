@@ -74,7 +74,7 @@ public class MainTest {
 		D.dijkstra(g, r, a, pi, previous);
 		
 		
-		new Player(miniMap);
+		new Player(miniMap,length);
 
 	}
 
