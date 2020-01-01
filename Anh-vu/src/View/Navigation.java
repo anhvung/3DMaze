@@ -154,18 +154,20 @@ public class Navigation extends JPanel {
 		case ("up"):
 			if (box.getWalls()[0]) {
 				blocked.add(2);
-				blocked.add(3);
-				blocked.add(4);
-				blocked.add(1);
+
 			}
+			blocked.add(3);
+			blocked.add(4);
+			blocked.add(1);
 			break;
 		case ("down"):
 			if (box.getWalls()[1]) {
 				blocked.add(2);
-				blocked.add(3);
-				blocked.add(4);
-				blocked.add(0);
+
 			}
+			blocked.add(3);
+			blocked.add(4);
+			blocked.add(0);
 			break;
 		}
 		noGo(blocked);

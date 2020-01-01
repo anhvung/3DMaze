@@ -50,6 +50,7 @@ public class Player extends JFrame {
 	}
 
 	private static void updateNav(String dir, Box box) {
+		System.out.println(prev+""+direction);
 		Navigation.update(dir, box);
 
 	}
