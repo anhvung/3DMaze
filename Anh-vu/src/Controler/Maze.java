@@ -39,6 +39,7 @@ public class Maze extends JFrame {
 	}
 
 	public static void updateMaze() {
+		// recréé le laby si le fichier txt a été modifié
 		uniqueMaze = new Maze(game.MainTest.source);
 	}
 
@@ -67,6 +68,7 @@ public class Maze extends JFrame {
 	}
 
 	private void initMazeFromTextFile() {
+		// lit le laby généré et stocké dans fichier txt
 		ArrayList<String> lines = getLines();
 		length = Integer.parseInt(lines.get(0));
 		startIndex = Integer.parseInt(lines.get(1));
@@ -97,10 +99,12 @@ public class Maze extends JFrame {
 	}
 
 	public int index(int depth, int row, int column) {
+		//donne l'index à partir de la position
 		return depth * length * length + row * length + column;
 	}
 
 	public ArrayList<Integer> getNeighbours(int boxIndex) {
+		//donne les cases voisinnes sous forme d'index
 		ArrayList<Integer> neighbours = new ArrayList<Integer>();
 		for (String dir : directions) {
 			if (grid[boxIndex].getWall(dir) == false) {

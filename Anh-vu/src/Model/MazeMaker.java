@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.Math;
 
+//GENERATION ALEATOIRE DU LABY EN 3D
+
 public class MazeMaker extends Maze {
 	private static final long serialVersionUID = 1L;
 	private CreateBox[] grid;

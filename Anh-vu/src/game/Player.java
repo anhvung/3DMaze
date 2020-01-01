@@ -12,7 +12,8 @@ import javax.swing.JPanel;
 import Controler.Box;
 import Controler.Maze;
 
-public class Player extends JFrame { 
+//CLASSE DU JOUEUR RELIANT LES AUTRES 
+public class Player extends JFrame {
 	private static int[] position = new int[3];
 	private static String direction = "north";
 	private static String prev = "north";
@@ -27,7 +28,7 @@ public class Player extends JFrame {
 	}
 
 	private void initializeFrame(MiniMap miniMap) {
-
+		this.setTitle("3D MAZE WHOUAAAOUUUU!!!");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		affichage3d.Display3d.display(true);
@@ -37,7 +38,7 @@ public class Player extends JFrame {
 		this.add(pane1, BorderLayout.WEST);
 		this.add(new View.Navigation(), BorderLayout.CENTER);
 		this.add(pane2, BorderLayout.EAST);
-		this.setSize(1200, 1200);
+		this.setPreferredSize(new Dimension(1500,650));
 		this.pack();
 		this.setVisible(true);
 		this.setFocusable(true);
@@ -48,19 +49,23 @@ public class Player extends JFrame {
 		updateNav(direction, grid[playerIndex]);
 
 	}
+	// Mise à jour des coordonnées du joueur
 
 	private static void updateNav(String dir, Box box) {
+		// Maj de la position et des boutons
 		updatePosition(playerIndex);
 		Navigation.update(dir, box);
 
 	}
 
 	private static void updatePosition(int index) {
+		// Maj de la position
 		position = grid[index].getIndex();
 
 	}
 
 	public static void updateTurnUp() {
+		// Maj de la direction
 		if (direction == "down") {
 			direction = prev;
 			prev = "down";
@@ -73,6 +78,7 @@ public class Player extends JFrame {
 	}
 
 	public static void updateTurnDown() {
+		// Maj de la direction
 		if (direction == "up") {
 			direction = prev;
 			prev = "up";
@@ -85,6 +91,7 @@ public class Player extends JFrame {
 	}
 
 	public static void updateTurnLeft() {
+		// Maj de la direction
 		prev = direction;
 		direction = getLeft(direction);
 		updateNav(direction, grid[playerIndex]);
@@ -92,6 +99,7 @@ public class Player extends JFrame {
 	}
 
 	public static void updateTurnRight() {
+		// Maj de la direction
 		prev = direction;
 		direction = getLeft(getLeft(getLeft(direction)));
 		updateNav(direction, grid[playerIndex]);
@@ -99,12 +107,14 @@ public class Player extends JFrame {
 	}
 
 	public static void updateGo() {
+		// Maj de la direction et de l'index de la case sur lequel est le joueur
 		playerIndex = grid[playerIndex].getNeighbourIndex(translate(direction), length);
 		updateNav(direction, grid[playerIndex]);
 
 	}
 
 	private static String translate(String dir) {
+		// Traduction de la direction entre classes
 		switch (dir) {
 		case "north":
 			return "UP";
@@ -124,6 +134,7 @@ public class Player extends JFrame {
 	}
 
 	private static String getLeft(String dir) {
+		// Donne la direction de gauche
 		switch (dir) {
 		case "north":
 			return "west";

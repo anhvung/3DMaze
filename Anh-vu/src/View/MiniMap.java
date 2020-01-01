@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import Controler.Maze;
 
+//JPANEL DONNANT LA MINI MAP ETAGE PAR ETAGE
 public class MiniMap extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private int currentIndex;
@@ -66,6 +67,7 @@ public class MiniMap extends JPanel {
 	}
 
 	private void changePanel(int dh) {
+		//changer d'etage
 		Dimension size = getCurrentPanel().getSize();
 		remove(getCurrentPanel());
 		setCurrentIndex((currentIndex + dh + length) % length);

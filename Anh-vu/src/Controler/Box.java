@@ -2,10 +2,12 @@ package Controler;
 
 import javax.swing.JButton;
 
+//Classe correspondant à une case élémentaire du laby
+
 public class Box extends JButton implements BoxInterface {
 	private static final long serialVersionUID = 6471035674279403491L;
-	protected int i, j, k;
-	protected boolean[] walls;
+	protected int i, j, k; // position (vertical, devant derriere, droite gauche)
+	protected boolean[] walls;// 6 murs existent ou pas
 
 	public Box(int i, int j, int k) {
 		super();
@@ -16,6 +18,7 @@ public class Box extends JButton implements BoxInterface {
 	}
 
 	public int getNeighbourIndex(String dir, int length) {
+		// donne l'index du voisin pointant à la direction dir
 		int[] move = movement(dir);
 		int[] index = getIndex();
 		for (int x = 0; x < 3; x++) {
@@ -27,10 +30,12 @@ public class Box extends JButton implements BoxInterface {
 	}
 
 	public void deleteWall(String side) {
+		// elève le mur
 		walls[sideToInt(side)] = false;
 	}
 
 	protected int sideToInt(String side) {
+		// donne l'index du mur correspondant à la direction
 		if (side == "ABOVE")
 			return 0;
 		else if (side == "BELOW")
@@ -52,10 +57,12 @@ public class Box extends JButton implements BoxInterface {
 	}
 
 	public boolean[] getWalls() {
+		// donne les murs
 		return walls;
 	}
 
 	public boolean getWall(String dir) {
+		// donne LE mur à la direction dir
 		return walls[sideToInt(dir)];
 	}
 

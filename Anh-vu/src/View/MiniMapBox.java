@@ -7,14 +7,16 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import Controler.Box;
 
+//CASE DE LA MINIMAP
 public class MiniMapBox extends Box {
+
+	private static final long serialVersionUID = 4899663446293018254L;
 	private final float propWalls = 0.01f;
 	private final float propStairs = 0.25f;
 	private String indexString;
@@ -46,6 +48,7 @@ public class MiniMapBox extends Box {
 
 	@Override
 	protected void paintComponent(Graphics g) {
+		//CONFIGURATION DE LA CASE AVEC LES MURS ET ESCALIERS
 		super.paintComponent(g);
 		/*
 		 * String s = ""; for (boolean wall : walls) { if (wall) s = s + '1'; else s = s
