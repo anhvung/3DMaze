@@ -30,7 +30,7 @@ import javax.vecmath.Vector3d;
 import javax.vecmath.Color3f;
 
 //PANEL 3D AFFICHANT LE LABY EN 3D 
-public class Display3d extends Canvas3D {
+public class Display3d extends Canvas3D implements Display3dInterface {
 
 	private static final long serialVersionUID = 12345L;
 	private TransformGroup objSpin = new TransformGroup(); // TransformGroup Général
@@ -200,7 +200,7 @@ public class Display3d extends Canvas3D {
 		return null;
 	}
 
-	public void UpdateViewerGeometryJ3D(Point3d start, Point3d center, double[] vect2, double[] vect1) {
+	private void UpdateViewerGeometryJ3D(Point3d start, Point3d center, double[] vect2, double[] vect1) {
 		// Mettre à jour la direction de pointage élémentaire de la caméra
 		TransformGroup viewingTransformGroup = myWorld.getViewingPlatform().getViewPlatformTransform();
 		Transform3D viewingTransform = new Transform3D();
@@ -228,7 +228,7 @@ public class Display3d extends Canvas3D {
 
 	}
 
-	public void updateCameraRot(double[] nextForward, int length) {
+	private void updateCameraRot(double[] nextForward, int length) {
 		// Faire tourner la caméra d'une direction à une autre avec une animation fluide
 		Point3d gaze1 = add(forwardVect, currentPosition);
 		Point3d gaze2 = add(nextForward, currentPosition);
@@ -264,7 +264,7 @@ public class Display3d extends Canvas3D {
 		return new Point3d(x, y, z);
 	}
 
-	public void updateCameraPos(Point3d next, int length) {
+	private void updateCameraPos(Point3d next, int length) {
 		// faire avancer la caméra d'un point à un autre
 		// avec fluidité
 		Point3d[] steps = positionArray(currentPosition, next, length);
@@ -404,7 +404,7 @@ public class Display3d extends Canvas3D {
 	private Appearance mkAppWithTexture(String textureName) {
 		// permet d'appliquer les textures
 		Appearance app = new Appearance();
-		try{
+		try {
 			TextureLoader loader = new TextureLoader(textureName, this);
 			ImageComponent2D image = loader.getImage();
 			Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
@@ -415,12 +415,10 @@ public class Display3d extends Canvas3D {
 
 			app.setTexture(texture);
 			app.setTextureAttributes(new TextureAttributes());
-		}
-		catch(ImageException e){
+		} catch (ImageException e) {
 			System.out.println("cannot read texture files");
 		}
 
-		
 		return app;
 	}
 
