@@ -30,8 +30,6 @@ public class MainTest {
 		M.makeMaze();
 		Maze maze = new Maze(source);
 		//maze.showBoxes();
-		MiniMap miniMap = new MiniMap(maze);
-		miniMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
 		GraphInterface g = new Graph(maze);
@@ -43,10 +41,25 @@ public class MainTest {
 		Dijkstra D = new Dijkstra();
 		D.dijkstra(g, r, a, pi, previous);
 		
-		/*for (VertexInterface v : previous.getShortestPathTo(s)) {
+
+		MiniMap miniMap = new MiniMap(maze, previous);
+		miniMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		/*out.println();
+		for (VertexInterface v : previous.getShortestPathFrom(s)) {
 			out.println(v.getIndex());
 		}
+		out.println();
 		
+		for (int i = 0; i < previous.getList().length; i++){
+			if(previous.getList()[i]!=null) {
+				out.print(i);
+				out.print(" ");
+				out.println(previous.getList()[i].getIndex());
+			}
+				
+		}
+		/*
 		for (int i = 0; i < g.getLength(); i++) {
 			for (int j = 0; j < g.getLength(); j++) {
 				out.print(g.getMatrix()[i][j]);

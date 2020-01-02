@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,16 +23,16 @@ public class MiniMapBox extends Box {
 	private BufferedImage stairsUpImage;
 	private BufferedImage stairsDownImage;
 	private String special = "";
-	
-	
+	private MiniMap container;
 	
 	public final void setSpecial(String special) {
 		this.special = special;
 	}
 
-	public MiniMapBox(Box parent) {
-		super(parent.getIndex()[0], parent.getIndex()[1], parent.getIndex()[1]);
+	public MiniMapBox(Box parent, MiniMap container) {
+		super(parent.getIndex()[0], parent.getIndex()[1], parent.getIndex()[2]);
 		walls = parent.getWalls();
+		this.container = container;
 		File file = new File("src/data/stairsdown.png");
 		try {
 			stairsDownImage = ImageIO.read(file);
@@ -43,7 +45,14 @@ public class MiniMapBox extends Box {
 		} catch (IOException e) {
 			
 		}
-		
+		MiniMapBox mnb = this;
+		addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(container.getNextDirection(mnb));
+			}
+			
+		});
 	}
 	
 	@Override
@@ -56,14 +65,38 @@ public class MiniMapBox extends Box {
 		}
 		s = s + toString();*/
 		String s = special;
-
-		int x0 = 0;
-		int y0 = 0;
+		int length = container.length;
+		s += " " + ((Integer)
+				(i * length * length + j * length + k)).toString();
 		int h  = getSize().height;
 		int w  = getSize().width;
 		
 		g.drawString(s, 10, h / 5);
-		
+		paintWalls(g, w, h);
+		if (container.showSol) paintSol(g, w, h);
+	}
+	
+	private void paintSol(Graphics g, int w, int h) {
+		String nextDir = container.getNextDirection(this);
+		g.setColor(new Color(1f,0f,0f));
+		if (nextDir == "RIGHT") g.drawLine((int)3*w/4, (int)h/2, (int)w, (int)h/2);
+		if (nextDir == "LEFT") g.drawLine((int)0, (int)h/2, (int)w/4, (int)h/2);
+		if (nextDir == "DOWN") g.drawLine((int)w/2, (int)3*h/4, (int)w/2, (int)h);
+		if (nextDir == "UP") g.drawLine((int)w/2, (int)0, (int)w/2, (int)h/4);
+		if (nextDir == "BELLOW") {
+			g.drawLine((int)w/2, (int)h/2, (int)3*w/4, (int)3*h/4);
+			g.drawLine((int)w/2, (int)3*h/4, (int)3*w/4, (int)h/2);
+			
+		}
+		if (nextDir == "ABOVE") {
+			g.drawLine((int)w/4, (int)h/4, (int)w/2, (int)h/2); 
+			g.drawLine((int)w/2, (int)h/4, (int)w/4, (int)h/2);
+		}
+		g.setColor(new Color(0f,0f,0f));
+	}
+	
+	
+	private void paintWalls(Graphics g, int w, int h) {
 		if (! walls[0]) {
 			int l_x = (int) (w * propStairs);
 			int l_y = (int) (h * propStairs);
@@ -77,29 +110,29 @@ public class MiniMapBox extends Box {
 			g.drawImage(image, (int) w/2, (int) h/2, null);
 		}
 		if (walls[2]) {
-			int x = x0;
-			int y = y0;
+			int x = 0;
+			int y = 0;
 			int width = w;
 			int height = (int) Math.round(h * propWalls);
 			g.fillRect(x, y, width, height);
 		}
 		if (walls[3]) {
-			int x = x0;
-			int y = y0 + h - (int) Math.round(h * propWalls);
+			int x = 0;
+			int y = h - (int) Math.round(h * propWalls);
 			int width = w;
 			int height = (int) Math.round(h * propWalls);
 			g.fillRect(x, y, width, height);
 		}
 		if (walls[4]) {
-			int x = x0;
-			int y = y0;
+			int x = 0;
+			int y = 0;
 			int width = (int) Math.round(w * propWalls);
 			int height = h;
 			g.fillRect(x, y, width, height);
 		}
 		if (walls[5]) {
-			int x = x0 + w - (int) Math.round(w * propWalls);
-			int y = y0;
+			int x = w - (int) Math.round(w * propWalls);
+			int y = 0;
 			int width = (int) Math.round(w * propWalls);
 			int height = h;
 			g.fillRect(x, y, width, height);

@@ -26,7 +26,7 @@ public class Previous implements PreviousInterface {
 	}
 
 	@Override
-	public ArrayList<VertexInterface> getShortestPathTo(VertexInterface v) {
+	public ArrayList<VertexInterface> getShortestPathFrom(VertexInterface v) {
 		ArrayList<VertexInterface> path = new ArrayList<VertexInterface>();
 		while (v != null) {
 			path.add(v);
@@ -35,4 +35,7 @@ public class Previous implements PreviousInterface {
 		return path;
 	}
 
+	public VertexInterface[] getList(){
+		return P;
+	}
 }
