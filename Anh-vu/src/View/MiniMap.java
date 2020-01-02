@@ -21,7 +21,7 @@ public class MiniMap extends JPanel {
 	private JPanel[] panels;
 	public int length;
 	private JButton rightButton;
-	public boolean showSol;
+	public static boolean showSol;
 	private PreviousInterface previous;
 	private Maze maze;
 
@@ -63,7 +63,9 @@ public class MiniMap extends JPanel {
 				else {
 					showSol = true;
 					rightButton.setText("Hide Solution");
+					
 				}
+		
 			}
 			
 		});

@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import game.Player;
 import affichage3d.Display3d;
+import dijkstra.VertexInterface;
 
 //Ici on s'occupe des boutons de navigation 
 public class Navigation extends JPanel {
@@ -26,10 +27,15 @@ public class Navigation extends JPanel {
 	private static JButton right = new JButton("START");
 	private static JButton go = new JButton("START");
 	private static JButton[] ref = { down, upButton, go, left, right };
+	private static boolean auto;
+	private static JButton start = new JButton("START");
+	private static ArrayList<VertexInterface> path;
 
-	public Navigation() {
+	public Navigation(boolean auto, ArrayList<VertexInterface> path) {
 		// Ajout des boutons et de leur comportements
 		this.setSize(300, 300);
+		Navigation.auto = auto;
+		this.path = path;
 		this.setLayout(new BorderLayout());
 		ref[1].addActionListener(new ActionListener() {
 			@Override
@@ -109,19 +115,33 @@ public class Navigation extends JPanel {
 			}
 		});
 
+		start.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (firstTime)
+					changeTxt();
+
+			}
+		});
+
 		JPanel panel1 = new JPanel();
 		JPanel panel2 = new JPanel();
 		panel2.setSize(300, 300);
 		panel2.setLayout(new BorderLayout());
 		panel1.add(label);
+		if (!auto) {
+			panel2.add(upButton, BorderLayout.NORTH);
+			panel2.add(right, BorderLayout.EAST);
+			panel2.add(down, BorderLayout.SOUTH);
+			panel2.add(left, BorderLayout.WEST);
+			panel2.add(go, BorderLayout.CENTER);
+			this.add(panel1, BorderLayout.NORTH);
+			this.add(panel2, BorderLayout.SOUTH);
+		} else {
+			this.add(start, BorderLayout.CENTER);
+		}
 
-		panel2.add(upButton, BorderLayout.NORTH);
-		panel2.add(right, BorderLayout.EAST);
-		panel2.add(down, BorderLayout.SOUTH);
-		panel2.add(left, BorderLayout.WEST);
-		panel2.add(go, BorderLayout.CENTER);
-		this.add(panel1, BorderLayout.NORTH);
-		this.add(panel2, BorderLayout.SOUTH);
 		this.setVisible(true);
 	}
 
@@ -135,6 +155,25 @@ public class Navigation extends JPanel {
 		go.setText("go");
 		Box start = Maze.getMaze().getGrid()[Maze.getMaze().startIndex];
 		affichage3d.Display3d.animate(start.getIndex());
+		if (auto) {
+			this.setVisible(false);
+			findEnd();
+
+		}
+
+	}
+
+	private void findEnd() {
+		final int length = path.size();
+		for (int i = 2; i < length; i++) {
+			goTo(path.get(i));
+
+		}
+	}
+
+	private void goTo(VertexInterface v) {
+		final int index = v.getIndex();
+
 	}
 
 	public static void update(String dir, Box box) {
@@ -186,9 +225,12 @@ public class Navigation extends JPanel {
 	}
 
 	private static void updateDirectionText(String dir) {
+
 		label.setText(
 				"<html>A droite se situe la carte par étage<br>En bas se trouvent les commandes <br> Bonne chance !  <br>  <br> <br> Direction : <font color=\"blue\">"
-						+ dir + "</font></html>");
+						+ dir + "</font><br><br>Case actuelle sur la mini map :  <font color=\"red\">"
+						+ Player.getIndex()
+						+ "</font><br><br>SOLUTION --> CLIQUER SUR LE BOUTON A DROITE <br>Le trait rouge montre la direction à prendre <br>La croix rouge montre l'étage à changer</html>");
 
 	}
 

@@ -2,8 +2,11 @@ package game;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
+
 import View.MiniMap;
 import View.Navigation;
+import dijkstra.VertexInterface;
 
 import javax.media.j3d.Canvas3D;
 import javax.swing.JFrame;
@@ -22,12 +25,12 @@ public class Player extends JFrame {
 	private static int playerIndex;
 	private static int length;
 
-	public Player(MiniMap miniMap, int length) {
+	public Player(MiniMap miniMap, int length, boolean auto, ArrayList<VertexInterface> path) {
 		Player.length = length;
-		initializeFrame(miniMap);
+		initializeFrame(miniMap, auto, path);
 	}
 
-	private void initializeFrame(MiniMap miniMap) {
+	private void initializeFrame(MiniMap miniMap, boolean auto, ArrayList<VertexInterface> path) {
 		this.setTitle("3D MAZE WHOUAAAOUUUU!!!");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
@@ -36,9 +39,12 @@ public class Player extends JFrame {
 		JPanel pane2 = miniMap;
 		pane2.setPreferredSize(new Dimension(500, 500));
 		this.add(pane1, BorderLayout.WEST);
-		this.add(new View.Navigation(), BorderLayout.CENTER);
+		View.Navigation nav = new View.Navigation(auto, path);
+		System.out.println(auto);
+		//if (!auto)
+			this.add(nav, BorderLayout.CENTER);
 		this.add(pane2, BorderLayout.EAST);
-		this.setPreferredSize(new Dimension(1500,650));
+		this.setPreferredSize(new Dimension(1500, 650));
 		this.pack();
 		this.setVisible(true);
 		this.setFocusable(true);
@@ -148,5 +154,9 @@ public class Player extends JFrame {
 		}
 		return null;
 
+	}
+
+	public static int getIndex() {
+		return playerIndex;
 	}
 }
