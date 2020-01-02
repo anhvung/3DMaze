@@ -8,6 +8,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import Controler.Maze;
+import dijkstra.PreviousInterface;
+import dijkstra.Vertex;
+import dijkstra.VertexInterface;
 
 //JPANEL DONNANT LA MINI MAP ETAGE PAR ETAGE
 public class MiniMap extends JPanel {
@@ -16,14 +19,22 @@ public class MiniMap extends JPanel {
 	private JButton downButton;
 	private JButton upButton;
 	private JPanel[] panels;
-	private int length;
+	public int length;
+	private JButton rightButton;
+	public boolean showSol;
+	private PreviousInterface previous;
+	private Maze maze;
 
-	public MiniMap(Maze maze) {
+
+	public MiniMap(Maze maze, PreviousInterface p) {
 		this.length = maze.getLength();
 		// this.setTitle("Maze look over");
 		this.setSize(500, 500);
 		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		showSol = false;
+        previous = p;
+        this.maze = maze;
 
 		panels = new JPanel[length];
 		for (int i = 0; i < length; i++) {
@@ -31,7 +42,7 @@ public class MiniMap extends JPanel {
 			panels[i].setLayout(new GridLayout(length, length));
 			int area = length * length;
 			for (int j = i * area; j < i * area + area; j++) {
-				MiniMapBox mn = new MiniMapBox(maze.getBox(j));
+				MiniMapBox mn = new MiniMapBox(maze.getBox(j),this);
 				if (j == maze.arrivalIndex)
 					mn.setSpecial("ARRIVAL");
 				else if (j == maze.startIndex)
@@ -41,9 +52,25 @@ public class MiniMap extends JPanel {
 		}
 
 		// this.add(new JPanel());
+		rightButton = new JButton("Show Solution");
+		rightButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (showSol) {
+					showSol = false;
+					rightButton.setText("Show Solution");
+				}
+				else {
+					showSol = true;
+					rightButton.setText("Hide Solution");
+				}
+			}
+			
+		});
+
 		this.setLayout(new BorderLayout());
 		this.add(getCurrentPanel(), BorderLayout.CENTER);
-
+		this.add(rightButton, BorderLayout.EAST);
 		MiniMap mn = this;
 
 		upButton = new JButton("Up");
@@ -76,6 +103,23 @@ public class MiniMap extends JPanel {
 		add(panel, BorderLayout.CENTER);
 		updateUI();
 		repaint();
+	}
+	public String getNextDirection(MiniMapBox mn) {
+		int [] index = mn.getIndex();
+		int i = maze.index(index[0], index[1], index[2]);
+		Vertex v = new Vertex(i);
+		VertexInterface vi = previous.getValue(v);
+		if (! (vi == null)) {
+			int nextIndex = vi.getIndex();
+			if (nextIndex == i + 1) return "RIGHT";
+			else if (nextIndex == i - 1) return "LEFT";
+			else if (nextIndex == i - length) return "UP";
+			else if (nextIndex == i + length) return "DOWN";
+			else if (nextIndex == i + length * length) return "BELLOW";
+			else if (nextIndex == i - length * length) return "ABOVE";
+			else return "";
+		}
+		return "";
 	}
 
 	public JPanel getCurrentPanel() {

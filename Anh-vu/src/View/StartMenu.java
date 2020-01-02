@@ -89,15 +89,16 @@ public class StartMenu extends JFrame {
 		MazeMaker M = new MazeMaker(length, source);
 		M.makeMaze();
 		Controler.Maze.updateMaze();
-		MiniMap miniMap = new MiniMap(Maze.getMaze());
+		
 		GraphInterface g = new Graph(Maze.getMaze());
 		ASetInterface a = new ASet();
 		PreviousInterface previous = new Previous(g.getLength());
 		VertexInterface r = new Vertex(Maze.getMaze().startIndex);
-		VertexInterface s = new Vertex(Maze.getMaze().arrivalIndex);
+		new Vertex(Maze.getMaze().arrivalIndex);
 		PiInterface pi = new Pi(g.getLength());
 		Dijkstra D = new Dijkstra();
 		D.dijkstra(g, r, a, pi, previous);
+		MiniMap miniMap = new MiniMap(Maze.getMaze(),previous);
 		new Player(miniMap, length);
 	}
 }
