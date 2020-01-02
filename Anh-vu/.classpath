@@ -4,7 +4,15 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="Ext JARs/j3dcore (1).jar"/>
 	<classpathentry kind="lib" path="Ext JARs/j3dutils (1).jar"/>
-	<classpathentry kind="lib" path="Ext JARs/jogamp-fat (1).jar"/>
 	<classpathentry kind="lib" path="Ext JARs/vecmath (1).jar"/>
+	<classpathentry kind="lib" path="Ext JARs/jogl-all (1).jar"/>
+	<classpathentry kind="lib" path="Ext JARs/gluegen-java-src.zip"/>
+	<classpathentry kind="lib" path="Ext JARs/gluegen-rt-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="Ext JARs/gluegen-rt-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="Ext JARs/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="Ext JARs/jogl-all-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="Ext JARs/jogl-all-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="Ext JARs/jogl-all.jar"/>
+	<classpathentry kind="lib" path="Ext JARs/jogl-java-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

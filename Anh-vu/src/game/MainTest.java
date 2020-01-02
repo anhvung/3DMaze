@@ -42,7 +42,7 @@ public class MainTest {
 		 * new Vertex(Maze.getMaze().startIndex); VertexInterface s = new
 		 * Vertex(Maze.getMaze().arrivalIndex); PiInterface pi = new Pi(g.getLength());
 		 * //Dijkstra D = new Dijkstra(); //D.dijkstra(g, r, a, pi, previous);
-		 * System.out.println("fini dijkstra"); /* for (VertexInterface v :
+		 * System.out.println("fini dijkstra"); /* for  (VertexInterface v :
 		 * previous.getShortestPathTo(s)) { out.println(v.getIndex()); }
 		 * 
 		 * for (int i = 0; i < g.getLength(); i++) { for (int j = 0; j < g.getLength();
