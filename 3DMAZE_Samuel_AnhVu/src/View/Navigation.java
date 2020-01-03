@@ -246,7 +246,7 @@ public class Navigation extends JPanel {
 		else
 			label.setText(
 					"<html>A droite se situe la carte par étage<br>En bas se trouvent les commandes <br> Bonne chance !  <br>  <br> <br> Direction : <font color=\"blue\">"
-							+ dir +getNextDirection()+ "<br><br>Case actuelle sur la mini map :  <font color=\"red\">"
+							+ dir + getNextDirection() + "<br><br>Case actuelle sur la mini map :  <font color=\"red\">"
 							+ Player.getIndex()
 							+ "</font><br><br>SOLUTION --> CLIQUER SUR LE BOUTON A DROITE <br>Le trait rouge montre la direction à prendre <br>La croix rouge montre l'étage à changer</html>");
 

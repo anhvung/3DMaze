@@ -115,7 +115,7 @@ public class StartMenu extends JFrame {
 		MiniMap miniMap = new MiniMap(Maze.getMaze(), previous);
 
 		ArrayList<VertexInterface> path = previous.getShortestPathFrom(r);
-		new Player(miniMap, length, auto.isSelected(), path,previous);
+		new Player(miniMap, length, auto.isSelected(), path, previous);
 
 	}
 }
