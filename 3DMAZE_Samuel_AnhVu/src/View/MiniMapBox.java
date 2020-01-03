@@ -15,7 +15,7 @@ import Controler.Box;
 
 public class MiniMapBox extends Box {
 	private static final long serialVersionUID = 6913294075608080639L;
-	private final float propWalls = 0.01f;
+	private final float propWalls = 0.04f;
 	private final float propStairs = 0.25f;
 	private String indexString;
 	private BufferedImage stairsUpImage;
@@ -96,6 +96,7 @@ public class MiniMapBox extends Box {
 	}
 
 	private void paintWalls(Graphics g, int w, int h) {
+		g.setColor(new Color(0.6f, 0.1f, 0.35f));
 		if (!walls[0]) {
 			int l_x = (int) (w * propStairs);
 			int l_y = (int) (h * propStairs);

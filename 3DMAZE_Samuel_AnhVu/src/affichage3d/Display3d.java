@@ -104,7 +104,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		startTg.addChild(getArrival("src/data/press.jpg"));
 
 		BigTG.addChild(startTg);
-		objSpin = getMouseTransform(scene, bounds, true);
+		objSpin = getMouseTransform(scene, bounds, false);
 		objSpin.addChild(BigTG);
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		su.getViewingPlatform().getViewers()[0].getView().setFieldOfView(Math.PI / 2);// angle de vue de la caméra

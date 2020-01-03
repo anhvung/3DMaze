@@ -11,6 +11,7 @@ import Controler.Maze;
 import dijkstra.PreviousInterface;
 import dijkstra.Vertex;
 import dijkstra.VertexInterface;
+import game.Player;
 
 //JPANEL DONNANT LA MINI MAP ETAGE PAR ETAGE
 public class MiniMap extends JPanel {
@@ -63,7 +64,7 @@ public class MiniMap extends JPanel {
 					rightButton.setText("Hide Solution");
 
 				}
-
+				Player.updateText();
 			}
 
 		});

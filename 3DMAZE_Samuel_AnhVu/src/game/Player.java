@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import View.MiniMap;
 import View.Navigation;
 import affichage3d.Display3d;
+import dijkstra.PreviousInterface;
 import dijkstra.VertexInterface;
 import javax.media.j3d.Canvas3D;
 import javax.swing.JFrame;
@@ -23,12 +24,14 @@ public class Player extends JFrame {
 	private static int playerIndex;
 	private static int length;
 
-	public Player(MiniMap miniMap, int length, boolean auto, ArrayList<VertexInterface> path) {
+	public Player(MiniMap miniMap, int length, boolean auto, ArrayList<VertexInterface> path,
+			PreviousInterface previous) {
 		Player.length = length;
-		initializeFrame(miniMap, auto, path);
+		initializeFrame(miniMap, auto, path, previous, length);
 	}
 
-	private void initializeFrame(MiniMap miniMap, boolean auto, ArrayList<VertexInterface> path) {
+	private void initializeFrame(MiniMap miniMap, boolean auto, ArrayList<VertexInterface> path,
+			PreviousInterface previous, int length) {
 		this.setTitle("3D MAZE WHOUAAAOUUUU!!!");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
@@ -40,7 +43,7 @@ public class Player extends JFrame {
 		JPanel pane2 = miniMap;
 		pane2.setPreferredSize(new Dimension(500, 500));
 		this.add(pane1, BorderLayout.CENTER);
-		View.Navigation nav = new View.Navigation(auto, path);
+		View.Navigation nav = new View.Navigation(auto, path, previous, length);
 		// if (!auto)
 		if (!auto)
 			this.add(nav, BorderLayout.WEST);
@@ -227,5 +230,13 @@ public class Player extends JFrame {
 		updateGo();
 		Display3d.maze3d.goForward();
 		Navigation.goNext();
+	}
+
+	public static int[] getPosition() {
+		return position;
+	}
+
+	public static void updateText() {
+		Navigation.updateDirectionText(direction);
 	}
 }

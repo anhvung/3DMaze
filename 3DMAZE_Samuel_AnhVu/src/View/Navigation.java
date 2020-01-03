@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import game.Player;
 import affichage3d.Display3d;
+import dijkstra.PreviousInterface;
+import dijkstra.Vertex;
 import dijkstra.VertexInterface;
 
 //Ici on s'occupe des boutons de navigation 
@@ -31,10 +33,14 @@ public class Navigation extends JPanel {
 	private static JButton start = new JButton("START");
 	private static ArrayList<VertexInterface> path;
 	private static int autoIndex = 0;
+	private static PreviousInterface previous;
+	private static int length;
 
-	public Navigation(boolean auto, ArrayList<VertexInterface> path) {
+	public Navigation(boolean auto, ArrayList<VertexInterface> path, PreviousInterface previous, int length) {
 		// Ajout des boutons et de leur comportements
 		this.setSize(300, 300);
+		Navigation.length = length;
+		Navigation.previous = previous;
 		Navigation.auto = auto;
 		Navigation.path = path;
 		this.setLayout(new BorderLayout());
@@ -234,13 +240,13 @@ public class Navigation extends JPanel {
 
 	}
 
-	private static void updateDirectionText(String dir) {
+	public static void updateDirectionText(String dir) {
 		if (auto)
 			label.setText("<html><font color=\"red\">Longueur du trajet : <br>" + path.size() + "</font></html>");
 		else
 			label.setText(
 					"<html>A droite se situe la carte par étage<br>En bas se trouvent les commandes <br> Bonne chance !  <br>  <br> <br> Direction : <font color=\"blue\">"
-							+ dir + "</font><br><br>Case actuelle sur la mini map :  <font color=\"red\">"
+							+ dir +getNextDirection()+ "<br><br>Case actuelle sur la mini map :  <font color=\"red\">"
 							+ Player.getIndex()
 							+ "</font><br><br>SOLUTION --> CLIQUER SUR LE BOUTON A DROITE <br>Le trait rouge montre la direction à prendre <br>La croix rouge montre l'étage à changer</html>");
 
@@ -255,5 +261,33 @@ public class Navigation extends JPanel {
 		for (Integer i : list) {
 			ref[i].setBackground(Color.RED);
 		}
+	}
+
+	private static String getNextDirection() {
+		String res = "";
+		int i = Maze.getMaze().index(Player.getPosition()[0], Player.getPosition()[1], Player.getPosition()[2]);
+		Vertex v = new Vertex(i);
+		VertexInterface vi = previous.getValue(v);
+		if (!(vi == null)) {
+			int nextIndex = vi.getIndex();
+			if (nextIndex == i + 1)
+				res = "EAST";
+			else if (nextIndex == i - 1)
+				res = "WEST";
+			else if (nextIndex == i - length)
+				res = "NORTH";
+			else if (nextIndex == i + length)
+				res = "SOUTH";
+			else if (nextIndex == i + length * length)
+				res = "DOWN";
+			else if (nextIndex == i - length * length)
+				res = "UP";
+			else
+				res = "";
+		}
+		if (MiniMap.showSol)
+			return "</font> Prochaine case : <font color=\"red\">" + res + "</font>";
+		else
+			return "</font>";
 	}
 }
