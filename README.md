@@ -1,5 +1,5 @@
 **Labyrinthe 3d de Samuel et Anh-Vu**
-
+![Alt text](Capture.PNG?raw=true "Title")
 <br>*Description :*<br>
 Le labyrinthe est généré automatiquement et est stocké sur un fichier texte<br>
 
