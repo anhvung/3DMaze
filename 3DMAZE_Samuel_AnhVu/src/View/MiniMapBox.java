@@ -1,6 +1,5 @@
 package View;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -11,12 +10,11 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 import Controler.Box;
 
 public class MiniMapBox extends Box {
+	private static final long serialVersionUID = 6913294075608080639L;
 	private final float propWalls = 0.01f;
 	private final float propStairs = 0.25f;
 	private String indexString;
@@ -70,7 +68,7 @@ public class MiniMapBox extends Box {
 
 		g.drawString(s, 10, h / 5);
 		paintWalls(g, w, h);
-		if (container.showSol)
+		if (MiniMap.showSol)
 			paintSol(g, w, h);
 	}
 

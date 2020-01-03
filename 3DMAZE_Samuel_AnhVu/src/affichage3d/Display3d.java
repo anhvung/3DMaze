@@ -377,7 +377,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		result.addChild(getCube(box.getWalls()));
 		if (box == Maze.getMaze().start) {
 			result.addChild(text("Start"));
-			
+
 		}
 		if (box == Maze.getMaze().arrival) {
 			result.addChild(getArrival("src/data/end.png"));
