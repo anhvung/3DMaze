@@ -30,12 +30,13 @@ public class Navigation extends JPanel {
 	private static boolean auto;
 	private static JButton start = new JButton("START");
 	private static ArrayList<VertexInterface> path;
+	private static int autoIndex = 0;
 
 	public Navigation(boolean auto, ArrayList<VertexInterface> path) {
 		// Ajout des boutons et de leur comportements
 		this.setSize(300, 300);
 		Navigation.auto = auto;
-		this.path = path;
+		Navigation.path = path;
 		this.setLayout(new BorderLayout());
 		ref[1].addActionListener(new ActionListener() {
 			@Override
@@ -139,6 +140,7 @@ public class Navigation extends JPanel {
 			this.add(panel1, BorderLayout.NORTH);
 			this.add(panel2, BorderLayout.SOUTH);
 		} else {
+			this.add(panel1, BorderLayout.NORTH);
 			this.add(start, BorderLayout.CENTER);
 		}
 
@@ -147,32 +149,38 @@ public class Navigation extends JPanel {
 
 	private void changeTxt() {
 		// Texte initial
-		firstTime = false;
-		right.setText("turn right");
-		left.setText("Turn Left");
-		upButton.setText("Turn Up");
-		down.setText("Turn Down");
-		go.setText("go");
+		if (!auto) {
+			firstTime = false;
+			right.setText("turn right");
+			left.setText("Turn Left");
+			upButton.setText("Turn Up");
+			down.setText("Turn Down");
+			go.setText("go");
+		}
 		Box start = Maze.getMaze().getGrid()[Maze.getMaze().startIndex];
 		affichage3d.Display3d.animate(start.getIndex());
 		if (auto) {
 			this.setVisible(false);
-			findEnd();
 
 		}
+		goNext();
 
 	}
 
-	private void findEnd() {
-		final int length = path.size();
-		for (int i = 2; i < length; i++) {
-			goTo(path.get(i));
+	public static void goNext() {
+		autoIndex++;
+	
+		goTo(autoIndex);
 
-		}
 	}
 
-	private void goTo(VertexInterface v) {
-		final int index = v.getIndex();
+	private static void goTo(int i) {
+		if (i >= path.size()) {
+			System.out.print("fini");
+		} else {
+			final int[] position = Maze.getMaze().getGrid()[path.get(i).getIndex()].getIndex();
+			Player.goTo(position);
+		}
 
 	}
 
@@ -222,15 +230,20 @@ public class Navigation extends JPanel {
 		}
 		noGo(blocked);
 		updateDirectionText(dir);
+
 	}
 
+	
 	private static void updateDirectionText(String dir) {
-
-		label.setText(
-				"<html>A droite se situe la carte par étage<br>En bas se trouvent les commandes <br> Bonne chance !  <br>  <br> <br> Direction : <font color=\"blue\">"
-						+ dir + "</font><br><br>Case actuelle sur la mini map :  <font color=\"red\">"
-						+ Player.getIndex()
-						+ "</font><br><br>SOLUTION --> CLIQUER SUR LE BOUTON A DROITE <br>Le trait rouge montre la direction à prendre <br>La croix rouge montre l'étage à changer</html>");
+		if (auto)
+			label.setText("<html><font color=\"red\">Résolution automatique en cours<br><br>Longueur du trajet : <br>"
+					+ path.size() + "</font></html>");
+		else
+			label.setText(
+					"<html>A droite se situe la carte par étage<br>En bas se trouvent les commandes <br> Bonne chance !  <br>  <br> <br> Direction : <font color=\"blue\">"
+							+ dir + "</font><br><br>Case actuelle sur la mini map :  <font color=\"red\">"
+							+ Player.getIndex()
+							+ "</font><br><br>SOLUTION --> CLIQUER SUR LE BOUTON A DROITE <br>Le trait rouge montre la direction à prendre <br>La croix rouge montre l'étage à changer</html>");
 
 	}
 

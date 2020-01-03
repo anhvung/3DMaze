@@ -14,7 +14,6 @@ import com.sun.j3d.utils.image.ImageException;
 
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.ColoringAttributes;
-import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Font3D;
 import javax.media.j3d.FontExtrusion;
 import javax.media.j3d.BranchGroup;
@@ -30,13 +29,11 @@ import javax.media.j3d.PointLight;
 import javax.media.j3d.RotationInterpolator;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Text3D;
-
-import java.awt.Font;
-
 import javax.media.j3d.Alpha;
-import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
+
+import java.awt.Font;
 
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
@@ -60,7 +57,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 	private static final float scaleSize = 2.5f; // échelle du jeu
 	private final TriangleStripArray tri = (TriangleStripArray) (basicWall.getShape(Box.FRONT).getGeometry()); // Textures
 	private SimpleUniverse myWorld;
-	private static final int speed = 300; // vitesse de la caméra
+	private static int speed = 300; // vitesse de la caméra
 	public static Display3d maze3d;
 
 	Display3d() {
@@ -357,7 +354,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		translZ.mul(translX);
 		TransformGroup result = new TransformGroup(translZ);
 		result.addChild(getCube(box.getWalls()));
-		if (box==Maze.getMaze().start) {
+		if (box == Maze.getMaze().start) {
 			result.addChild(text("Start"));
 			System.out.print("addestart");
 		}
@@ -394,11 +391,11 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		scale.setScale(0.15f);
 		TransformGroup BigTG = new TransformGroup(scale);
 		BigTG.addChild(objSpin);
-		
+
 		Transform3D rot = new Transform3D();
 		TransformGroup Rotation = new TransformGroup(rot);
-		rot.rotX(Math.PI/2);
-		
+		rot.rotX(Math.PI / 2);
+
 		Rotation.addChild(textShape.cloneTree());
 		BigTG.addChild(Rotation);
 		return BigTG;
@@ -517,6 +514,10 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 
 		root.addChild(manipulator);
 		return manipulator;
+	}
+
+	public static void setSpeed(final int fast) {
+		speed = fast;
 	}
 
 }

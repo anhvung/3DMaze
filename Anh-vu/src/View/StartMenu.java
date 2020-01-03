@@ -6,12 +6,10 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import Controler.Maze;
 import Model.MazeMaker;
@@ -32,21 +30,10 @@ import game.Player;
 public class StartMenu extends JFrame {
 	private static final long serialVersionUID = 3525L;
 	private static JCheckBox auto = new JCheckBox("RESOLUTION AUTOMATIQUE (caméra auto)");
-	private boolean bool=false;
 	public StartMenu() {
 		Color color=new Color(200,0,128);
-		JCheckBox auto = new JCheckBox("RESOLUTION AUTOMATIQUE (caméra auto)");
-		auto.addActionListener(new ActionListener() {
-
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            if(auto.isSelected())
-	                bool=true;
-	            else
-	            	bool=false;
-
-	        }
-	    });
+		auto = new JCheckBox("RESOLUTION AUTOMATIQUE (caméra auto)");
+	 
 		auto.setForeground(color);
 		auto.setSelected(false);
 		JLabel text = new JLabel(
@@ -104,7 +91,7 @@ public class StartMenu extends JFrame {
 	}
 
 	private void level(int length) {
-
+		
 		// On lance le niveau choisi
 		String source = game.MainTest.source;
 		setVisible(false);
@@ -130,7 +117,7 @@ public class StartMenu extends JFrame {
 		for (VertexInterface v : path) {
 			System.out.println(v.getIndex());
 		}
-		new Player(miniMap, length,bool,path);
+		new Player(miniMap, length,auto.isSelected(),path);
 
 	}
 }

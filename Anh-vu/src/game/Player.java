@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import View.MiniMap;
 import View.Navigation;
+import affichage3d.Display3d;
 import dijkstra.VertexInterface;
 
 import javax.media.j3d.Canvas3D;
@@ -36,13 +37,16 @@ public class Player extends JFrame {
 		this.setLayout(new BorderLayout());
 		affichage3d.Display3d.display(true);
 		Canvas3D pane1 = affichage3d.Display3d.maze3d;
+		if (Maze.getMaze().getLength()==10 && auto) {
+			affichage3d.Display3d.setSpeed(100);
+		}
 		JPanel pane2 = miniMap;
 		pane2.setPreferredSize(new Dimension(500, 500));
 		this.add(pane1, BorderLayout.WEST);
 		View.Navigation nav = new View.Navigation(auto, path);
 		System.out.println(auto);
-		//if (!auto)
-			this.add(nav, BorderLayout.CENTER);
+		// if (!auto)
+		this.add(nav, BorderLayout.CENTER);
 		this.add(pane2, BorderLayout.EAST);
 		this.setPreferredSize(new Dimension(1500, 650));
 		this.pack();
@@ -61,6 +65,7 @@ public class Player extends JFrame {
 		// Maj de la position et des boutons
 		updatePosition(playerIndex);
 		Navigation.update(dir, box);
+		
 
 	}
 
@@ -75,11 +80,14 @@ public class Player extends JFrame {
 		if (direction == "down") {
 			direction = prev;
 			prev = "down";
-		} else {
+			updateNav(direction, grid[playerIndex]);
+
+		} else if (direction != "up") {
 			prev = direction;
 			direction = "up";
+			updateNav(direction, grid[playerIndex]);
+
 		}
-		updateNav(direction, grid[playerIndex]);
 
 	}
 
@@ -88,11 +96,12 @@ public class Player extends JFrame {
 		if (direction == "up") {
 			direction = prev;
 			prev = "up";
-		} else {
+			updateNav(direction, grid[playerIndex]);
+		} else if (direction != "down") {
 			prev = direction;
 			direction = "down";
+			updateNav(direction, grid[playerIndex]);
 		}
-		updateNav(direction, grid[playerIndex]);
 
 	}
 
@@ -158,5 +167,69 @@ public class Player extends JFrame {
 
 	public static int getIndex() {
 		return playerIndex;
+	}
+
+	public static void goTo(int[] target) {
+		System.out.println("dir : " + position[0] + " " + position[1] + " " + position[2] + "tag: " + target[0] + " "
+				+ target[1] + " " + target[2]);
+		if (target[0] < position[0]) {
+			updateTurnUp();
+			Display3d.maze3d.turnUp();
+			updateTurnUp();
+			Display3d.maze3d.turnUp();
+		} else if (target[0] > position[0]) {
+			updateTurnDown();
+			Display3d.maze3d.turnDown();
+			updateTurnDown();
+			Display3d.maze3d.turnDown();
+		} else {
+			if (direction == "up") {
+				updateTurnDown();
+				Display3d.maze3d.turnDown();
+			} else if (direction == "down") {
+				updateTurnUp();
+				Display3d.maze3d.turnUp();
+			}
+			String temp = direction;
+			String targetDir = "init";
+			System.out.println("temp : " + temp);
+			int turns = 0;
+			switch (10 * (target[1] - position[1]) + target[2] - position[2]) {
+			case (-10):
+				targetDir = "north";
+				break;
+			case (10):
+				targetDir = "south";
+				break;
+			case (-1):
+				targetDir = "west";
+				break;
+			case (1):
+				targetDir = "east";
+				break;
+			}
+			System.out.println("targetdir : " + targetDir);
+			while (temp != targetDir && targetDir != "init") {
+				temp = getLeft(temp);
+				turns++;
+
+			}
+			System.out.println(direction + "  " + temp + "  " + targetDir);
+			System.out.println("turns :" + turns);
+			if (turns == 3) {
+				updateTurnRight();
+				Display3d.maze3d.turnRight();
+			} else {
+				for (int i = 0; i < turns; i++) {
+					updateTurnLeft();
+					Display3d.maze3d.turnLeft();
+					
+				}
+			}
+		}
+		
+		updateGo();
+		Display3d.maze3d.goForward();
+		Navigation.goNext();
 	}
 }
