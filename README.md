@@ -1,10 +1,10 @@
-Idées :
+**Labyrinthe 3d de Samuel et Anh-Vu**
 
-3d
-minimap en 2d pour la vue
-Structure en objets cases 6 murs 
+<br>*Description :*<br>
+Le labyrinthe est généré automatiquement et est stocké sur un fichier texte<br>
 
-
+<br> Une carte des cases est disponible pour le joueur et la solution donnée par l'algorithme de dijkstra peut y être affichée.
+<br><br> Enfin il y a un mode automatique dans lequel la caméra parcourt automatiqument le chemin le plus court
 
 
 
