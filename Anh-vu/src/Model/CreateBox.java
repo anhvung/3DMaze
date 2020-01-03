@@ -4,6 +4,7 @@ import Controler.Box;
 
 //CASE DANS LA GENERATION ALEATOIRE DU LABY
 public class CreateBox extends Box {
+	static final long serialVersionUID = -448289361019749594L;
 	private CreateBox[] neighbours;
 	public boolean visited;
 

@@ -3,16 +3,13 @@ package game;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
-
 import View.MiniMap;
 import View.Navigation;
 import affichage3d.Display3d;
 import dijkstra.VertexInterface;
-
 import javax.media.j3d.Canvas3D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import Controler.Box;
 import Controler.Maze;
 
@@ -37,18 +34,24 @@ public class Player extends JFrame {
 		this.setLayout(new BorderLayout());
 		affichage3d.Display3d.display(true);
 		Canvas3D pane1 = affichage3d.Display3d.maze3d;
-		if (Maze.getMaze().getLength()==10 && auto) {
+		if (Maze.getMaze().getLength() == 10 && auto) {
 			affichage3d.Display3d.setSpeed(100);
 		}
 		JPanel pane2 = miniMap;
 		pane2.setPreferredSize(new Dimension(500, 500));
-		this.add(pane1, BorderLayout.WEST);
+		this.add(pane1, BorderLayout.CENTER);
 		View.Navigation nav = new View.Navigation(auto, path);
-		System.out.println(auto);
 		// if (!auto)
-		this.add(nav, BorderLayout.CENTER);
-		this.add(pane2, BorderLayout.EAST);
-		this.setPreferredSize(new Dimension(1500, 650));
+		if (!auto)
+			this.add(nav, BorderLayout.WEST);
+		else
+			this.add(nav, BorderLayout.SOUTH);
+		if (!auto)
+			this.add(pane2, BorderLayout.EAST);
+		if (!auto)
+			this.setPreferredSize(new Dimension(1500, 650));
+		else
+			this.setPreferredSize(new Dimension(600, 660));
 		this.pack();
 		this.setVisible(true);
 		this.setFocusable(true);
@@ -65,8 +68,6 @@ public class Player extends JFrame {
 		// Maj de la position et des boutons
 		updatePosition(playerIndex);
 		Navigation.update(dir, box);
-		
-
 	}
 
 	private static void updatePosition(int index) {
@@ -170,8 +171,6 @@ public class Player extends JFrame {
 	}
 
 	public static void goTo(int[] target) {
-		System.out.println("dir : " + position[0] + " " + position[1] + " " + position[2] + "tag: " + target[0] + " "
-				+ target[1] + " " + target[2]);
 		if (target[0] < position[0]) {
 			updateTurnUp();
 			Display3d.maze3d.turnUp();
@@ -192,7 +191,6 @@ public class Player extends JFrame {
 			}
 			String temp = direction;
 			String targetDir = "init";
-			System.out.println("temp : " + temp);
 			int turns = 0;
 			switch (10 * (target[1] - position[1]) + target[2] - position[2]) {
 			case (-10):
@@ -208,14 +206,12 @@ public class Player extends JFrame {
 				targetDir = "east";
 				break;
 			}
-			System.out.println("targetdir : " + targetDir);
 			while (temp != targetDir && targetDir != "init") {
 				temp = getLeft(temp);
 				turns++;
 
 			}
-			System.out.println(direction + "  " + temp + "  " + targetDir);
-			System.out.println("turns :" + turns);
+
 			if (turns == 3) {
 				updateTurnRight();
 				Display3d.maze3d.turnRight();
@@ -223,11 +219,11 @@ public class Player extends JFrame {
 				for (int i = 0; i < turns; i++) {
 					updateTurnLeft();
 					Display3d.maze3d.turnLeft();
-					
+
 				}
 			}
 		}
-		
+
 		updateGo();
 		Display3d.maze3d.goForward();
 		Navigation.goNext();

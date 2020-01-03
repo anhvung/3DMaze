@@ -161,15 +161,15 @@ public class Navigation extends JPanel {
 		affichage3d.Display3d.animate(start.getIndex());
 		if (auto) {
 			this.setVisible(false);
+			goNext();
 
 		}
-		goNext();
 
 	}
 
 	public static void goNext() {
 		autoIndex++;
-	
+
 		goTo(autoIndex);
 
 	}
@@ -177,6 +177,7 @@ public class Navigation extends JPanel {
 	private static void goTo(int i) {
 		if (i >= path.size()) {
 			System.out.print("fini");
+
 		} else {
 			final int[] position = Maze.getMaze().getGrid()[path.get(i).getIndex()].getIndex();
 			Player.goTo(position);
@@ -233,11 +234,9 @@ public class Navigation extends JPanel {
 
 	}
 
-	
 	private static void updateDirectionText(String dir) {
 		if (auto)
-			label.setText("<html><font color=\"red\">Résolution automatique en cours<br><br>Longueur du trajet : <br>"
-					+ path.size() + "</font></html>");
+			label.setText("<html><font color=\"red\">Longueur du trajet : <br>" + path.size() + "</font></html>");
 		else
 			label.setText(
 					"<html>A droite se situe la carte par étage<br>En bas se trouvent les commandes <br> Bonne chance !  <br>  <br> <br> Direction : <font color=\"blue\">"

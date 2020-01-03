@@ -4,23 +4,25 @@ import java.util.ArrayList;
 
 public class Previous implements PreviousInterface {
 	private VertexInterface[] P;
-	
+
 	public Previous(int length) {
 		P = new VertexInterface[length];
 	}
-	
+
 	@Override
 	public void setValue(VertexInterface father, VertexInterface son) {
 		for (int i = 0; i < P.length; i++) {
-			if (father.getIndex() == i) P[i] = son;
+			if (father.getIndex() == i)
+				P[i] = son;
 		}
-		
+
 	}
 
 	@Override
 	public VertexInterface getValue(VertexInterface v) {
 		for (int i = 0; i < P.length; i++) {
-			if (v != null && v.getIndex() == i) return P[i];
+			if (v != null && v.getIndex() == i)
+				return P[i];
 		}
 		return null;
 	}
@@ -35,7 +37,7 @@ public class Previous implements PreviousInterface {
 		return path;
 	}
 
-	public VertexInterface[] getList(){
+	public VertexInterface[] getList() {
 		return P;
 	}
 }

@@ -30,15 +30,16 @@ import game.Player;
 public class StartMenu extends JFrame {
 	private static final long serialVersionUID = 3525L;
 	private static JCheckBox auto = new JCheckBox("RESOLUTION AUTOMATIQUE (caméra auto)");
+
 	public StartMenu() {
-		Color color=new Color(200,0,128);
+		Color color = new Color(200, 0, 128);
 		auto = new JCheckBox("RESOLUTION AUTOMATIQUE (caméra auto)");
-	 
+
 		auto.setForeground(color);
 		auto.setSelected(false);
 		JLabel text = new JLabel(
 				"<html><br><font color=\"red\"> Bienvenue !</font><br><br> Veuiller choisir la difficulté  <br>  <br> <br> Le labyrinthe sera généré aléatoirement <br><br></html>");
-		
+
 		this.setTitle("START MENU");
 		this.setPreferredSize(new Dimension(500, 300));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,21 +53,21 @@ public class StartMenu extends JFrame {
 		left.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				level(3);
+				level(2);
 			}
 		});
 		JButton right = new JButton("Difficile");
 		right.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				level(5);
+				level(4);
 			}
 		});
 		JButton go = new JButton("Normal");
 		go.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				level(4);
+				level(3);
 			}
 		});
 		JButton impossible = new JButton("Impossible");
@@ -81,8 +82,8 @@ public class StartMenu extends JFrame {
 		container.add(go, BorderLayout.CENTER);
 		container.add(impossible, BorderLayout.SOUTH);
 		container.add(auto, BorderLayout.NORTH);
-		this.add(container,BorderLayout.CENTER);
-		this.add(text,BorderLayout.NORTH);
+		this.add(container, BorderLayout.CENTER);
+		this.add(text, BorderLayout.NORTH);
 		this.pack();
 		this.setVisible(true);
 		this.setFocusable(true);
@@ -91,9 +92,9 @@ public class StartMenu extends JFrame {
 	}
 
 	private void level(int length) {
-		
+
 		// On lance le niveau choisi
-		String source = game.MainTest.source;
+		String source = game.MainExecuteHere.source;
 		setVisible(false);
 		dispose();
 		// Maze maze = new Maze(source);
@@ -114,10 +115,7 @@ public class StartMenu extends JFrame {
 		MiniMap miniMap = new MiniMap(Maze.getMaze(), previous);
 
 		ArrayList<VertexInterface> path = previous.getShortestPathFrom(r);
-		for (VertexInterface v : path) {
-			System.out.println(v.getIndex());
-		}
-		new Player(miniMap, length,auto.isSelected(),path);
+		new Player(miniMap, length, auto.isSelected(), path);
 
 	}
 }

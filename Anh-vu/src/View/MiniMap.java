@@ -25,7 +25,6 @@ public class MiniMap extends JPanel {
 	private PreviousInterface previous;
 	private Maze maze;
 
-
 	public MiniMap(Maze maze, PreviousInterface p) {
 		this.length = maze.getLength();
 		// this.setTitle("Maze look over");
@@ -33,8 +32,8 @@ public class MiniMap extends JPanel {
 		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		showSol = false;
-        previous = p;
-        this.maze = maze;
+		previous = p;
+		this.maze = maze;
 
 		panels = new JPanel[length];
 		for (int i = 0; i < length; i++) {
@@ -42,7 +41,7 @@ public class MiniMap extends JPanel {
 			panels[i].setLayout(new GridLayout(length, length));
 			int area = length * length;
 			for (int j = i * area; j < i * area + area; j++) {
-				MiniMapBox mn = new MiniMapBox(maze.getBox(j),this);
+				MiniMapBox mn = new MiniMapBox(maze.getBox(j), this);
 				if (j == maze.arrivalIndex)
 					mn.setSpecial("ARRIVAL");
 				else if (j == maze.startIndex)
@@ -59,15 +58,14 @@ public class MiniMap extends JPanel {
 				if (showSol) {
 					showSol = false;
 					rightButton.setText("Show Solution");
-				}
-				else {
+				} else {
 					showSol = true;
 					rightButton.setText("Hide Solution");
-					
+
 				}
-		
+
 			}
-			
+
 		});
 
 		this.setLayout(new BorderLayout());
@@ -96,7 +94,7 @@ public class MiniMap extends JPanel {
 	}
 
 	private void changePanel(int dh) {
-		//changer d'etage
+		// changer d'etage
 		Dimension size = getCurrentPanel().getSize();
 		remove(getCurrentPanel());
 		setCurrentIndex((currentIndex + dh + length) % length);
@@ -106,20 +104,28 @@ public class MiniMap extends JPanel {
 		updateUI();
 		repaint();
 	}
+
 	public String getNextDirection(MiniMapBox mn) {
-		int [] index = mn.getIndex();
+		int[] index = mn.getIndex();
 		int i = maze.index(index[0], index[1], index[2]);
 		Vertex v = new Vertex(i);
 		VertexInterface vi = previous.getValue(v);
-		if (! (vi == null)) {
+		if (!(vi == null)) {
 			int nextIndex = vi.getIndex();
-			if (nextIndex == i + 1) return "RIGHT";
-			else if (nextIndex == i - 1) return "LEFT";
-			else if (nextIndex == i - length) return "UP";
-			else if (nextIndex == i + length) return "DOWN";
-			else if (nextIndex == i + length * length) return "BELLOW";
-			else if (nextIndex == i - length * length) return "ABOVE";
-			else return "";
+			if (nextIndex == i + 1)
+				return "RIGHT";
+			else if (nextIndex == i - 1)
+				return "LEFT";
+			else if (nextIndex == i - length)
+				return "UP";
+			else if (nextIndex == i + length)
+				return "DOWN";
+			else if (nextIndex == i + length * length)
+				return "BELLOW";
+			else if (nextIndex == i - length * length)
+				return "ABOVE";
+			else
+				return "";
 		}
 		return "";
 	}

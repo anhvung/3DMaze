@@ -16,10 +16,11 @@ public class Maze extends JFrame {
 	private Box[] grid;
 	public Box start;
 	public Box arrival;
-	public int startIndex; //index de la case de départ
-	public int arrivalIndex;//index de la case d'arrivée
-	private static Maze uniqueMaze = new Maze(game.MainTest.source); // INSTANCE DE MAZE SUR LAQUELLE ON TRAVAILLE DANS
-																		// LA CLASSE Display3D
+	public int startIndex; // index de la case de départ
+	public int arrivalIndex;// index de la case d'arrivée
+	private static Maze uniqueMaze = new Maze(game.MainExecuteHere.source); // INSTANCE DE MAZE SUR LAQUELLE ON
+																			// TRAVAILLE DANS
+	// LA CLASSE Display3D
 
 	private Maze(String path) {
 		directions = new String[] { "ABOVE", "BELOW", "UP", "DOWN", "RIGHT", "LEFT" };
@@ -40,7 +41,7 @@ public class Maze extends JFrame {
 
 	public static void updateMaze() {
 		// recréé le laby si le fichier txt a été modifié
-		uniqueMaze = new Maze(game.MainTest.source);
+		uniqueMaze = new Maze(game.MainExecuteHere.source);
 	}
 
 	private ArrayList<String> getLines() {
@@ -99,12 +100,12 @@ public class Maze extends JFrame {
 	}
 
 	public int index(int depth, int row, int column) {
-		//donne l'index à partir de la position
+		// donne l'index à partir de la position
 		return depth * length * length + row * length + column;
 	}
 
 	public ArrayList<Integer> getNeighbours(int boxIndex) {
-		//donne les cases voisinnes sous forme d'index
+		// donne les cases voisinnes sous forme d'index
 		ArrayList<Integer> neighbours = new ArrayList<Integer>();
 		for (String dir : directions) {
 			if (grid[boxIndex].getWall(dir) == false) {

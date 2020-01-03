@@ -3,6 +3,7 @@ package affichage3d;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
 import Controler.Maze;
+import game.Player;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
@@ -25,6 +26,8 @@ import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Material;
 import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.TriangleStripArray;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.media.j3d.PointLight;
 import javax.media.j3d.RotationInterpolator;
 import javax.media.j3d.Shape3D;
@@ -93,7 +96,15 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		scale.setScale(scaleSize);
 		TransformGroup BigTG = new TransformGroup(scale);
 		BigTG.addChild(generateMaze());
-		objSpin = getMouseTransform(scene, bounds, false);
+
+		Transform3D trslt = new Transform3D();
+		trslt.setTranslation(
+				new Vector3f((float) 2.36 * scaleSize, (float) -1.58 * scaleSize, (float) 6.25 * scaleSize));
+		TransformGroup startTg = new TransformGroup(trslt);
+		startTg.addChild(getArrival("src/data/press.jpg"));
+
+		BigTG.addChild(startTg);
+		objSpin = getMouseTransform(scene, bounds, true);
 		objSpin.addChild(BigTG);
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		su.getViewingPlatform().getViewers()[0].getView().setFieldOfView(Math.PI / 2);// angle de vue de la caméra
@@ -107,16 +118,17 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		maze3d.setSize(700, 700);
 		if (show)
 			maze3d.setVisible(true);
-		maze3d.updateCameraPos(new Point3d((float) 5 * scaleSize, (float) -3 * scaleSize, (float) 12 * scaleSize), 10);
+		maze3d.updateCameraPos(new Point3d((float) 3 * scaleSize, (float) -2 * scaleSize, (float) 8 * scaleSize), 10);
 		double[] forwardVect = { zoom, 0, 0 };
 		maze3d.updateCameraRot(forwardVect, 10);
+		double[] v = { 0, 0, -zoom };
+		maze3d.updateCameraRot(v, 10);
 
 	}
 
 	public static void animate(int[] ind) {
 		// Animation de début de la caméra (zoom sur laby)
-		double[] forwardVect = { 0, 0, -zoom };
-		maze3d.updateCameraRot(forwardVect, 10);
+
 		maze3d.updateCameraPos(new Point3d((float) ind[2] * scaleSize * stepSize,
 				(float) -ind[0] * scaleSize * stepSize, (float) ind[1] * scaleSize * stepSize), 4000);
 
@@ -125,6 +137,15 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 	public void goForward() {
 		// Avancer d'un pas dans la direction de la caméra
 		updateCameraPos(add(forwardVect, currentPosition, (float) (stepSize * scaleSize / zoom)), speed);
+		checkEnd();
+
+	}
+
+	private static void checkEnd() {
+		if (Player.getIndex() == Maze.getMaze().arrivalIndex) {
+			JFrame f = new JFrame();
+			JOptionPane.showMessageDialog(f, "Arrivé !");
+		}
 
 	}
 
@@ -356,7 +377,11 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		result.addChild(getCube(box.getWalls()));
 		if (box == Maze.getMaze().start) {
 			result.addChild(text("Start"));
-			System.out.print("addestart");
+			
+		}
+		if (box == Maze.getMaze().arrival) {
+			result.addChild(getArrival("src/data/end.png"));
+
 		}
 		return result;
 	}
@@ -456,6 +481,29 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		pointLi.setInfluencingBounds(new BoundingSphere(new Point3d(), 150d));
 		// éclairage
 		return cube;
+	}
+
+	@SuppressWarnings("deprecation")
+	private TransformGroup getArrival(String str) {
+		TransformGroup res = new TransformGroup();
+		Appearance boxArrival = mkAppWithTexture(str);
+		Box box = new Box(0.12f, 0.12f, 0.12f, Box.GENERATE_TEXTURE_COORDS, boxArrival);
+		TriangleStripArray tri = (TriangleStripArray) (box.getShape(Box.FRONT).getGeometry());
+		tri.setTextureCoordinate(0, new Point2f(3f, 0f));
+		tri.setTextureCoordinate(1, new Point2f(3f, 3f));
+		tri.setTextureCoordinate(2, new Point2f(0f, 0f));
+		tri.setTextureCoordinate(3, new Point2f(0f, 3f));
+
+		TransformGroup objSpin = new TransformGroup();
+		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		Alpha rotationAlpha = new Alpha(-1, 4000);
+		RotationInterpolator rotator = new RotationInterpolator(rotationAlpha, objSpin);
+		BoundingSphere bounds = new BoundingSphere();
+		rotator.setSchedulingBounds(bounds);
+		objSpin.addChild(rotator);
+		res.addChild(objSpin);
+		objSpin.addChild(box);
+		return res;
 	}
 
 	private Appearance mkAppWithTexture(String textureName) {
