@@ -8,9 +8,11 @@ import View.Navigation;
 import affichage3d.Display3d;
 import dijkstra.PreviousInterface;
 import dijkstra.VertexInterface;
-import javax.media.j3d.Canvas3D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import org.jogamp.java3d.Canvas3D;
+
 import Controler.Box;
 import Controler.Maze;
 

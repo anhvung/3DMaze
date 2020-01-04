@@ -1,49 +1,49 @@
 package affichage3d;
 
-import com.sun.j3d.utils.universe.SimpleUniverse;
+import org.jogamp.java3d.utils.universe.SimpleUniverse;
 
 import Controler.Maze;
 import game.Player;
 
-import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
-import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
-import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
-import com.sun.j3d.utils.behaviors.mouse.MouseWheelZoom;
-import com.sun.j3d.utils.geometry.Box;
-import com.sun.j3d.utils.image.TextureLoader;
-import com.sun.j3d.utils.image.ImageException;
+import org.jogamp.java3d.utils.behaviors.mouse.MouseRotate;
+import org.jogamp.java3d.utils.behaviors.mouse.MouseZoom;
+import org.jogamp.java3d.utils.behaviors.mouse.MouseTranslate;
+import org.jogamp.java3d.utils.behaviors.mouse.MouseWheelZoom;
+import org.jogamp.java3d.utils.geometry.Box;
+import org.jogamp.java3d.utils.image.TextureLoader;
+import org.jogamp.java3d.utils.image.ImageException;
 
-import javax.media.j3d.Canvas3D;
-import javax.media.j3d.ColoringAttributes;
-import javax.media.j3d.Font3D;
-import javax.media.j3d.FontExtrusion;
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.TransformGroup;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.Texture;
-import javax.media.j3d.Texture2D;
-import javax.media.j3d.ImageComponent2D;
-import javax.media.j3d.Material;
-import javax.media.j3d.TextureAttributes;
-import javax.media.j3d.TriangleStripArray;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.media.j3d.PointLight;
-import javax.media.j3d.RotationInterpolator;
-import javax.media.j3d.Shape3D;
-import javax.media.j3d.Text3D;
-import javax.media.j3d.Alpha;
-import javax.media.j3d.Appearance;
-import javax.media.j3d.BoundingSphere;
+import org.jogamp.java3d.Canvas3D;
+import org.jogamp.java3d.ColoringAttributes;
+import org.jogamp.java3d.Font3D;
+import org.jogamp.java3d.FontExtrusion;
+import org.jogamp.java3d.BranchGroup;
+import org.jogamp.java3d.TransformGroup;
+import org.jogamp.java3d.Transform3D;
+import org.jogamp.java3d.Texture;
+import org.jogamp.java3d.Texture2D;
+import org.jogamp.java3d.ImageComponent2D;
+import org.jogamp.java3d.Material;
+import org.jogamp.java3d.TextureAttributes;
+import org.jogamp.java3d.TriangleStripArray;
+import org.jogamp.java3d.PointLight;
+import org.jogamp.java3d.RotationInterpolator;
+import org.jogamp.java3d.Shape3D;
+import org.jogamp.java3d.Text3D;
+import org.jogamp.java3d.Alpha;
+import org.jogamp.java3d.Appearance;
+import org.jogamp.java3d.BoundingSphere;
+
 
 import java.awt.Font;
-
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3f;
-import javax.vecmath.Point2f;
-import javax.vecmath.Point3f;
-import javax.vecmath.Vector3d;
-import javax.vecmath.Color3f;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import org.jogamp.vecmath.Point3d;
+import org.jogamp.vecmath.Vector3f;
+import org.jogamp.vecmath.Point2f;
+import org.jogamp.vecmath.Point3f;
+import org.jogamp.vecmath.Vector3d;
+import org.jogamp.vecmath.Color3f;
 
 //PANEL 3D AFFICHANT LE LABY EN 3D 
 public class Display3d extends Canvas3D implements Display3dInterface {
@@ -51,7 +51,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 	private static final long serialVersionUID = 12345L;
 	private TransformGroup objSpin = new TransformGroup(); // TransformGroup Général
 	// Unique mur qui sera réutilisé pour des raisons de perf
-	private Box basicWall = new Box(0.02f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, new Appearance());
+	private Box basicWall = new Box(0.02f, 0.25f, 0.25f, Box.GENERATE_TEXTURE_COORDS, new org.jogamp.java3d.Appearance());
 	private static final float stepSize = 0.25f; // longueur de chaque pas dans le jeu
 	private Point3d currentPosition = new Point3d(0.5f, -0 / 2f, 0.5f); // position de la caméra
 	private double[] forwardVect = { -zoom, 0, 0 }; // direction de la caméra
@@ -96,15 +96,15 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		scale.setScale(scaleSize);
 		TransformGroup BigTG = new TransformGroup(scale);
 		BigTG.addChild(generateMaze());
-		
-		//Création du cube start
+
+		// Création du cube start
 		Transform3D trslt = new Transform3D();
 		trslt.setTranslation(
 				new Vector3f((float) 2.36 * scaleSize, (float) -1.58 * scaleSize, (float) 6.25 * scaleSize));
 		TransformGroup startTg = new TransformGroup(trslt);
 		startTg.addChild(getArrival("src/data/press.jpg"));
 		BigTG.addChild(startTg);
-		
+
 		objSpin = getMouseTransform(scene, bounds, false);
 		objSpin.addChild(BigTG);
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -388,7 +388,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 	}
 
 	private TransformGroup text(String txt) {
-		//Donne le texte en 3D qui tourne
+		// Donne le texte en 3D qui tourne
 		TransformGroup objSpin = new TransformGroup();
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
@@ -479,7 +479,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 
 	@SuppressWarnings("deprecation")
 	private TransformGroup getArrival(String str) {
-		//Cube End
+		// Cube End
 		TransformGroup res = new TransformGroup();
 		Appearance boxArrival = mkAppWithTexture(str);
 		Box box = new Box(0.12f, 0.12f, 0.12f, Box.GENERATE_TEXTURE_COORDS, boxArrival);
