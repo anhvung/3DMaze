@@ -4,10 +4,11 @@ public class Main {
 	public static String version;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		System.err.close();// java 9+ déclenchent des warnings à cause des .jar
 		new VirtualUniverse();
 		version= (String) VirtualUniverse.getProperties().get("j3d.version");
 		System.out.println("JAVA3D version " +version);
-		
+		System.out.println("Tested on java 8 (1.8.0_221) and 11.0.5 on windows. You are currently running : "+System.getProperty("java.version"));
 		game.MainExecuteHere.main();
 		 
 		
