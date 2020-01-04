@@ -38,7 +38,7 @@ public class StartMenu extends JFrame {
 		auto.setForeground(color);
 		auto.setSelected(false);
 		JLabel text = new JLabel(
-				"<html><br><font color=\"red\"> Bienvenue !</font><br><br> Veuiller choisir la difficulté  <br>  <br> <br> Le labyrinthe sera généré aléatoirement <br><br></html>");
+				"<html><br><font color=\"red\"> &nbsp;&nbsp;&nbsp;  Bienvenue !</font><br><br> &nbsp;&nbsp;&nbsp; Veuiller choisir la difficulté  <br>  <br> <br>&nbsp;&nbsp;&nbsp;  Le labyrinthe sera généré aléatoirement <br><br></html>");
 
 		this.setTitle("START MENU");
 		this.setPreferredSize(new Dimension(500, 300));
@@ -71,6 +71,10 @@ public class StartMenu extends JFrame {
 			}
 		});
 		JButton impossible = new JButton("Impossible");
+		paintButton(impossible);
+		paintButton(go);
+		paintButton(right);
+		paintButton(left);
 		impossible.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -118,4 +122,12 @@ public class StartMenu extends JFrame {
 		new Player(miniMap, length, auto.isSelected(), path, previous);
 
 	}
+
+	private void paintButton(JButton b) {
+		b.setFocusPainted(true);
+		b.setContentAreaFilled(false);
+		b.setForeground(new Color(0.8f, 0.2f, 0.5f));
+		// b.setBorder(BorderFactory.createLineBorder(new Color(0.8f, 0.2f, 0.5f),1));
+	}
+
 }

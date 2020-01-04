@@ -24,12 +24,11 @@ public class Player extends JFrame {
 	private static int playerIndex;
 	private static int length;
 
-
 	public Player(MiniMap miniMap, int length, boolean auto, ArrayList<VertexInterface> path,
 			PreviousInterface previous) {
 		Player.length = length;
 		initializeFrame(miniMap, auto, path, previous, length);
-	
+
 	}
 
 	private void initializeFrame(MiniMap miniMap, boolean auto, ArrayList<VertexInterface> path,
@@ -41,8 +40,7 @@ public class Player extends JFrame {
 		Canvas3D pane1 = affichage3d.Display3d.maze3d;
 		if (Maze.getMaze().getLength() == 10 && auto) {
 			affichage3d.Display3d.setSpeed(100);
-		}
-		else if (auto) {
+		} else if (auto) {
 			affichage3d.Display3d.setSpeed(200);
 		}
 		JPanel pane2 = miniMap;
@@ -67,10 +65,18 @@ public class Player extends JFrame {
 		grid = Maze.getMaze().getGrid();
 		playerIndex = Maze.getMaze().startIndex;
 		updatePosition(playerIndex);
+		initMinimap(miniMap);
 		updateNav(direction, grid[playerIndex]);
 
 	}
 	// Mise à jour des coordonnées du joueur
+
+	private void initMinimap(MiniMap miniMap) {
+		for (int i = 0; i < position[0]; i++) {
+			miniMap.click();
+		}
+
+	}
 
 	private static void updateNav(String dir, Box box) {
 		// Maj de la position et des boutons

@@ -23,11 +23,11 @@ public class MiniMap extends JPanel {
 	private JButton upButton;
 	private JPanel[] panels;
 	public int length;
-	public static JButton rightButton;
+	private static JButton rightButton;
 	public static boolean showSol;
 	private PreviousInterface previous;
 	private Maze maze;
-	private static ArrayList<MiniMapBox> list= new ArrayList<MiniMapBox>();
+	private static ArrayList<MiniMapBox> list = new ArrayList<MiniMapBox>();
 
 	public MiniMap(Maze maze, PreviousInterface p) {
 		this.length = maze.getLength();
@@ -98,6 +98,10 @@ public class MiniMap extends JPanel {
 		this.add(downButton, BorderLayout.SOUTH);
 	}
 
+	public void click() {
+		this.downButton.doClick();
+	}
+
 	private void changePanel(int dh) {
 		// changer d'etage
 		Dimension size = getCurrentPanel().getSize();
@@ -146,6 +150,7 @@ public class MiniMap extends JPanel {
 	public void setCurrentIndex(int i) {
 		currentIndex = i;
 	}
+
 	public static void refreshAll() {
 		for (MiniMapBox square : list) {
 			square.repaint();

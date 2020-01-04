@@ -35,7 +35,7 @@ public class MiniMapBox extends Box {
 
 		this.setFocusPainted(false);
 		this.setContentAreaFilled(false);
-		this.setBorder(BorderFactory.createLineBorder(new Color(0.8f, 0.2f, 0.5f),1));
+		this.setBorder(BorderFactory.createLineBorder(new Color(0.8f, 0.2f, 0.5f), 1));
 		walls = parent.getWalls();
 		this.container = container;
 		File file = new File("src/data/stairsdown.png");
@@ -89,8 +89,8 @@ public class MiniMapBox extends Box {
 	}
 
 	private void paintHere(Graphics g, int w, int h) {
-		int l_x = (int) (w * propStairs*2);
-		int l_y = (int) (h * propStairs*2);
+		int l_x = (int) (w * propStairs * 2);
+		int l_y = (int) (h * propStairs * 2);
 		Image image = you.getScaledInstance(l_x, l_y, Image.SCALE_SMOOTH);
 		g.drawImage(image, (int) w / 4, (int) h / 4, null);
 	}

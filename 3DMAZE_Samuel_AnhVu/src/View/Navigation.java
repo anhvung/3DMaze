@@ -146,6 +146,9 @@ public class Navigation extends JPanel {
 			this.add(panel1, BorderLayout.NORTH);
 			this.add(panel2, BorderLayout.SOUTH);
 		} else {
+			start.setFocusPainted(true);
+			start.setContentAreaFilled(false);
+			start.setForeground(new Color(0.8f, 0.2f, 0.5f));
 			this.add(panel1, BorderLayout.NORTH);
 			this.add(start, BorderLayout.CENTER);
 		}
@@ -235,7 +238,7 @@ public class Navigation extends JPanel {
 			blocked.add(0);
 			break;
 		}
-	
+
 		noGo(blocked);
 		updateDirectionText(dir);
 
@@ -249,7 +252,8 @@ public class Navigation extends JPanel {
 					"<html>A droite se situe la carte par étage<br>En bas se trouvent les commandes <br> Bonne chance !  <br>  <br> <br> Direction : <font color=\"red\">"
 							+ dir + "</font><br><br>Case actuelle sur la mini map :  <font color=\"blue\">"
 							+ Player.getIndex()
-							+ "</font><br><br>SOLUTION --> CLIQUER SUR LE BOUTON A DROITE <br>Le trait rouge montre la direction à prendre <br>La croix rouge montre l'étage à changer<br><br><br>"+getNextDirection()+"</html>");
+							+ "</font><br><br>SOLUTION --> CLIQUER SUR LE BOUTON A DROITE <br>Le trait rouge montre la direction à prendre <br>La croix rouge montre l'étage à changer<br><br><br>"
+							+ getNextDirection() + "</html>");
 
 	}
 
@@ -287,7 +291,8 @@ public class Navigation extends JPanel {
 				res = "";
 		}
 		if (MiniMap.showSol)
-			return "</font> <font color=\"green\">PROCHAINE CASE : DIRECTION </font><font color=\"red\">" + res + "</font>";
+			return "</font> <font color=\"green\">PROCHAINE CASE : DIRECTION </font><font color=\"red\">" + res
+					+ "</font>";
 		else
 			return "</font>";
 	}

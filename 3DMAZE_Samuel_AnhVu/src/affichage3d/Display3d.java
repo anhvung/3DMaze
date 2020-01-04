@@ -66,7 +66,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 	Display3d() {
 		// Création de l'univers pour le laby
 		super(SimpleUniverse.getPreferredConfiguration());
-		initializeTextures("src/data/samu.jpg", "src/data/wall.jpg"); // Texturation des murs
+		initializeTextures("src/data/grid.jpg", "src/data/wall.jpg"); // Texturation des murs
 		myWorld = new SimpleUniverse(this);
 
 		BranchGroup myScene = createScene(myWorld);
@@ -416,13 +416,6 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		scale.setScale(0.15f);
 		TransformGroup BigTG = new TransformGroup(scale);
 		BigTG.addChild(objSpin);
-
-		Transform3D rot = new Transform3D();
-		TransformGroup Rotation = new TransformGroup(rot);
-		rot.rotX(Math.PI / 2);
-
-		Rotation.addChild(textShape.cloneTree());
-		BigTG.addChild(Rotation);
 		return BigTG;
 	}
 
