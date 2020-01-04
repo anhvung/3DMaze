@@ -12,14 +12,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import Controler.Box;
+import game.Player;
 
 public class MiniMapBox extends Box {
 	private static final long serialVersionUID = 6913294075608080639L;
-	private final float propWalls = 0.04f;
+	private final float propWalls = 0.07f;
 	private final float propStairs = 0.25f;
 	private String indexString;
 	private BufferedImage stairsUpImage;
 	private BufferedImage stairsDownImage;
+	private BufferedImage you;
 	private String special = "";
 	private MiniMap container;
 
@@ -29,19 +31,28 @@ public class MiniMapBox extends Box {
 
 	public MiniMapBox(Box parent, MiniMap container) {
 		super(parent.getIndex()[0], parent.getIndex()[1], parent.getIndex()[2]);
+
+		this.setFocusPainted(false);
+		this.setContentAreaFilled(false);
 		walls = parent.getWalls();
 		this.container = container;
 		File file = new File("src/data/stairsdown.png");
 		try {
 			stairsDownImage = ImageIO.read(file);
 		} catch (IOException e) {
-
+			System.out.println("Cannot read file stairsdown.png");
 		}
 		file = new File("src/data/stairsup.png");
 		try {
 			stairsUpImage = ImageIO.read(file);
 		} catch (IOException e) {
-
+			System.out.println("Cannot read file stairsup.png");
+		}
+		file = new File("src/data/you.png");
+		try {
+			you = ImageIO.read(file);
+		} catch (IOException e) {
+			System.out.println("Cannot read file you.png");
 		}
 		MiniMapBox mnb = this;
 		addActionListener(new ActionListener() {
@@ -70,19 +81,45 @@ public class MiniMapBox extends Box {
 		paintWalls(g, w, h);
 		if (MiniMap.showSol)
 			paintSol(g, w, h);
+		if (i * length * length + j * length + k == Player.getIndex()) {
+			paintHere(g, w, h);
+		}
+	}
+
+	private void paintHere(Graphics g, int w, int h) {
+		int l_x = (int) (w * propStairs);
+		int l_y = (int) (h * propStairs);
+		Image image = you.getScaledInstance(l_x, l_y, Image.SCALE_SMOOTH);
+		g.drawImage(image, (int) w / 4, (int) h / 4, null);
 	}
 
 	private void paintSol(Graphics g, int w, int h) {
 		String nextDir = container.getNextDirection(this);
 		g.setColor(new Color(1f, 0f, 0f));
-		if (nextDir == "RIGHT")
+		if (nextDir == "RIGHT") {
 			g.drawLine((int) 3 * w / 4, (int) h / 2, (int) w, (int) h / 2);
-		if (nextDir == "LEFT")
+			g.drawLine((int) 7 * w / 8, (int) 8 * h / 14, (int) w, (int) h / 2);
+			g.drawLine((int) 7 * w / 8, (int) 6 * h / 14, (int) w, (int) h / 2);
+		}
+		if (nextDir == "LEFT") {
 			g.drawLine((int) 0, (int) h / 2, (int) w / 4, (int) h / 2);
-		if (nextDir == "DOWN")
+			g.drawLine((int) 0, (int) h / 2, (int) w / 8, (int) 8 * h / 14);
+			g.drawLine((int) 0, (int) h / 2, (int) w / 8, (int) 6 * h / 14);
+		}
+
+		if (nextDir == "DOWN") {
 			g.drawLine((int) w / 2, (int) 3 * h / 4, (int) w / 2, (int) h);
-		if (nextDir == "UP")
+			g.drawLine((int) 8 * w / 14, (int) 7 * h / 8, (int) w / 2, (int) h);
+			g.drawLine((int) 6 * w / 14, (int) 7 * h / 8, (int) w / 2, (int) h);
+		}
+
+		if (nextDir == "UP") {
 			g.drawLine((int) w / 2, (int) 0, (int) w / 2, (int) h / 4);
+			g.drawLine((int) w / 2, (int) 0, (int) 8 * w / 14, (int) h / 8);
+			g.drawLine((int) w / 2, (int) 0, (int) 6 * w / 14, (int) h / 8);
+
+		}
+
 		if (nextDir == "BELLOW") {
 			g.drawLine((int) w / 2, (int) h / 2, (int) 3 * w / 4, (int) 3 * h / 4);
 			g.drawLine((int) w / 2, (int) 3 * h / 4, (int) 3 * w / 4, (int) h / 2);
