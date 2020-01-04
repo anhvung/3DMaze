@@ -96,14 +96,15 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		scale.setScale(scaleSize);
 		TransformGroup BigTG = new TransformGroup(scale);
 		BigTG.addChild(generateMaze());
-
+		
+		//Création du cube start
 		Transform3D trslt = new Transform3D();
 		trslt.setTranslation(
 				new Vector3f((float) 2.36 * scaleSize, (float) -1.58 * scaleSize, (float) 6.25 * scaleSize));
 		TransformGroup startTg = new TransformGroup(trslt);
 		startTg.addChild(getArrival("src/data/press.jpg"));
-
 		BigTG.addChild(startTg);
+		
 		objSpin = getMouseTransform(scene, bounds, false);
 		objSpin.addChild(BigTG);
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -130,7 +131,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		// Animation de début de la caméra (zoom sur laby)
 
 		maze3d.updateCameraPos(new Point3d((float) ind[2] * scaleSize * stepSize,
-				(float) -ind[0] * scaleSize * stepSize, (float) ind[1] * scaleSize * stepSize), 4000);
+				(float) -ind[0] * scaleSize * stepSize, (float) ind[1] * scaleSize * stepSize), 2000);
 
 	}
 

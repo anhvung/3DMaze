@@ -15,7 +15,7 @@ import game.Player;
 
 public class MiniMapBox extends Box {
 	private static final long serialVersionUID = 6913294075608080639L;
-	private final float propWalls = 0.07f;
+	private final float propWalls = 0.07f;// épaisseur des murs
 	private final float propStairs = 0.25f;
 	private String indexString;
 	private BufferedImage stairsUpImage;
