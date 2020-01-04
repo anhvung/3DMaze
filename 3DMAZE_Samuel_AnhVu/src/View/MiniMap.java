@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import Controler.Maze;
@@ -21,10 +23,11 @@ public class MiniMap extends JPanel {
 	private JButton upButton;
 	private JPanel[] panels;
 	public int length;
-	private JButton rightButton;
+	public static JButton rightButton;
 	public static boolean showSol;
 	private PreviousInterface previous;
 	private Maze maze;
+	private static ArrayList<MiniMapBox> list= new ArrayList<MiniMapBox>();
 
 	public MiniMap(Maze maze, PreviousInterface p) {
 		this.length = maze.getLength();
@@ -48,6 +51,7 @@ public class MiniMap extends JPanel {
 				else if (j == maze.startIndex)
 					mn.setSpecial("START");
 				panels[i].add(mn);
+				list.add(mn);
 			}
 		}
 
@@ -141,6 +145,11 @@ public class MiniMap extends JPanel {
 
 	public void setCurrentIndex(int i) {
 		currentIndex = i;
+	}
+	public static void refreshAll() {
+		for (MiniMapBox square : list) {
+			square.repaint();
+		}
 	}
 
 }

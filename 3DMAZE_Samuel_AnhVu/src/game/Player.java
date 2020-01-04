@@ -24,10 +24,12 @@ public class Player extends JFrame {
 	private static int playerIndex;
 	private static int length;
 
+
 	public Player(MiniMap miniMap, int length, boolean auto, ArrayList<VertexInterface> path,
 			PreviousInterface previous) {
 		Player.length = length;
 		initializeFrame(miniMap, auto, path, previous, length);
+	
 	}
 
 	private void initializeFrame(MiniMap miniMap, boolean auto, ArrayList<VertexInterface> path,
@@ -39,6 +41,9 @@ public class Player extends JFrame {
 		Canvas3D pane1 = affichage3d.Display3d.maze3d;
 		if (Maze.getMaze().getLength() == 10 && auto) {
 			affichage3d.Display3d.setSpeed(100);
+		}
+		else if (auto) {
+			affichage3d.Display3d.setSpeed(200);
 		}
 		JPanel pane2 = miniMap;
 		pane2.setPreferredSize(new Dimension(500, 500));
@@ -71,6 +76,7 @@ public class Player extends JFrame {
 		// Maj de la position et des boutons
 		updatePosition(playerIndex);
 		Navigation.update(dir, box);
+		MiniMap.refreshAll();
 	}
 
 	private static void updatePosition(int index) {
