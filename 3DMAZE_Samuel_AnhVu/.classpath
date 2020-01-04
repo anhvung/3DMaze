@@ -9,7 +9,6 @@
 	<classpathentry kind="lib" path="Ext JARs/gluegen-rt.jar"/>
 	<classpathentry kind="lib" path="Ext JARs/j3dcore (1).jar"/>
 	<classpathentry kind="lib" path="Ext JARs/j3dutils (1).jar"/>
-	<classpathentry kind="lib" path="Ext JARs/jogamp-fat .jar"/>
 	<classpathentry kind="lib" path="Ext JARs/jogl-all-natives-linux-amd64.jar"/>
 	<classpathentry kind="lib" path="Ext JARs/jogl-all-natives-macosx-universal.jar"/>
 	<classpathentry kind="lib" path="Ext JARs/jogl-all-natives-windows-amd64.jar"/>
