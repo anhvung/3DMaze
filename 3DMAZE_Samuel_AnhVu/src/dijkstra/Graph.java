@@ -11,7 +11,6 @@ public class Graph implements GraphInterface {
 
 	public Graph(Maze maze) {
 		length = (int) Math.pow(maze.getLength(), 3);
-		System.out.println(length);
 		matrix = new int[length][length];
 		VertexList = new Vertex[length];
 		for (int depth = 0; depth < maze.getLength(); depth++) {

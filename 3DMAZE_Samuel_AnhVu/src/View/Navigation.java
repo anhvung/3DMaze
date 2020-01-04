@@ -47,7 +47,6 @@ public class Navigation extends JPanel {
 		ref[1].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("turn Up");
 				if (firstTime) {
 					changeTxt();
 				} else if (ref[1].getBackground() == Color.GREEN) {
@@ -62,7 +61,6 @@ public class Navigation extends JPanel {
 		ref[0].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("turn down");
 				if (firstTime) {
 					changeTxt();
 
@@ -78,7 +76,6 @@ public class Navigation extends JPanel {
 		ref[3].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("turn left");
 				if (firstTime) {
 					changeTxt();
 
@@ -94,7 +91,7 @@ public class Navigation extends JPanel {
 		ref[4].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("turn right");
+
 				if (firstTime) {
 					changeTxt();
 
@@ -109,8 +106,6 @@ public class Navigation extends JPanel {
 		ref[2].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("go forward");
-
 				if (firstTime) {
 					changeTxt();
 

@@ -56,14 +56,14 @@ public class MiniMapBox extends Box {
 		} catch (IOException e) {
 			System.out.println("Cannot read file you.png");
 		}
-		MiniMapBox mnb = this;
-		addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println(container.getNextDirection(mnb));
-			}
-
-		});
+		/*
+		 * MiniMapBox mnb = this; addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent e) {
+		 * System.out.println(container.getNextDirection(mnb)); }
+		 * 
+		 * });
+		 */
 	}
 
 	@Override

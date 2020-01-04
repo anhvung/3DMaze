@@ -387,7 +387,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 	}
 
 	private TransformGroup text(String txt) {
-
+		//Donne le texte en 3D qui tourne
 		TransformGroup objSpin = new TransformGroup();
 		objSpin.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
@@ -478,6 +478,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 
 	@SuppressWarnings("deprecation")
 	private TransformGroup getArrival(String str) {
+		//Cube End
 		TransformGroup res = new TransformGroup();
 		Appearance boxArrival = mkAppWithTexture(str);
 		Box box = new Box(0.12f, 0.12f, 0.12f, Box.GENERATE_TEXTURE_COORDS, boxArrival);
