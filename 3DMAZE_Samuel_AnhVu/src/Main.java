@@ -4,7 +4,7 @@ public class Main {
 	public static String version;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.err.close();// java 9+ déclenchent des warnings à cause des .jar
+		System.setErr(System.out);// java 9+ déclenchent des warnings à cause des .jar
 		new VirtualUniverse();
 		version= (String) VirtualUniverse.getProperties().get("j3d.version");
 		System.out.println("JAVA3D version " +version);
