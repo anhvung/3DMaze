@@ -100,7 +100,7 @@ public class StartMenu extends JFrame {
 		// On lance le niveau choisi
 		String source = game.MainExecuteHere.source;
 		setVisible(false);
-		dispose();
+		pack();
 		// Maze maze = new Maze(source);
 		// intégré dans Maze déjà --> Maze.getMaze() pour avoir le laby
 		MazeMaker M = new MazeMaker(length, source);
