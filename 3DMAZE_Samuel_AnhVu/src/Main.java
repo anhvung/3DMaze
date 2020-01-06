@@ -2,7 +2,7 @@ import org.jogamp.java3d.VirtualUniverse;
 
 public class Main {
 	public static String version;
-	public static boolean debug = true;
+	public static boolean debug = false;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -16,8 +16,7 @@ public class Main {
 			System.out.println("Tested on java 8 (1.8.0_221) and 11.0.5 on windows. You are currently running : "
 					+ System.getProperty("java.version"));
 		}
-		else
-			System.err.close();
+		
 		game.MainExecuteHere.main();
 
 	}
