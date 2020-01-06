@@ -33,12 +33,12 @@ public class StartMenu extends JFrame {
 
 	public StartMenu() {
 		Color color = new Color(200, 0, 128);
-		auto = new JCheckBox("RESOLUTION AUTOMATIQUE (caméra auto)");
+		auto = new JCheckBox("RESOLUTION AUTOMATIQUE (camera auto)");
 
 		auto.setForeground(color);
 		auto.setSelected(false);
 		JLabel text = new JLabel(
-				"<html><br><font color=\"red\"> &nbsp;&nbsp;&nbsp;  Bienvenue !</font><br><br> &nbsp;&nbsp;&nbsp; Veuiller choisir la difficulte  <br>  <br> <br>&nbsp;&nbsp;&nbsp;  Le labyrinthe sera genere aleatoirement <br>&nbsp;&nbsp;&nbsp;Les cases de départ et d'arrivée également (cf Model.MazeMaker)<br></html>");
+				"<html><br><font color=\"red\"> &nbsp;&nbsp;&nbsp;  Bienvenue !</font><br><br> &nbsp;&nbsp;&nbsp; Veuiller choisir la difficulte  <br>  <br> <br>&nbsp;&nbsp;&nbsp;  Le labyrinthe sera genere aleatoirement <br>&nbsp;&nbsp;&nbsp;Les cases de depart et d'arrivee egalement (cf Model.MazeMaker)<br></html>");
 
 		this.setTitle("START MENU");
 		this.setPreferredSize(new Dimension(500, 300));
@@ -56,7 +56,7 @@ public class StartMenu extends JFrame {
 				level(2);
 			}
 		});
-		JButton load = new JButton("charger le dernier laby sauvegardé");
+		JButton load = new JButton("charger le dernier laby sauvegarde");
 		load.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -247,10 +247,10 @@ public class Navigation extends JPanel {
 			label.setText("<html><font color=\"blue\">Longueur du trajet : <br>" + path.size() + "</font></html>");
 		else
 			label.setText(
-					"<html>A droite se situe la carte par étage<br>En bas se trouvent les commandes <br> Bonne chance !  <br>  <br> <br> Direction : <font color=\"red\">"
+					"<html>A droite se situe la carte par etage<br>En bas se trouvent les commandes <br> Bonne chance !  <br>  <br> <br> Direction : <font color=\"red\">"
 							+ dir + "</font><br><br>Case actuelle sur la mini map :  <font color=\"blue\">"
 							+ Player.getIndex()
-							+ "</font><br><br>SOLUTION : CLIQUER SUR LE BOUTON A DROITE <br>La flèche rouge montre la direction à prendre <br>La croix rouge montre l'étage à changer<br><br><br>"
+							+ "</font><br><br>SOLUTION : CLIQUER SUR LE BOUTON A DROITE <br>La fleche rouge montre la direction a prendre <br>La croix rouge montre l'etage à changer<br><br><br>"
 							+ getNextDirection() + "</html>");
 
 	}
