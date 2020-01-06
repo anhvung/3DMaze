@@ -156,6 +156,7 @@ public class MazeMaker extends Maze {
 				writer.write("\n");
 			}
 			writer.close();
+			System.out.print("Nouveau Laby enregistre : " + path);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

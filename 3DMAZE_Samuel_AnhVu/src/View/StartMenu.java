@@ -38,7 +38,7 @@ public class StartMenu extends JFrame {
 		auto.setForeground(color);
 		auto.setSelected(false);
 		JLabel text = new JLabel(
-				"<html><br><font color=\"red\"> &nbsp;&nbsp;&nbsp;  Bienvenue !</font><br><br> &nbsp;&nbsp;&nbsp; Veuiller choisir la difficulté  <br>  <br> <br>&nbsp;&nbsp;&nbsp;  Le labyrinthe sera généré aléatoirement <br><br></html>");
+				"<html><br><font color=\"red\"> &nbsp;&nbsp;&nbsp;  Bienvenue !</font><br><br> &nbsp;&nbsp;&nbsp; Veuiller choisir la difficulte  <br>  <br> <br>&nbsp;&nbsp;&nbsp;  Le labyrinthe sera genere aleatoirement <br>&nbsp;&nbsp;&nbsp;Les cases de départ et d'arrivée également (cf Model.MazeMaker)<br></html>");
 
 		this.setTitle("START MENU");
 		this.setPreferredSize(new Dimension(500, 300));
@@ -54,6 +54,13 @@ public class StartMenu extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				level(2);
+			}
+		});
+		JButton load = new JButton("charger le dernier laby sauvegardé");
+		load.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				level(-1);
 			}
 		});
 		JButton right = new JButton("Difficile");
@@ -75,6 +82,7 @@ public class StartMenu extends JFrame {
 		paintButton(go);
 		paintButton(right);
 		paintButton(left);
+		paintButton(load);
 		impossible.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -88,6 +96,7 @@ public class StartMenu extends JFrame {
 		container.add(auto, BorderLayout.NORTH);
 		this.add(container, BorderLayout.CENTER);
 		this.add(text, BorderLayout.NORTH);
+		this.add(load, BorderLayout.SOUTH);
 		this.pack();
 		this.setVisible(true);
 		this.setFocusable(true);
@@ -103,8 +112,11 @@ public class StartMenu extends JFrame {
 		pack();
 		// Maze maze = new Maze(source);
 		// intégré dans Maze déjà --> Maze.getMaze() pour avoir le laby
+		if (length!=-1) {
 		MazeMaker M = new MazeMaker(length, source);
 		M.makeMaze();
+		}
+		else length =Maze.getMaze().getLength();
 		Controler.Maze.updateMaze();
 
 		GraphInterface g = new Graph(Maze.getMaze());
