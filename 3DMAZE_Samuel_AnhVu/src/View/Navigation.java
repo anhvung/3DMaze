@@ -38,6 +38,9 @@ public class Navigation extends JPanel {
 
 	public Navigation(boolean auto, ArrayList<VertexInterface> path, PreviousInterface previous, int length) {
 		// Ajout des boutons et de leur comportements
+		for (JButton jb : ref) {
+			jb.setOpaque(true);
+		}
 		this.setSize(300, 300);
 		Navigation.length = length;
 		Navigation.previous = previous;

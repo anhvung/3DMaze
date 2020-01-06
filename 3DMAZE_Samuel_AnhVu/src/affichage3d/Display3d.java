@@ -131,7 +131,7 @@ public class Display3d extends Canvas3D implements Display3dInterface {
 		// Animation de début de la caméra (zoom sur laby)
 
 		maze3d.updateCameraPos(new Point3d((float) ind[2] * scaleSize * stepSize,
-				(float) -ind[0] * scaleSize * stepSize, (float) ind[1] * scaleSize * stepSize), 2000);
+				(float) -ind[0] * scaleSize * stepSize, (float) ind[1] * scaleSize * stepSize), 700);
 
 	}
 
